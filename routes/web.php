@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 	// Auth::routes();
 // });
 Route::group(['as' => 'api.','namespace' => 'App\Http\Controllers\Api', 'prefix' => 'api'], function(){	
-	Route::group(['middleware' => 'auth:members'], function(){	
+	// Route::group(['middleware' => 'auth:members'], function(){	
 		Route::get('/status',['uses' => 'StatusController@index','as' => 'status.index']);
 		/*Project */
 		Route::get('/project',['uses' => 'ProjectController@index','as' => 'project.index'])->middleware('can:member-view-project');
@@ -33,7 +33,7 @@ Route::group(['as' => 'api.','namespace' => 'App\Http\Controllers\Api', 'prefix'
 		Route::get('/project/edit/{id}',['uses' => 'ProjectController@edit','as' => 'project.edit']);
 
 		Route::get('/project/send-mail/{id}',['uses' => 'ProjectController@sendMailMember'])->middleware('can:member-send-mail-project');
-	});
+	// });
 });
 
 
@@ -44,7 +44,7 @@ Route::group(['as' => 'api.','namespace' => 'App\Http\Controllers\Api', 'prefix'
  	Route::post('user/login',['uses' => 'UserController@postLogin']);
  	
 
-	Route::group(['middleware' => ['auth:web','HtmlMinifier'] ], function(){	
+	Route::group(['middleware' => ['auth:web'] ], function(){	
 		Route::put('/ajax/status/{id}', ['uses' => 'AjaxController@updateStatus']);
 		Route::put('/ajax/priority/{id}', ['uses' => 'AjaxController@updatePriority']);
 		// Route::resource('member', 'MemberController');
@@ -111,6 +111,7 @@ Route::group(['as' => 'api.','namespace' => 'App\Http\Controllers\Api', 'prefix'
 
 		/*Trạng thái */
 		Route::get('/status',['uses' => 'StatusController@index','as' => 'status.index'])->middleware('can:view-status');
+		Route::get('/status/data',['uses' => 'StatusController@getData','as' => 'status.data'])->middleware('can:view-status');
 		Route::get('/status/add',['uses' => 'StatusController@create','as' => 'status.add'])->middleware('can:create-status');
 		Route::post('/status/store',['uses' => 'StatusController@store','as' => 'status.store']);
 		Route::get('/status/edit/{id}',['uses' => 'StatusController@edit','as' => 'status.edit'])->middleware('can:update-status');

@@ -165,7 +165,7 @@ function loadFormItem(data)
         	$('.selectpicker').selectpicker('refresh');
         	$('#pre-loader').delay(250).fadeOut();
         	$("#con-close-modal").modal();
-        	ValidationFormSelf('.needs-validation');s
+        	ValidationFormSelf('.needs-validation');
         }
     });
 }

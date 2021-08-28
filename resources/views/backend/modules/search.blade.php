@@ -1,5 +1,5 @@
 <div class="d-inline-flex justify-content-end mt-sm-0 mt-1">
-    <form role="form" class="d-flex " method="GET" action="{{url()->current()}}" enctype="multipart/form-data" >
+    <form role="form" id="search-form" class="d-flex " method="GET" action="{{url()->current()}}" enctype="multipart/form-data" >
         @if(request()->routeIs('admin.project.index'))
         <div class="dropdown-custom float-left">
             <a 
@@ -90,11 +90,10 @@
             </div>
         </div>    
         @endif
-
         @if(isset($_GET['type']))
         <input type="hidden"  name="type" value='{{$_GET["type"]}}'>
         @endif
-        <div class="form-inline form-search d-inline-block align-middle ml-1">
+        <div  class="form-inline form-search d-inline-block align-middle ml-1">
             <div class="input-group input-group-sm">
                 <input class="form-control form-control-navbar text-sm" type="search" id="keyword" placeholder="Tìm kiếm" aria-label="Tìm kiếm" name='term' value="{{Request('term')}}" >
                 <div class="input-group-append bg-primary rounded-right">

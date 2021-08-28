@@ -146,10 +146,46 @@ $(document).on('click', function (e) {
     }
 });
 
-$(window).on('load', function () {
-	$(".container-fluid").css({'opacity':'1'});
-    $('#pre-loader').delay(250).fadeOut(function () {
-        // $('#pre-loader').remove();
-    });
-});
 
+
+if($('#datatable-buttons').exists()){
+	$(document).ready(function(){
+		var oTable = $('#datatable-buttons').DataTable({
+			initComplete: function( settings, json ) {
+			    $(".container-fluid").css({'opacity':'1'});
+			    $('#pre-loader').delay(250).fadeOut(function () {
+			        // $('#pre-loader').remove();
+			    });
+			},
+			language: {
+		    	paginate: {
+		      		previous: '<i class="mdi mdi-chevron-left"></i>',
+		      		next: '<i class="mdi mdi-chevron-right"></i>'
+		    	},
+		    	sProcessing: '<span class="spinner-border spinner-border-sm mr-1"></span>Loading...',
+
+		  	},
+			pageLength: Datatable.pageLength,
+			order: [],
+			searching: false,
+			lengthChange: false,
+	        processing: true,
+	        serverSide: true,
+	        ajax: Datatable.ajax,
+	        columns: Datatable.columns,
+	    });
+
+	    $('#search-form').on('submit', function(e) {
+	        oTable.draw();
+	        e.preventDefault();
+	    });
+	});
+
+}else{
+	$(window).on('load', function () {
+		$(".container-fluid").css({'opacity':'1'});
+	    $('#pre-loader').delay(250).fadeOut(function () {
+	        // $('#pre-loader').remove();
+	    });
+	});
+}

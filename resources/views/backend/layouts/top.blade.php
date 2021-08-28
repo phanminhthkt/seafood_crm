@@ -8,6 +8,7 @@
 <!-- App favicon -->
 <link rel="shortcut icon" href="{{asset('backend')}}\images\favicon.ico">
 <!-- App css -->
+<link href="{{asset('backend')}}\libs\datatables\dataTables.bootstrap4.css" rel="stylesheet" type="text/css">
 <link href="{{asset('backend')}}\css\bootstrap.min.css" rel="stylesheet" type="text/css">
 <link href="{{asset('backend')}}\css\icons.min.css" rel="stylesheet" type="text/css">
 <link href="{{asset('backend')}}\libs\switchery\switchery.min.css" rel="stylesheet" type="text/css">

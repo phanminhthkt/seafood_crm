@@ -5,6 +5,8 @@
 <!-- <script  src="{{asset('backend')}}\libs\dropzone\dropzone.min.js"></script> -->
 <!-- Init js-->
 <!-- <script  src="{{asset('backend')}}\js\pages\form-fileuploads.init.js"></script> -->
+<script  src="{{asset('backend')}}\libs\datatables\jquery.dataTables.min.js"></script>
+<script  src="{{asset('backend')}}\libs\datatables\dataTables.bootstrap4.js"></script>
 <script  src="{{asset('backend')}}\libs\multiselect\jquery.multi-select.js"></script>
 <script  src="{{asset('backend')}}\libs\select2\select2.min.js"></script>
 <script  src="{{asset('backend')}}\libs\bootstrap-select\bootstrap-select.min.js"></script>

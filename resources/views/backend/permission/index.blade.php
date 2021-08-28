@@ -32,7 +32,7 @@
                <div class="row">
                   <div class="col-sm-12">
                     <div class="table-responsive">
-                     <table id="basic-datatable" class="table table-striped dt-responsive nowrap dataTable no-footer dtr-inline" role="grid" aria-describedby="basic-datatable_info" >
+                     <table id="datatable-buttons" class="table table-striped dt-responsive nowrap dataTable no-footer dtr-inline" role="grid" aria-describedby="basic-datatable_info" >
                         <thead>
                            <tr role="row">
                               <th width="1%">

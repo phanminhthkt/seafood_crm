@@ -31,9 +31,9 @@ abstract class BaseRepository implements RepositoryInterface
         return $this->_model->all();
     }
 
-    public function find($id)
+    public function findOrFail($id)
     {
-        $result = $this->_model->find($id);
+        $result = $this->_model->findOrFail($id);
 
         return $result;
     }
@@ -45,7 +45,7 @@ abstract class BaseRepository implements RepositoryInterface
 
     public function update($id, $attributes = [])
     {
-        $result = $this->find($id);
+        $result = $this->findOrFail($id);
         if ($result) {
             $result->update($attributes);
             return $result;
@@ -56,7 +56,7 @@ abstract class BaseRepository implements RepositoryInterface
 
     public function delete($id)
     {
-        $result = $this->find($id);
+        $result = $this->findOrFail($id);
         if ($result) {
             $result->delete();
 
