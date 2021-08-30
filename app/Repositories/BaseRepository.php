@@ -34,7 +34,6 @@ abstract class BaseRepository implements RepositoryInterface
     public function findOrFail($id)
     {
         $result = $this->_model->findOrFail($id);
-
         return $result;
     }
 

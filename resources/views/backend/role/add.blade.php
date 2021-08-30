@@ -61,28 +61,6 @@
             <h5 class="card-title mb-0">THÔNG TIN CHI TIẾT</h5>
         </div>
         <div class="card-body">
-          <ul class="nav nav-tabs nav-bordered">
-            <li class="nav-item">
-                <a href="#vi" data-toggle="tab" aria-expanded="false" class="nav-link active">
-                    <span class="d-inline-block d-sm-none"><i class="fas fa-home"></i></span>
-                    <span class="d-none d-sm-inline-block">Tiếng Việt</span> 
-                </a>
-            </li>
-            <li class="nav-item d-none">
-                <a href="#en" data-toggle="tab" aria-expanded="true" class="nav-link">
-                    <span class="d-inline-block d-sm-none"><i class="far fa-user"></i></span>
-                    <span class="d-none d-sm-inline-block">Tiếng Anh</span> 
-                </a>
-            </li>
-            <li class="nav-item d-none">
-                <a href="#kr" data-toggle="tab" aria-expanded="false" class="nav-link">
-                    <span class="d-inline-block d-sm-none"><i class="far fa-envelope"></i></span>
-                    <span class="d-none d-sm-inline-block">Tiếng Hàn</span>  
-                </a>
-            </li>
-          </ul>
-          <div class="tab-content">
-              <div class="tab-pane fade active show" id="vi">
                 <div class="form-group">
                   <label>Vai trò</label>
                     <div class="input-group">
@@ -114,10 +92,6 @@
                   @endforeach
                 </div>
                <!--End Add Permission -->
-            </div>
-            <div class="tab-pane fade d-none" id="en">Anh</div>
-            <div class="tab-pane fade d-none" id="kr">Hàn</div>
-          </div>
         </div>
       </div>
       <button type="submit" class="btn btn-success waves-effect waves-light"><i class="far fa-plus-square mr-1"></i>Submit</button>

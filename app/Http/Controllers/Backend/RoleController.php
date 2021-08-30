@@ -8,6 +8,8 @@ use App\Models\Role;
 use App\Models\Permission;
 use Illuminate\Support\Str;
 use App\Http\Helpers\helpers;
+use App\Repositories\Role\RoleRepositoryInterface;
+use Illuminate\Support\Arr;
 
 class RoleController extends Controller
 {
@@ -18,11 +20,11 @@ class RoleController extends Controller
      */
     private $_data;
     private $_pathType;
-    private $_model;
+    private $_repository;
 
-    public function __construct(Role $role,Permission $permission,Request $request)
+    public function __construct(RoleRepositoryInterface $roleRepository,Permission $permission,Request $request)
     {
-        $this->_model = $role;
+        $this->_repository = $roleRepository;
         $this->_pathType = '';
         $this->_data['pageIndex'] = route('admin.role.index');
         $this->_data['permissions'] = Permission::all()->groupBy('module');
@@ -34,15 +36,12 @@ class RoleController extends Controller
 
     public function index(Request $request)
     {
-        $sql  = $this->_model::where('id','<>', 0);
-        if($request->has('term')){
-            $sql->where('name', 'Like', '%' . $request->term . '%');
-            $this->_pathType .= '?term='.$request->term;
-        }
-        $this->_data['items'] = $sql->orderBy('id','desc')->paginate(10)->withPath(url()->current().$this->_pathType);
         return view('backend.role.index', $this->_data);
     }
-
+    public function getData(Request $request)
+    {   
+        return $this->_repository->getDataByCondition($request,Arr::except($this->_data, 'permissions'));
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -63,8 +62,8 @@ class RoleController extends Controller
     {
         $data = $request->except('_token','permission');
         $data['slug'] = Str::slug($request->name, '-');
-        if($roleId = $this->_model->create($data)->id){
-            $role = $this->_model::find($roleId);
+        if($roleId = $this->_repository->create($data)->id){
+            $role = $this->_repository->findOrFail($roleId);
             $role->permissions()->attach($request->permission);
             return redirect()->route('admin.role.index')->with('success', 'Thêm vai trò <b>'. $request->name .'</b> thành công');
         }else{
@@ -91,7 +90,7 @@ class RoleController extends Controller
      */
     public function edit($id)
     {
-        $this->_data['item'] = $this->_model->findOrFail($id);
+        $this->_data['item'] = $this->_repository->findOrFail($id);
         $this->_data['permission_array'] = [];
         foreach($this->_data['item']->permissions as $v){array_push($this->_data['permission_array'],$v['id']);}
         return view('backend.role.edit',$this->_data);
@@ -106,10 +105,10 @@ class RoleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $role = $this->_model->findOrFail($id);
+        $role = $this->_repository->findOrFail($id);
         $data = $request->except('_token','_method','permission');//# request only
         $data['slug'] = Str::slug($request->name, '-');
-        if($role->where('id', $id)->update($data)){
+        if($this->_repository->update($id,$data)){
             $role->permissions()->sync($request->permission);
             return redirect()->route('admin.role.index')->with('success', 'Chỉnh sửa vai trò <b>'. $request->name .'</b> thành công');
         }else{
@@ -125,8 +124,7 @@ class RoleController extends Controller
      */
     public function delete($id)
     {
-        $this->_model->findOrFail($id);
-        if($this->_model->where('id', $id)->delete()){
+        if($this->_repository->delete($id)){
             return ['success' => true, 'message' => 'Xóa vai trò thành công !!'];
         }else{
             return ['error' => true, 'message' => 'Xóa vai trò thất bại.Xin vui lòng thử lại !!'];
@@ -134,7 +132,7 @@ class RoleController extends Controller
     }
     public function deleteMultiple($listId)
     {
-        if($this->_model->whereIn('id',explode(",",$listId))->delete()){
+        if($this->_repository->deleteMultiple($listId)){
             return ['success' => true, 'message' => 'Xóa vai trò thành công !!'];
         }else{
             return ['error' => true, 'message' => 'Xóa vai trò thất bại.Xin vui lòng thử lại !!'];

@@ -108,6 +108,7 @@ if(URL.current!=''){
 	})
 }
 
+
 // End active menu third
 // Change file
 $('body').on('change','.custom-file-dev input[type=file]', function(){
@@ -146,8 +147,7 @@ $(document).on('click', function (e) {
     }
 });
 
-
-
+// $(".ajax-form").
 if($('#datatable-buttons').exists()){
 	$(document).ready(function(){
 		var oTable = $('#datatable-buttons').DataTable({

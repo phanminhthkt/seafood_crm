@@ -151,6 +151,48 @@ function sendMail(data)
 	});
 }
 /* Delete */
+function ajaxFormItem(){
+	if($('.dev-form').exists()){
+		$(document).ready(function() {
+			$('.dev-form').on('submit', function(e){
+				e.preventDefault();
+				var form = $(this);
+				var url = form.attr('action');
+				$.ajax({
+				   	type: "POST",
+				   	url: url,
+				   	data: form.serialize(), // serializes the form's elements.
+					beforeSend: function() {
+				        $('.dev-form').find("button[type='submit']").html('<span class="spinner-border spinner-border-sm"></span>');
+				    },
+					error:function(x,e) {
+					    backErrorAjax(x,e);
+					    $('.dev-form').find("button[type='submit']").html('<i class="fa fa-plus-square mr-1"></i> Tạo');
+					},
+				   success: function(data)
+				   {
+				    	$.ajaxSetup({
+						    headers: {
+						        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+						    }
+						});
+				       	$('.dev-form').find("button[type='submit']").html('<i class="mdi mdi-check"></i>');
+				       	$('.dev-form').removeClass('was-validated');
+				       	$('#datatable-buttons').DataTable().ajax.reload();
+				       	setTimeout(function(){ 
+				       		var textBtn = 'Sửa';
+				       		if(!form.find('input[name="_method"]').val()){
+				       			form.trigger("reset");
+				       			textBtn = 'Tạo';
+				       		}
+				       		$('.dev-form').find("button[type='submit']").html('<i class="fa fa-plus-square mr-1"></i> '+textBtn+''); }
+				       		, 1000);
+				   }
+			 	});
+	  		});
+		});
+	}
+}
 function loadFormItem(data)
 {	
 	 $.ajax({
@@ -166,6 +208,7 @@ function loadFormItem(data)
         	$('#pre-loader').delay(250).fadeOut();
         	$("#con-close-modal").modal();
         	ValidationFormSelf('.needs-validation');
+        	ajaxFormItem();
         }
     });
 }
@@ -182,7 +225,7 @@ function deleteItem(data)
 		    backErrorAjax(x,e);
 		},
 	    success: function(result){
-	    	location.reload();
+	    	$('#datatable-buttons').DataTable().ajax.reload();
 	    }
 	});
 }

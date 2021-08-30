@@ -55,6 +55,7 @@ Route::group(['as' => 'api.','namespace' => 'App\Http\Controllers\Api', 'prefix'
 		
 		// Route::post('user/login',['uses' => '/UserController@postLogin','as'=>'user.login']);
 		Route::get('/user',['uses' => 'UserController@index','as' => 'user.index'])->middleware('can:view-user');
+		Route::get('/user/data',['uses' => 'UserController@getData','as' => 'user.data'])->middleware('can:view-user');
 		Route::get('/user/add',['uses' => 'UserController@create','as' => 'user.add'])->middleware('can:create-user');
 		Route::post('/user/store',['uses' => 'UserController@store','as' => 'user.store']);
 		Route::get('/user/edit/{id}',['uses' => 'UserController@edit','as' => 'user.edit'])->middleware('can:update-user');
@@ -65,6 +66,7 @@ Route::group(['as' => 'api.','namespace' => 'App\Http\Controllers\Api', 'prefix'
 
 		/*Role */
 		Route::get('/role',['uses' => 'RoleController@index','as' => 'role.index'])->middleware('can:view-role');
+		Route::get('/role/data',['uses' => 'RoleController@getData','as' => 'role.data'])->middleware('can:view-role');
 		Route::get('/role/add',['uses' => 'RoleController@create','as' => 'role.add'])->middleware('can:create-status');
 		Route::post('/role/store',['uses' => 'RoleController@store','as' => 'role.store']);
 		Route::get('/role/edit/{id}',['uses' => 'RoleController@edit','as' => 'role.edit'])->middleware('can:update-status');
@@ -74,6 +76,7 @@ Route::group(['as' => 'api.','namespace' => 'App\Http\Controllers\Api', 'prefix'
 
 		/*Role */
 		Route::get('/permission',['uses' => 'PermissionController@index','as' => 'permission.index'])->middleware('can:view-permission');
+		Route::get('/permission/data',['uses' => 'PermissionController@getData','as' => 'permission.data'])->middleware('can:view-permission');
 		Route::get('/permission/add',['uses' => 'PermissionController@create','as' => 'permission.add'])->middleware('can:create-permission');
 		Route::post('/permission/store',['uses' => 'PermissionController@store','as' => 'permission.store']);
 		Route::get('/permission/edit/{id}',['uses' => 'PermissionController@edit','as' => 'permission.edit'])->middleware('can:update-permission');
@@ -102,6 +105,7 @@ Route::group(['as' => 'api.','namespace' => 'App\Http\Controllers\Api', 'prefix'
 
 		/*Nhóm trạng thái */
 		Route::get('/group_status',['uses' => 'GroupStatusController@index','as' => 'group_status.index'])->middleware('can:view-group_status');
+		Route::get('/group_status/data',['uses' => 'GroupStatusController@getData','as' => 'group_status.data'])->middleware('can:view-group_status');
 		Route::get('/group_status/add',['uses' => 'GroupStatusController@create','as' => 'group_status.add'])->middleware('can:create-group_status');
 		Route::post('/group_status/store',['uses' => 'GroupStatusController@store','as' => 'group_status.store']);
 		Route::get('/group_status/edit/{id}',['uses' => 'GroupStatusController@edit','as' => 'group_status.edit'])->middleware('can:update-group_status');

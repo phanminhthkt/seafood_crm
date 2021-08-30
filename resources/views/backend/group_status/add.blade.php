@@ -1,5 +1,5 @@
-     <form 
-    class='needs-validation'
+ <form 
+    class='needs-validation dev-form'
     role="form" 
     method="POST" 
     action="{{$pageIndex.'/store'.$path_type}}" 
@@ -21,7 +21,7 @@
           </div>
         </div>
       </div>
-      <button type="submit" class="btn btn-success waves-effect waves-light"><i class="far fa-plus-square mr-1"></i>Submit</button>
+      <button type="submit" class="btn btn-success waves-effect waves-light"><i class="far fa-plus-square mr-1"></i>Tạo</button>
       <button type="reset" class="btn btn-secondary waves-effect waves-light"><i class="fa fas fa-redo mr-1"></i>Reset</button>
    </div>
    

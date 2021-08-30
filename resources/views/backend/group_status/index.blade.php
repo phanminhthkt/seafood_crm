@@ -32,7 +32,7 @@
                <div class="row">
                   <div class="col-sm-12">
                     <div class="table-responsive">
-                     <table id="basic-datatable" class="table table-striped dt-responsive nowrap dataTable no-footer dtr-inline" role="grid" aria-describedby="basic-datatable_info" >
+                     <table id="datatable-buttons" class="table table-striped dt-responsive no-border">
                         <thead>
                            <tr role="row">
                               <th width="1%">
@@ -59,22 +59,19 @@
 </div>
 <script type="text/javascript">
   var Datatable = {
-    url_data: '<?=url()->current()?>/data',
-    pageLength: 10,
-    // ajaxForm:{
-    //     url: '<?=url()->current()?>/data',
-    //     data: function (d) {
-    //         d.name = $('input[name=term]').val();
-    //     }
-    // },
+    ajax: {
+        url: '<?=url()->current()?>/data',
+        data: function (d) {
+            d.name = $('input[name=term]').val();
+        }
+    },
     columns:[
-      {data: 'checkbox', orderable: false, searchable: false},
-      {data: 'priority',name: 'priority', orderable: false, searchable: false},
-      {data: 'name',name: 'name'},
-      {data: 'group.name',name: 'group', orderable: false, searchable: false},
-      {data: 'status',name: 'status', orderable: false, searchable: false},
-      {data: 'action', name: 'action', orderable: false, searchable: false}
-    ],
+        {data: 'checkbox', orderable: false, searchable: false},
+        {data: 'priority',name: 'priority', orderable: false, searchable: false},
+        {data: 'name',name: 'name'},
+        {data: 'status',name: 'status', orderable: false, searchable: false},
+        {data: 'action', name: 'action', orderable: false, searchable: false}
+    ]
   };
 </script>
 @endsection

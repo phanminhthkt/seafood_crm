@@ -11,6 +11,8 @@ use Auth;
 use App\Models\User;
 use App\Models\Role;
 use Session;
+use App\Repositories\User\UserRepositoryInterface;
+use Illuminate\Support\Arr;
 
 class UserController extends Controller
 {
@@ -22,16 +24,16 @@ class UserController extends Controller
 
     private $_data;
     private $_pathType;
-    private $_model;
+    private $_repository;
 
-    public function __construct(User $user,Role $role,Request $request)
+    public function __construct(UserRepositoryInterface $userRepository,Role $role,Request $request)
     {
 
-        $this->_model = $user;
+        $this->_repository = $userRepository;
         $this->_pathType = '';
         $this->_data['pageIndex'] = route('admin.user.index');
         $this->_data['table'] = 'users';
-        $this->_data['roles'] = Role::all();
+        $this->_data['roles'] = Role::get(['name','id']);
         $this->_data['title'] = 'Người dùng';
         $this->_data['type'] = $request->type;
         $this->_data['path_type'] = isset($_GET['type']) ? '?type='.$_GET['type']:'';
@@ -39,16 +41,12 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-        $sql  = User::where('type',$request->type);
-        $this->_pathType = '?type='.$request->type;
-        if($request->has('term')){
-            $sql->where('name', 'Like', '%' . $request->term . '%');
-            $this->_pathType .= '&term='.$request->term;
-        }
-        $this->_data['items'] = $sql->orderBy('id','desc')->paginate(10)->withPath(url()->current().$this->_pathType);
         return view('backend.user.index', $this->_data);
     }
-
+    public function getData(Request $request)
+    {   
+        return $this->_repository->getDataByCondition($request,Arr::except($this->_data, 'roles'));
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -70,9 +68,8 @@ class UserController extends Controller
         $data = $request->except('_token','password_confirmation','role');
         $data['password'] = Hash::make($request->password);
         $data['remember_token'] = $request->_token;
-
-        if($userId = $this->_model->create($data)->id){
-            $user = $this->_model::find($userId);
+        if($userId = $this->_repository->create($data)->id){
+            $user = $this->_repository->findOrFail($userId);
             $user->roles()->attach($request->role);
             return redirect()->route('admin.user.index')->with('success', 'Thêm người dùng <b>'. $request->name .'</b> thành công');
         }else{
@@ -99,7 +96,7 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $this->_data['item'] = $this->_model->findOrFail($id);
+        $this->_data['item'] = $this->_repository->findOrFail($id);
         $this->_data['role_array'] = [];
         foreach($this->_data['item']->roles as $v){array_push($this->_data['role_array'],$v['id']);}
         return view('backend.user.edit',$this->_data);
@@ -115,12 +112,11 @@ class UserController extends Controller
      */
     public function update(SignupRequestUser $request, $id)
     {
-        $user = $this->_model->findOrFail($id);
-        
+        $user = $this->_repository->findOrFail($id);
         $data = $request->except('_token','_method','password_confirmation','role');//# request only
         $data['password'] = Hash::make($request->password);
         $data['remember_token'] = $request->_token;
-        if($user->where('id', $id)->update($data)){
+        if($this->_repository->update($id,$data)){
             $user->roles()->sync($request->role);
             return redirect()->route('admin.user.index')->with('success', 'Chỉnh sửa người dùng <b>'. $request->name .'</b> thành công');
         }else{
@@ -136,8 +132,7 @@ class UserController extends Controller
      */
     public function delete($id)
     {
-        $this->_model->findOrFail($id);
-        if($this->_model->where('id', $id)->delete()){
+        if($this->_repository->delete($id)){
             return ['success' => true, 'message' => 'Xóa người dùng thành công !!'];
         }else{
             return ['error' => true, 'message' => 'Xóa người dùng thất bại.Xin vui lòng thử lại !!'];
@@ -145,8 +140,7 @@ class UserController extends Controller
     }
     public function deleteMultiple($listId)
     {
-        $data = $this->_model->whereIn('id',explode(",",$listId))->pluck('name');
-        if($this->_model->whereIn('id',explode(",",$listId))->delete()){
+        if($this->_repository->deleteMultiple($listId)){
             return ['success' => true, 'message' => 'Xóa người dùng thành công !!'];
         }else{
             return ['error' => true, 'message' => 'Xóa người dùng thất bại.Xin vui lòng thử lại !!'];

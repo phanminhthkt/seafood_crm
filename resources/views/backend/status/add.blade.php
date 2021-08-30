@@ -1,5 +1,5 @@
     <form 
-    class='needs-validation'
+    class='needs-validation dev-form'
     role="form" 
     method="POST" 
     action="{{$pageIndex.'/store'.$path_type}}" 
@@ -39,4 +39,4 @@
       <button type="reset" class="btn btn-secondary waves-effect waves-light"><i class="fa fas fa-redo mr-1"></i>Làm mới</button>
    </div>
 </div>
- </form>
+</form>

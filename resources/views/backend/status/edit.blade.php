@@ -5,7 +5,7 @@
     </div>
  </div>
  <form 
-  class='needs-validation'
+  class='needs-validation dev-form'
   role="form" 
   method="POST" 
   action="{{$pageIndex.'/update/'.$item->id.$path_type}}" 

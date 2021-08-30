@@ -1,16 +1,16 @@
 <?php
-namespace App\Repositories\Status;
+namespace App\Repositories\Role;
 use App\Repositories\BaseRepository;
 use DataTables;
-class StatusRepository extends BaseRepository implements StatusRepositoryInterface
+class RoleRepository extends BaseRepository implements RoleRepositoryInterface
 {
     //lấy model tương ứng
     public function getModel()
     {
-        return \App\Models\Status::class;
+        return \App\Models\Role::class;
     }
     public function getDataByCondition($request,$data){
-        $value = $this->_model::with('group')->select('name','id','group_id','is_status','is_priority')->where('id','<>', 0);
+        $value = $this->_model::select('name','id','is_status','is_priority')->where('id','<>', 0);
         return Datatables::of($value)
         ->filter(function ($query) use ($request) {
             if ($request->has('name')) {
@@ -45,10 +45,9 @@ class StatusRepository extends BaseRepository implements StatusRepositoryInterfa
                                 </div>';})
         ->addColumn('action', function ($value) use ($data) {
                 return '<a  
-                            href="javascript:void(0)"
-                            class="btn btn-icon waves-effect waves-light btn-info ajax-form"
+                            class="btn btn-icon waves-effect waves-light btn-info"
                             data-title="Sửa '.$data['title'].'"
-                            data-url="'.$data['pageIndex'].'/edit/'.$value->id.$data['path_type'].'"  
+                            href="'.$data['pageIndex'].'/edit/'.$value->id.$data['path_type'].'"  
                                   >
                             <i class="mdi mdi-pencil"></i>
                         </a>

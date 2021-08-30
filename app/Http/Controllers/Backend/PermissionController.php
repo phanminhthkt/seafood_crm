@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Permission;
 use Illuminate\Support\Str;
+use DataTables;
+use App\Repositories\Permission\PermissionRepositoryInterface;
+use Illuminate\Support\Arr;
 
 class PermissionController extends Controller
 {
@@ -16,11 +19,11 @@ class PermissionController extends Controller
      */
     private $_data;
     private $_pathType;
-    private $_model;
+    private $_repository;
 
-    public function __construct(Permission $permission,Request $request)
+    public function __construct(PermissionRepositoryInterface $permissionRepository,Request $request)
     {
-        $this->_model = $permission;
+        $this->_repository = $permissionRepository;
         $this->_pathType = '';
         $this->_data['pageIndex'] = route('admin.permission.index');
         $this->_data['table'] = 'permissions';
@@ -31,15 +34,13 @@ class PermissionController extends Controller
 
     public function index(Request $request)
     {
-        $sql  = $this->_model::where('id','<>', 0);
-        if($request->has('term')){
-            $sql->where('name', 'Like', '%' . $request->term . '%');
-            $this->_pathType .= '?term='.$request->term;
-        }
-        $this->_data['items'] = $sql->orderBy('module','desc')->paginate(10)->withPath(url()->current().$this->_pathType);
         return view('backend.permission.index', $this->_data);
     }
 
+    public function getData(Request $request)
+    {   
+        return $this->_repository->getDataByCondition($request,$this->_data);
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -60,7 +61,7 @@ class PermissionController extends Controller
     {
         $data = $request->except('_token');
         $data['slug'] = Str::slug($request->action.' '.$request->module, '-');
-        if($this->_model->create($data)){
+        if($this->_repository->create($data)){
             return redirect()->route('admin.permission.index')->with('success', 'Thêm quyền <b>'. $request->name .'</b> thành công');
         }else{
             return redirect()->route('admin.permission.index')->with('danger', 'Thêm quyền <b>'. $request->name .'</b> thất bại.Xin vui lòng thử lại');
@@ -86,7 +87,7 @@ class PermissionController extends Controller
      */
     public function edit($id)
     {
-        $this->_data['item'] = $this->_model->findOrFail($id);
+        $this->_data['item'] = $this->_repository->findOrFail($id);
         return view('backend.permission.edit',$this->_data);
     }
 
@@ -99,10 +100,10 @@ class PermissionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->_model->findOrFail($id);
+        $this->_repository->findOrFail($id);
         $data = $request->except('_token','_method');//# request only
         $data['slug'] = Str::slug($request->action.' '.$request->module, '-');
-        if($this->_model->where('id', $id)->update($data)){
+        if($this->_repository->update($id,$data)){
             return redirect()->route('admin.permission.index')->with('success', 'Chỉnh sửa quyền <b>'. $request->name .'</b> thành công');
         }else{
             return redirect()->route('admin.permission.index')->with('danger', 'Chỉnh sửa quyền <b>'. $request->name .'</b> thất bại.Xin vui lòng thử lại');
@@ -117,8 +118,7 @@ class PermissionController extends Controller
      */
     public function delete($id)
     {
-        $this->_model->findOrFail($id);
-        if($this->_model->where('id', $id)->delete()){
+        if($this->_repository->delete($id)){
             return ['success' => true, 'message' => 'Xóa quyền thành công !!'];
         }else{
             return ['error' => true, 'message' => 'Xóa quyền thất bại.Xin vui lòng thử lại !!'];
@@ -126,7 +126,7 @@ class PermissionController extends Controller
     }
     public function deleteMultiple($listId)
     {
-        if($this->_model->whereIn('id',explode(",",$listId))->delete()){
+        if($this->_repository->deleteMultiple($listId)){
             return ['success' => true, 'message' => 'Xóa quyền thành công !!'];
         }else{
             return ['error' => true, 'message' => 'Xóa quyền thất bại.Xin vui lòng thử lại !!'];

@@ -1,16 +1,16 @@
 <?php
-namespace App\Repositories\Status;
+namespace App\Repositories\GroupStatus;
 use App\Repositories\BaseRepository;
 use DataTables;
-class StatusRepository extends BaseRepository implements StatusRepositoryInterface
+class GroupStatusRepository extends BaseRepository implements GroupStatusRepositoryInterface
 {
     //lấy model tương ứng
     public function getModel()
     {
-        return \App\Models\Status::class;
+        return \App\Models\GroupStatus::class;
     }
     public function getDataByCondition($request,$data){
-        $value = $this->_model::with('group')->select('name','id','group_id','is_status','is_priority')->where('id','<>', 0);
+        $value = $this->_model::select('name','id','is_status','is_priority')->where('id','<>', 0);
         return Datatables::of($value)
         ->filter(function ($query) use ($request) {
             if ($request->has('name')) {

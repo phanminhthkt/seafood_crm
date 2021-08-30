@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Status;
+use DataTables;
 use App\Models\GroupStatus;
+use App\Repositories\GroupStatus\GroupStatusRepositoryInterface;
+use Illuminate\Support\Arr;
 
 class GroupStatusController extends Controller
 {
@@ -17,11 +19,11 @@ class GroupStatusController extends Controller
 
     private $_data;
     private $_pathType;
-    private $_model;
+    private $_repository;
 
-    public function __construct(GroupStatus $groupStatus,Request $request)
+    public function __construct(GroupStatusRepositoryInterface $groupStatusRepository,Request $request)
     {
-        $this->_model = $groupStatus;
+        $this->_repository = $groupStatusRepository;
         $this->_pathType = '';
         $this->_data['pageIndex'] = route('admin.group_status.index');
         $this->_data['table'] = 'group_status';
@@ -32,15 +34,12 @@ class GroupStatusController extends Controller
 
     public function index(Request $request)
     {
-        $sql  = $this->_model::where('id','<>', 0)->where('type',$request->type);
-        if($request->has('term')){
-            $sql->where('name', 'Like', '%' . $request->term . '%');
-            $this->_pathType .= '?term='.$request->term;
-        }
-        $this->_data['items'] = $sql->orderBy('id','desc')->paginate(10)->withPath(url()->current().$this->_pathType);
         return view('backend.group_status.index', $this->_data);
     }
-
+    public function getData(Request $request)
+    {   
+        return $this->_repository->getDataByCondition($request,$this->_data);
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -60,7 +59,7 @@ class GroupStatusController extends Controller
     public function store(Request $request)
     {
         $data = $request->except('_token');
-        if($this->_model->create($data)){
+        if($this->_repository->create($data)){
             return redirect()->route('admin.group_status.index',['type' => $request->type])->with('success', 'Thêm nhóm trạng thái <b>'. $request->name .'</b> thành công');
         }else{
             return redirect()->route('admin.group_status.index',['type' => $request->type])->with('danger', 'Thêm nhóm trạng thái <b>'. $request->name .'</b> thất bại.Xin vui lòng thử lại');
@@ -86,7 +85,7 @@ class GroupStatusController extends Controller
      */
     public function edit($id)
     {
-        $this->_data['item'] = $this->_model->findOrFail($id);
+        $this->_data['item'] = $this->_repository->findOrFail($id);
         return view('backend.group_status.edit',$this->_data);
     }
 
@@ -98,13 +97,12 @@ class GroupStatusController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
-        $this->_model->findOrFail($id);
+    {   
         $data = $request->except('_token','_method');//# request only
-        if($this->_model->where('id', $id)->update($data)){
-            return redirect()->route('admin.group_status.index',['type' => $request->type])->with('success', 'Chỉnh sửa nhóm trạng thái <b>'. $request->name .'</b> thành công');
+        if($this->_repository->update($id,$data)){
+            return redirect()->route('admin.status.index')->with('success', 'Chỉnh sửa nhóm trạng thái <b>'. $request->name .'</b> thành công');
         }else{
-            return redirect()->route('admin.group_status.index',['type' => $request->type])->with('danger', 'Chỉnh sửa nhóm trạng thái <b>'. $request->name .'</b> thất bại.Xin vui lòng thử lại');
+            return redirect()->route('admin.status.index')->with('danger', 'Chỉnh sửa nhóm trạng thái <b>'. $request->name .'</b> thất bại.Xin vui lòng thử lại');
         }
     }
 
@@ -116,19 +114,18 @@ class GroupStatusController extends Controller
      */
     public function delete($id)
     {
-        $this->_model->findOrFail($id);
-        if($this->_model->where('id', $id)->delete()){
-            return ['success' => true, 'message' => 'Xóa nhóm trạng thái thành công !!'];
+        if($this->_repository->delete($id)){
+            return ['success' => true, 'message' => 'Xóa trạng thái thành công !!'];
         }else{
-            return ['error' => true, 'message' => 'Xóa nhóm trạng thái thất bại.Xin vui lòng thử lại !!'];
+            return ['error' => true, 'message' => 'Xóa trạng thái thất bại.Xin vui lòng thử lại !!'];
         }
     }
     public function deleteMultiple($listId)
     {
-        if($this->_model->whereIn('id',explode(",",$listId))->delete()){
-            return ['success' => true, 'message' => 'Xóa nhóm trạng thái thành công !!'];
+        if($this->_repository->deleteMultiple($listId)){
+            return ['success' => true, 'message' => 'Xóa trạng thái thành công !!'];
         }else{
-            return ['error' => true, 'message' => 'Xóa nhóm trạng thái thất bại.Xin vui lòng thử lại !!'];
+            return ['error' => true, 'message' => 'Xóa trạng thái thất bại.Xin vui lòng thử lại !!'];
         }
     }
 }

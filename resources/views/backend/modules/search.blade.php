@@ -105,7 +105,11 @@
         </div>
     </form>
     <a 
-    class="btn btn-secondary bg-gradient-primary text-white  ml-1 ajax-form"
+
+    class="btn btn-secondary bg-gradient-primary text-white  ml-1 {{ request()->routeIs('admin.role.*') ? '' : 'ajax-form' }}"
+    @if(request()->routeIs('admin.role.*'))
+    href="{{url()->current().'/add'.$path_type}}"
+    @endif
     data-title="Tạo {{$title}}" 
     data-url="{{url()->current().'/add'.$path_type}}" title="Thêm mới">
         <i class="mdi mdi-plus-circle"></i>
