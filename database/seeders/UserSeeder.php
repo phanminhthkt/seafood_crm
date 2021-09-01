@@ -20,6 +20,7 @@ class UserSeeder extends Seeder
             'email' => 'phanminh@gmail.com',
             'name' => 'Minh dev',
             'password' => Hash::make('123456'),
+            'is_status' => 1,
         ]
         ];
         foreach($data as $v) {

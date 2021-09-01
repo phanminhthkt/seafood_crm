@@ -28,9 +28,9 @@ class MemberController extends Controller
         $this->_model = $member;
         $this->_pathType = '';
         $this->_data['pageIndex'] = route('admin.member.index');
-        $this->_data['table'] = 'members';
+        $this->_data['title'] = config('siteconfig.member.title');
+        $this->_data['table'] = config('siteconfig.member.table');
         $this->_data['groups'] = GroupMember::all();
-        $this->_data['title'] = 'Thành viên';
         $this->_data['type'] = $request->type;
         $this->_data['path_type'] = isset($_GET['type']) ? '?type='.$_GET['type']:'';
     }

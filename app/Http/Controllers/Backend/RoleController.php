@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Role;
 use App\Models\Permission;
 use Illuminate\Support\Str;
 use App\Http\Helpers\helpers;
@@ -28,9 +27,9 @@ class RoleController extends Controller
         $this->_pathType = '';
         $this->_data['pageIndex'] = route('admin.role.index');
         $this->_data['permissions'] = Permission::all()->groupBy('module');
-        $this->_data['table'] = 'roles';
+        $this->_data['title'] = config('siteconfig.role.title');
+        $this->_data['table'] = config('siteconfig.role.table');
         $this->_data['form'] = (object)['devform'=>'','ajaxform'=>'direct-form'];
-        $this->_data['title'] = 'Vai trò';
         $this->_data['type'] = $request->type;
         $this->_data['path_type'] = isset($_GET['type']) ? '?type='.$_GET['type']:'';
     }

@@ -104,6 +104,16 @@ Route::group(['as' => 'api.','namespace' => 'App\Http\Controllers\Api', 'prefix'
 		// Route::delete('/group_member/delete-multiple/{id}',['uses' => 'GroupMemberController@deleteMultiple'])->middleware('can:delete-group_member');
 
 		/*Nhóm trạng thái */
+		Route::get('/unit',['uses' => 'UnitController@index','as' => 'unit.index'])->middleware('can:view-unit');
+		Route::get('/unit/data',['uses' => 'UnitController@getData','as' => 'unit.data'])->middleware('can:view-unit');
+		Route::get('/unit/add',['uses' => 'UnitController@create','as' => 'unit.add'])->middleware('can:create-unit');
+		Route::post('/unit/store',['uses' => 'UnitController@store','as' => 'unit.store'])->middleware('can:create-unit');
+		Route::get('/unit/edit/{id}',['uses' => 'UnitController@edit','as' => 'unit.edit'])->middleware('can:update-unit');
+		Route::put('/unit/update/{id}', ['uses' => 'UnitController@update','as' => 'unit.update']);
+		Route::delete('/unit/delete/{id}',['uses' => 'UnitController@delete','as' => 'unit.delete'])->middleware('can:delete-unit');
+		Route::delete('/unit/delete-multiple/{id}',['uses' => 'UnitController@deleteMultiple'])->middleware('can:delete-unit');
+
+		/*Nhóm trạng thái */
 		Route::get('/group_status',['uses' => 'GroupStatusController@index','as' => 'group_status.index'])->middleware('can:view-group_status');
 		Route::get('/group_status/data',['uses' => 'GroupStatusController@getData','as' => 'group_status.data'])->middleware('can:view-group_status');
 		Route::get('/group_status/add',['uses' => 'GroupStatusController@create','as' => 'group_status.add'])->middleware('can:create-group_status');
@@ -123,15 +133,35 @@ Route::group(['as' => 'api.','namespace' => 'App\Http\Controllers\Api', 'prefix'
 		Route::delete('/status/delete/{id}',['uses' => 'StatusController@delete','as' => 'status.delete'])->middleware('can:delete-status');
 		Route::delete('/status/delete-multiple/{id}',['uses' => 'StatusController@deleteMultiple'])->middleware('can:delete-status');
 
-		/*Project */
-		Route::get('/project',['uses' => 'ProjectController@index','as' => 'project.index'])->middleware('can:view-project');
-		Route::get('/project/add',['uses' => 'ProjectController@create','as' => 'project.add'])->middleware('can:create-project');
-		Route::post('/project/store',['uses' => 'ProjectController@store','as' => 'project.store']);
-		Route::get('/project/edit/{id}',['uses' => 'ProjectController@edit','as' => 'project.edit'])->middleware('can:update-project');
-		Route::put('/project/update/{id}', ['uses' => 'ProjectController@update','as' => 'project.update']);
-		Route::delete('/project/delete/{id}',['uses' => 'ProjectController@delete','as' => 'project.delete'])->middleware('can:delete-project');
-		Route::delete('/project/delete-multiple/{id}',['uses' => 'ProjectController@deleteMultiple'])->middleware('can:delete-project');
-		Route::get('/project/send-mail/{id}',['uses' => 'ProjectController@sendMailMember'])->middleware('can:send-mail-project');
+		/*Nhóm thuộc tính */
+		Route::get('/group_attribute',['uses' => 'GroupAttributeController@index','as' => 'group_attribute.index'])->middleware('can:view-group_attribute');
+		Route::get('/group_attribute/data',['uses' => 'GroupAttributeController@getData','as' => 'group_attribute.data'])->middleware('can:view-group_attribute');
+		Route::get('/group_attribute/add',['uses' => 'GroupAttributeController@create','as' => 'group_attribute.add'])->middleware('can:create-group_attribute');
+		Route::post('/group_attribute/store',['uses' => 'GroupAttributeController@store','as' => 'group_attribute.store']);
+		Route::get('/group_attribute/edit/{id}',['uses' => 'GroupAttributeController@edit','as' => 'group_attribute.edit'])->middleware('can:update-group_attribute');
+		Route::put('/group_attribute/update/{id}', ['uses' => 'GroupAttributeController@update','as' => 'group_attribute.update']);
+		Route::delete('/group_attribute/delete/{id}',['uses' => 'GroupAttributeController@delete','as' => 'group_attribute.delete'])->middleware('can:delete-group_attribute');
+		Route::delete('/group_attribute/delete-multiple/{id}',['uses' => 'GroupAttributeController@deleteMultiple'])->middleware('can:delete-group_attribute');
+
+		/*Thuộc tính */
+		Route::get('/attribute',['uses' => 'AttributeController@index','as' => 'attribute.index'])->middleware('can:view-attribute');
+		Route::get('/attribute/data',['uses' => 'AttributeController@getData','as' => 'attribute.data'])->middleware('can:view-attribute');
+		Route::get('/attribute/add',['uses' => 'AttributeController@create','as' => 'attribute.add'])->middleware('can:create-attribute');
+		Route::post('/attribute/store',['uses' => 'AttributeController@store','as' => 'attribute.store']);
+		Route::get('/attribute/edit/{id}',['uses' => 'AttributeController@edit','as' => 'attribute.edit'])->middleware('can:update-attribute');
+		Route::put('/attribute/update/{id}', ['uses' => 'AttributeController@update','as' => 'attribute.update']);
+		Route::delete('/attribute/delete/{id}',['uses' => 'AttributeController@delete','as' => 'attribute.delete'])->middleware('can:delete-attribute');
+		Route::delete('/attribute/delete-multiple/{id}',['uses' => 'AttributeController@deleteMultiple'])->middleware('can:delete-attribute');
+
+		/*Danh mục */
+		Route::get('/category',['uses' => 'CategoryController@index','as' => 'category.index'])->middleware('can:view-category');
+		Route::get('/category/data',['uses' => 'CategoryController@getData','as' => 'category.data'])->middleware('can:view-category');
+		Route::get('/category/add',['uses' => 'CategoryController@create','as' => 'category.add'])->middleware('can:create-category');
+		Route::post('/category/store',['uses' => 'CategoryController@store','as' => 'category.store']);
+		Route::get('/category/edit/{id}',['uses' => 'CategoryController@edit','as' => 'category.edit'])->middleware('can:update-category');
+		Route::put('/category/update/{id}', ['uses' => 'CategoryController@update','as' => 'category.update']);
+		Route::delete('/category/delete/{id}',['uses' => 'CategoryController@delete','as' => 'category.delete'])->middleware('can:delete-category');
+		Route::delete('/category/delete-multiple/{id}',['uses' => 'CategoryController@deleteMultiple'])->middleware('can:delete-category');
 	});
 });
 

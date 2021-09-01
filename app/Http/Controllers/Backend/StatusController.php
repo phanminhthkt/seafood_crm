@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Status;
 use App\Models\GroupStatus;
 use DataTables;
 use App\Repositories\Status\StatusRepositoryInterface;
@@ -27,11 +26,11 @@ class StatusController extends Controller
         $this->_pathType = '';
         $this->_data['groups'] = GroupStatus::get(['name','id']);
         $this->_data['pageIndex'] = route('admin.status.index');
-        $this->_data['table'] = 'status';
+        $this->_data['title'] = config('siteconfig.status.title');
+        $this->_data['table'] = config('siteconfig.status.table');
         //Load ajax if ajax-form,dev-form for add,edit.
         //Direct in if devform '' and ajaxForm=direct-form
         $this->_data['form'] = (object)['devform'=>'dev-form','ajaxform'=>'ajax-form'];
-        $this->_data['title'] = 'Tình trạng';
         $this->_data['type'] = $request->type;
         $this->_data['path_type'] = isset($_GET['type']) ? '?type='.$_GET['type']:'';
     }

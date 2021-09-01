@@ -35,7 +35,22 @@ class RepositoryServiceProvider extends ServiceProvider
             \App\Repositories\Permission\PermissionRepositoryInterface::class,
             \App\Repositories\Permission\PermissionRepository::class,
         );
-        
+        $this->app->singleton(
+            \App\Repositories\Unit\UnitRepositoryInterface::class,
+            \App\Repositories\Unit\UnitRepository::class,
+        );
+        $this->app->singleton(
+            \App\Repositories\GroupAttribute\GroupAttributeRepositoryInterface::class,
+            \App\Repositories\GroupAttribute\GroupAttributeRepository::class,
+        );
+        $this->app->singleton(
+            \App\Repositories\Attribute\AttributeRepositoryInterface::class,
+            \App\Repositories\Attribute\AttributeRepository::class,
+        );
+        $this->app->singleton(
+            \App\Repositories\Category\CategoryRepositoryInterface::class,
+            \App\Repositories\Category\CategoryRepository::class,
+        );
     }
 
     /**

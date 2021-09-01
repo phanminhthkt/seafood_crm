@@ -17,7 +17,6 @@ class RoleRepository extends BaseRepository implements RoleRepositoryInterface
                 $query->where('name', 'like', "%{$request->get('name')}%");
             }
         })
-        ->order(function ($query) {$query->orderBy('id', 'desc');})
         ->addColumn('checkbox', function ($value) use ($data) {
                 return '<div class="custom-control custom-checkbox text-center">
                                   <input type="checkbox" class="custom-control-input select-checkbox" value="'.$value->id.'" id="autoSizingCheck-'.$value->id.'">

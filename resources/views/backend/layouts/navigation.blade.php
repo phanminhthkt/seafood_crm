@@ -19,10 +19,10 @@
                             <a href="extras-profile.html">- Báo cáo năm</a>
                         </li>
                         <li>
-                            <a href="extras-timeline.html"> - Báo cáo tháng</a>
+                            <a href="extras-timeline.html">- Báo cáo tháng</a>
                         </li>
                         <li>
-                            <a href="extras-timeline.html"> - Báo cáo ngày</a>
+                            <a href="extras-timeline.html">- Báo cáo ngày</a>
                         </li>
                     </ul>
                 </li>
@@ -56,16 +56,19 @@
                     </a>
                     <ul class="nav-second-level mm-collapse" aria-expanded="false">
                         <li>
-                            <a href="extras-profile.html">- Danh mục</a>
+                            <a href="{{Route('admin.category.index')}}">- Danh mục</a>
                         </li>
                         <li>
                             <a href="extras-timeline.html">- Sản phẩm</a>
                         </li>
                         <li>
-                            <a href="extras-profile.html">- Nhóm thuộc tính</a>
+                            <a href="{{Route('admin.group_attribute.index')}}">- Nhóm thuộc tính</a>
                         </li>
                         <li>
-                            <a href="extras-timeline.html">- Thuộc tính</a>
+                            <a href="{{Route('admin.attribute.index')}}">- Thuộc tính</a>
+                        </li>
+                        <li>
+                            <a href="{{Route('admin.unit.index')}}">- Đơn vị</a>
                         </li>
                     </ul>
                 </li>

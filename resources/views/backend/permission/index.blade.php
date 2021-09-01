@@ -35,6 +35,7 @@
                      <table id="datatable-buttons" class="table table-striped dt-responsive no-border">
                         <thead>
                            <tr role="row">
+                              <th>Id</th>
                               <th width="1%">
                                   <div class="custom-control custom-checkbox text-center">
                                     <input type="checkbox" class="custom-control-input" id="selectall-checkbox">
@@ -68,6 +69,7 @@
         }
     },
     columns:[
+        {data: 'id',name: 'id', visible: false},
         {data: 'checkbox', orderable: false, searchable: false},
         {data: 'priority',name: 'priority', orderable: false, searchable: false},
         {data: 'name',name: 'name'},

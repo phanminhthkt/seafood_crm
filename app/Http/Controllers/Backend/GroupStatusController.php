@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use DataTables;
-use App\Models\GroupStatus;
 use App\Repositories\GroupStatus\GroupStatusRepositoryInterface;
 use Illuminate\Support\Arr;
 
@@ -26,9 +25,9 @@ class GroupStatusController extends Controller
         $this->_repository = $groupStatusRepository;
         $this->_pathType = '';
         $this->_data['pageIndex'] = route('admin.group_status.index');
-        $this->_data['table'] = 'group_status';
+        $this->_data['title'] = config('siteconfig.group_status.title');
+        $this->_data['table'] = config('siteconfig.group_status.table');
         $this->_data['form'] = (object)['devform'=>'dev-form','ajaxform'=>'ajax-form'];
-        $this->_data['title'] = 'Nhóm trạng thái';
         $this->_data['type'] = $request->type;
         $this->_data['path_type'] = isset($_GET['type']) ? '?type='.$_GET['type']:'';
     }

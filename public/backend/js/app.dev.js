@@ -171,7 +171,7 @@ if($('#datatable-buttons').exists()){
 
 		  	},
 			pageLength: Datatable.pageLength,
-			order: [],
+			order: ['0', 'desc'],
 			searching: false,
 			lengthChange: false,
 	        processing: true,

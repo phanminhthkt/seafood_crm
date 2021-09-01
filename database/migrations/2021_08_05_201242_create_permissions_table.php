@@ -21,7 +21,7 @@ class CreatePermissionsTable extends Migration
             $table->string('action');
             $table->string('type')->nullable();
             $table->string('slug')->unique();
-            $table->integer('is_status')->default(0);
+            $table->integer('is_status')->default(1);
             $table->integer('is_priority')->default(0);
             $table->timestamps();
         });

@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Permission;
 use Illuminate\Support\Str;
 use DataTables;
 use App\Repositories\Permission\PermissionRepositoryInterface;
@@ -26,9 +25,9 @@ class PermissionController extends Controller
         $this->_repository = $permissionRepository;
         $this->_pathType = '';
         $this->_data['pageIndex'] = route('admin.permission.index');
-        $this->_data['table'] = 'permissions';
+        $this->_data['title'] = config('siteconfig.permission.title');
+        $this->_data['table'] = config('siteconfig.permission.table');
         $this->_data['form'] = (object)['devform'=>'dev-form','ajaxform'=>'ajax-form'];
-        $this->_data['title'] = 'Phân quyền';
         $this->_data['type'] = $request->type;
         $this->_data['path_type'] = isset($_GET['type']) ? '?type='.$_GET['type']:'';
     }
