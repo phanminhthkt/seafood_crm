@@ -5,6 +5,11 @@ $('body').on('click','.ajax-form', function(){
 	$('#pre-loader').show();	
 	loadFormItem(data);
 });
+$('body').on('click','.direct-form', function(){
+	var data = data || {};
+		data.url = $(this).data("url");
+	window.location = data.url;	
+});
 $('body').on('click','#delete-all', function(){
 	var data = data || {};
 		data.url = $(this).data("url");

@@ -26,6 +26,7 @@ class GroupMemberController extends Controller
         $this->_data['pageIndex'] = route('admin.group_member.index');
         $this->_data['roles'] = Role::all();
         $this->_data['table'] = 'group_members';
+        $this->_data['form'] = (object)['devform'=>'dev-form','ajaxform'=>'ajax-form'];
         $this->_data['title'] = 'Nhóm thành viên';
         $this->_data['type'] = $request->type;
         $this->_data['path_type'] = isset($_GET['type']) ? '?type='.$_GET['type']:'';

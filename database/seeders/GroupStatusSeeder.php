@@ -12,11 +12,15 @@ class GroupStatusSeeder extends Seeder
      */
     protected $groups = [
     	[
-            'name' => 'Trạng thái lập trình',
+            'name' => 'Trạng thái kho',
             'is_status' => 1,
         ],
         [
-            'name' => 'Trạng thái dự án',
+            'name' => 'Trạng thái vận chuyển',
+            'is_status' => 1,
+        ],
+        [
+            'name' => 'Trạng thái thanh toán',
             'is_status' => 1,
         ]
         

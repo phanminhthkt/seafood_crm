@@ -27,7 +27,7 @@ Route::group(['as' => 'api.','namespace' => 'App\Http\Controllers\Api', 'prefix'
 		Route::put('/project/update-dev/{id}', ['uses' => 'ProjectController@updateDev','as' => 'project.dev.update'])->middleware('can:member-update-dev-project');
 
 		Route::get('/project/edit-sale/{id}',['uses' => 'ProjectController@editSale','as' => 'project.sale.edit'])->middleware('can:member-update-sale-project');
-		Route::put('/project/update-sale/{id}',['uses' => 'ProjectController@updateSale','as' => 'project.sale.edit'])->middleware('can:member-update-sale-project');
+		Route::put('/project/update-sale/{id}',['uses' => 'ProjectController@updateSale','as' => 'project.sale.update'])->middleware('can:member-update-sale-project');
 
 
 		Route::get('/project/edit/{id}',['uses' => 'ProjectController@edit','as' => 'project.edit']);

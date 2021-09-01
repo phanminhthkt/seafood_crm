@@ -50,6 +50,7 @@ a{color:#29689e;}
     padding-left: 12px;
     background: #fff;
 }
+.enlarged .left-side-menu #sidebar-menu>ul>li>a{margin-left: 0px;margin-right: 0px;}
 .pd-0{padding: 0 !important}
 .card-body .nav-tabs{margin-top:-15px;}
 .nav-bordered a.active{border-bottom: 2px solid #3bafda!important;}
@@ -61,10 +62,11 @@ a{color:#29689e;}
 #sidebar-menu>ul>li>a.active{color: #fff !important;text-decoration: none;background: #3bafda;}
 .nav-second-level li>a.active, .nav-thrid-level li>a.active{color:#3bafda;}
 .nav-second-level li a:focus, .nav-second-level li a:hover, .nav-thrid-level li a:focus, .nav-thrid-level li a:hover{color:#3bafda;}
-#sidebar-menu>ul>li>a i{margin-right: 5px;}
+#sidebar-menu>ul>li>a i{margin-right: 5px;font-size: 20px;margin-top: 3px;}
 #sidebar-menu>ul>li>a{padding: 10px 20px;border-radius: 3px;margin: 0px 5px;font-size: 15px;font-weight: 400;}
 .breadcrumb-item>a i{position: relative;top:2px;}
 .breadcrumb-item>a{line-height: 15px;}
+a.btn{cursor: pointer;}
 .btn-icon{display: inline-flex;align-items: center;justify-content: center;width: 30px;height: 30px;}
 .btn-icon-mini{width: 20px;height: 20px;padding:0;}
 .btn-icon i{font-size: 12px;}

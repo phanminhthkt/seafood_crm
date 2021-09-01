@@ -29,6 +29,7 @@ class RoleController extends Controller
         $this->_data['pageIndex'] = route('admin.role.index');
         $this->_data['permissions'] = Permission::all()->groupBy('module');
         $this->_data['table'] = 'roles';
+        $this->_data['form'] = (object)['devform'=>'','ajaxform'=>'direct-form'];
         $this->_data['title'] = 'Vai trò';
         $this->_data['type'] = $request->type;
         $this->_data['path_type'] = isset($_GET['type']) ? '?type='.$_GET['type']:'';

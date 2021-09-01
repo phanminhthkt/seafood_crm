@@ -34,6 +34,9 @@ class UserController extends Controller
         $this->_data['pageIndex'] = route('admin.user.index');
         $this->_data['table'] = 'users';
         $this->_data['roles'] = Role::get(['name','id']);
+        //Load ajax if ajax-form,dev-form for add,edit.
+        //Direct in if devform '' and ajaxForm=direct-form
+        $this->_data['form'] = (object)['devform'=>'dev-form','ajaxform'=>'ajax-form'];
         $this->_data['title'] = 'Người dùng';
         $this->_data['type'] = $request->type;
         $this->_data['path_type'] = isset($_GET['type']) ? '?type='.$_GET['type']:'';

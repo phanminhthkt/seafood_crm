@@ -12,30 +12,38 @@ class StatusSeeder extends Seeder
      */
     protected $_status = [
         [
-            'name' => 'Chưa lập trình',
+            'name' => 'Đã huỷ',
             'group_id' => 1,
             'is_status' => 1,
         ],
         [
-            'name' => 'Đang lập trình',
+            'name' => 'Nháp',
             'group_id' => 1,
             'is_status' => 1,
         ],
         [
-            'name' => 'Đã lập trình',
+            'name' => 'Hoàn thành',
             'group_id' => 1,
             'is_status' => 1,
         ],
         [
-            'name' => 'Chưa bàn giao',
+            'name' => 'Chưa giao',
             'group_id' => 2,
             'is_status' => 1,
         ],
         [
-            'name' => 'Đã bàn giao',
+            'name' => 'Đã giao',
             'group_id' => 2,
             'is_status' => 1,
-        ],
+        ],[
+            'name' => 'Đã thanh toán',
+            'group_id' => 3,
+            'is_status' => 1,
+        ],[
+            'name' => 'Chưa thanh toán',
+            'group_id' => 3,
+            'is_status' => 1,
+        ]
     ];
 
     public function run()

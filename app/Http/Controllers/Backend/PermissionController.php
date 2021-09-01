@@ -27,6 +27,7 @@ class PermissionController extends Controller
         $this->_pathType = '';
         $this->_data['pageIndex'] = route('admin.permission.index');
         $this->_data['table'] = 'permissions';
+        $this->_data['form'] = (object)['devform'=>'dev-form','ajaxform'=>'ajax-form'];
         $this->_data['title'] = 'Phân quyền';
         $this->_data['type'] = $request->type;
         $this->_data['path_type'] = isset($_GET['type']) ? '?type='.$_GET['type']:'';

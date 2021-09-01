@@ -41,7 +41,7 @@
                                     <label class="custom-control-label" for="selectall-checkbox"></label>
                                   </div>
                               </th>
-                              <th width="5%" class="text-center">Thứ tự</th>
+                              <th width="8%" class="text-center">Thứ tự</th>
                               <th class="text-center" width="20%" >{{$title}}</th>
                               <th class="text-center" width="20%" >Email</th>
                               <th class="text-center" width="20%" >Họ tên</th>

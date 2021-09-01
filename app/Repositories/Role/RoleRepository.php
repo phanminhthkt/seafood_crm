@@ -45,7 +45,7 @@ class RoleRepository extends BaseRepository implements RoleRepositoryInterface
                                 </div>';})
         ->addColumn('action', function ($value) use ($data) {
                 return '<a  
-                            class="btn btn-icon waves-effect waves-light btn-info"
+                            class="btn btn-icon waves-effect waves-light btn-info '.$data['form']->ajaxform.'"
                             data-title="Sửa '.$data['title'].'"
                             href="'.$data['pageIndex'].'/edit/'.$value->id.$data['path_type'].'"  
                                   >

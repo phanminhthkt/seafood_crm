@@ -182,6 +182,8 @@ function ajaxFormItem(){
 				       	setTimeout(function(){ 
 				       		var textBtn = 'Sửa';
 				       		if(!form.find('input[name="_method"]').val()){
+				       			form.find('.selectpicker').val('');
+				       			form.find('.selectpicker').selectpicker('refresh');
 				       			form.trigger("reset");
 				       			textBtn = 'Tạo';
 				       		}

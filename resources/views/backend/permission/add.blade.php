@@ -1,5 +1,5 @@
     <form 
-    class='needs-validation dev-form'
+    class='needs-validation {{$form->devform}}'
     role="form" 
     method="POST" 
     action="{{$pageIndex.'/store'.$path_type}}" 
@@ -21,7 +21,7 @@
             <label class="col-sm-3">Module</label>
             <div class="col-sm-9">
               <div class="input-group">
-                 <input type="text" class="form-control" name="module" placeholder="Quyền" value="{{old('module')}}" required="">
+                 <input type="text" class="form-control" name="module" placeholder="Module" value="{{old('module')}}" required="">
                 <div class="invalid-feedback">Vui lòng nhập module( Ex: product,post,project... )</div>
               </div>
               </div>

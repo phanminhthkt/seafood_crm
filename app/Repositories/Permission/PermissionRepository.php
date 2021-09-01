@@ -46,7 +46,7 @@ class PermissionRepository extends BaseRepository implements PermissionRepositor
         ->addColumn('action', function ($value) use ($data) {
                 return '<a  
                             href="javascript:void(0)"
-                            class="btn btn-icon waves-effect waves-light btn-info ajax-form"
+                            class="btn btn-icon waves-effect waves-light btn-info '.$data['form']->ajaxform.'"
                             data-title="Sửa '.$data['title'].'"
                             data-url="'.$data['pageIndex'].'/edit/'.$value->id.$data['path_type'].'"  
                                   >

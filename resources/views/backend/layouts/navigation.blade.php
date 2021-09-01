@@ -4,14 +4,76 @@
             <ul class="metismenu" id="side-menu">
                 <li>
                     <a href="{{Route('admin.index')}}" class="waves-effect">
-                        <i class="remixicon-home-8-line"></i>
-                        <span> Trang điều khiển </span>
+                        <i class="remixicon-dashboard-line"></i>
+                        <span> Tổng quan </span>
                     </a>
                 </li>
+                <li>
+                    <a href="javascript: void(0);" class="waves-effect">
+                        <i class="remixicon-pie-chart-line"></i>
+                        <span>Báo cáo</span>
+                        <span class="menu-arrow"></span>
+                    </a>
+                    <ul class="nav-second-level mm-collapse" aria-expanded="false">
+                        <li>
+                            <a href="extras-profile.html">- Báo cáo năm</a>
+                        </li>
+                        <li>
+                            <a href="extras-timeline.html"> - Báo cáo tháng</a>
+                        </li>
+                        <li>
+                            <a href="extras-timeline.html"> - Báo cáo ngày</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="javascript: void(0);" class="waves-effect">
+                        <i class="remixicon-building-4-line"></i>
+                        <span>Kho</span>
+                        <span class="menu-arrow"></span>
+                    </a>
+                    <ul class="nav-second-level mm-collapse" aria-expanded="false">
+                        <li>
+                            <a href="extras-profile.html">- Chi nhánh</a>
+                        </li>
+                        <li>
+                            <a href="extras-profile.html">- Xuất kho</a>
+                        </li>
+                        <li>
+                            <a href="extras-timeline.html"> - Nhập kho</a>
+                        </li>
+                        <li>
+                            <a href="extras-timeline.html"> - Kiểm kho</a>
+                        </li>
+                    </ul>
+                </li>
+                
+                <li>
+                    <a href="javascript: void(0);" class="waves-effect">
+                        <i class="remixicon-stack-line"></i>
+                        <span>Hàng hoá</span>
+                        <span class="menu-arrow"></span>
+                    </a>
+                    <ul class="nav-second-level mm-collapse" aria-expanded="false">
+                        <li>
+                            <a href="extras-profile.html">- Danh mục</a>
+                        </li>
+                        <li>
+                            <a href="extras-timeline.html">- Sản phẩm</a>
+                        </li>
+                        <li>
+                            <a href="extras-profile.html">- Nhóm thuộc tính</a>
+                        </li>
+                        <li>
+                            <a href="extras-timeline.html">- Thuộc tính</a>
+                        </li>
+                    </ul>
+                </li>
+
                 @if(Auth::user()->can('view-status') || Auth::user()->can('view-group_status'))
                 <li class="{{ request()->routeIs('admin.status.*') || request()->routeIs('admin.group_status.*') ? 'mm-active' : '' }}">
                     <a href="javascript: void(0)" class="waves-effect">
-                        <i class="fas fa-tasks"></i>
+                        <i class="remixicon-contrast-drop-2-line"></i>
                         <span>Trạng thái</span>
                         <span class="menu-arrow"></span>
                     </a>
@@ -23,12 +85,12 @@
                             <a 
 
                             href="{{Route('admin.group_status.index')}}">
-                            <i class="remixicon-movie-line"></i>Nhóm trạng thái</a>
+                            - Nhóm trạng thái</a>
                         </li>
                         @endcan
                         @can('view-status')
                         <li>
-                            <a href="{{Route('admin.status.index')}}"> <i class="remixicon-movie-line"></i>Trạng thái</a>
+                            <a href="{{Route('admin.status.index')}}"> - Trạng thái</a>
                         </li>
                         @endcan
                     </ul>
@@ -48,12 +110,12 @@
                 request()->routeIs('admin.role.*') || request()->routeIs('admin.permission.*') ? 'mm-show' : '' }}"  aria-expanded="false">
                         @can('view-role')
                         <li >
-                            <a href="{{Route('admin.role.index')}}"> <i class="remixicon-movie-line"></i>Vai trò</a>
+                            <a href="{{Route('admin.role.index')}}"> - Vai trò</a>
                         </li>
                         @endcan
                         @can('view-permission')
                         <li> 
-                            <a href="{{Route('admin.permission.index')}}"> <i class="remixicon-movie-line"></i>Phân quyền</a>
+                            <a href="{{Route('admin.permission.index')}}"> - Phân quyền</a>
                         </li>
                         @endcan
                     </ul>
@@ -64,26 +126,12 @@
                 <li 
                 class="{{ request()->routeIs('admin.user.*') ? 'mm-active' : '' }}">
                     <a href="{{Route('admin.user.index')}}" class="waves-effect">
-                        <i class="fas fa-users-cog"></i>
+                        <i class="remixicon-group-line"></i>
                         <span>Người dùng</span>
                     </a>
                 </li>
                 @endcan
-                <li>
-                    <a href="javascript: void(0);" class="waves-effect">
-                        <i class="remixicon-stack-line"></i>
-                        <span>Sản phẩm</span>
-                        <span class="menu-arrow"></span>
-                    </a>
-                    <ul class="nav-second-level mm-collapse" aria-expanded="false">
-                        <li>
-                            <a href="extras-profile.html"><i class="remixicon-movie-line"></i> Danh mục</a>
-                        </li>
-                        <li>
-                            <a href="extras-timeline.html"> <i class="remixicon-movie-line"></i>Sản phẩm</a>
-                        </li>
-                    </ul>
-                </li>
+                
                 <li class="menu-title">cấu hình</li>
                 <li>
                     <a href="javascript: void(0);" class="waves-effect">

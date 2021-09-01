@@ -1,5 +1,5 @@
     <form role="form" 
-    class='needs-validation dev-form'
+    class='needs-validation {{$form->devform}}'
     method="POST" 
     action="{{$pageIndex.'/store'.$path_type}}" 
     enctype="multipart/form-data" 

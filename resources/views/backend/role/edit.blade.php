@@ -18,7 +18,7 @@
     </div>
  </div>
  <form 
-  class='needs-validation'
+  class='needs-validation {{$form->devform}}'
   role="form" 
   method="POST" 
   action="{{$pageIndex.'/update/'.$item->id.$path_type}}" 
