@@ -23,6 +23,7 @@
 <script  src="{{asset('backend')}}\js\pages\form-advanced.init.js"></script>
 <script  src="{{asset('backend')}}\libs\sweetalert2\sweetalert2.js"></script>
 <script  src="{{asset('backend')}}\libs\flatpickr/flatpickr.min.js"></script>
+<script  src="{{asset('backend')}}\libs\jquery-mask-plugin\jquery.mask.min.js"></script>
 <!-- App js -->
 <script  src="{{asset('backend')}}\js\functions.js"></script>
 <script  src="{{asset('backend')}}\js\app.dev.js"></script>

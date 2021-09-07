@@ -11,6 +11,22 @@
       <div class="card">
         <div class="card-body">
             <div class="form-group row">
+                <label class="col-sm-3">Nhóm</label>
+                <div class="col-sm-9">
+                  <select class="selectpicker" data-live-search="true" name="group_id" id="group" required="" {{@$group_id!='' ? 'readonly':''}}>
+                  <option value="" >Chọn nhóm</option>
+                    @foreach($groups as $group)
+                    <option value="{{$group->id}}"
+                    {{ @$group_id == $group->id ? 'selected' : ''}}
+                    >
+                    {{$group->name}}
+                    </option>
+                    @endforeach
+                  </select>
+                  <div class="invalid-feedback">Vui lòng chọn nhóm</div>
+                </div>
+            </div>
+            <div class="form-group row">
               <label class="col-sm-3">Thuộc tính</label>
               <div class="col-sm-9">
                 <div class="input-group">
@@ -19,20 +35,7 @@
                 </div>
               </div>
             </div>
-            <div class="form-group row">
-                <label class="col-sm-3">Nhóm</label>
-                <div class="col-sm-9">
-                  <select class="selectpicker" data-live-search="true" name="group_id" id="group" required="">
-                  <option value="" >Chọn nhóm</option>
-                    @foreach($groups as $group)
-                    <option value="{{$group->id}}">
-                    {{$group->name}}
-                    </option>
-                    @endforeach
-                  </select>
-                  <div class="invalid-feedback">Vui lòng chọn nhóm</div>
-                </div>
-            </div>
+
         </div>
       </div>
       <button type="submit" class="btn btn-success waves-effect waves-light"><i class="far fa-plus-square mr-1"></i>Tạo</button>

@@ -16,7 +16,7 @@ class GroupAttribute extends Model
         'is_priority',
         'type'
     ];
-    public function attribute(){
+    public function attributes(){
     	return $this->hasMany(Attribute::class,'group_id','id');
     }
 }

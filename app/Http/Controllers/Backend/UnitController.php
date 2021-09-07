@@ -59,8 +59,8 @@ class UnitController extends Controller
     public function store(Request $request)
     {
         $data = $request->except('_token');
-        if($this->_repository->create($data)){
-            return redirect()->route('admin.unit.index',['type' => $request->type])->with('success', 'Thêm đơn vị <b>'. $request->name .'</b> thành công');
+        if($id = $this->_repository->create($data)->id){
+            return response()->json(['status' => 'Thêm đơn vị thành công','item' =>['id' => $id,'name' => $data['name']] ]);
         }else{
             return redirect()->route('admin.unit.index',['type' => $request->type])->with('danger', 'Thêm đơn vị <b>'. $request->name .'</b> thất bại.Xin vui lòng thử lại');
         }

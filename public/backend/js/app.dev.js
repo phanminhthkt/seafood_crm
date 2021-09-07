@@ -1,7 +1,45 @@
-$('body').on('click','.ajax-form', function(){
+if($('#all-attribute').exists()){
+	function checkSelectedSelectPicker(){
+		$(".group_attribute.selectpicker option").not(this).attr('disabled',false);
+		$(".group_attribute.selectpicker").each(function(value){
+			$(".group_attribute.selectpicker option[value='"+$(this).val()+"']").not(this).not(".group_attribute.selectpicker option[value='']").attr('disabled','disabled');
+			$(".group_attribute.selectpicker").not(this).selectpicker('refresh');
+		});
+	}
+	var allAttribute = $("#all-attribute").data('value');
+	$(document).on('change','.selectpicker.group_attribute', function(){
+		var group_id = $(this).val();
+		var item  = $(this).parents('.item-attribute');
+		if(group_id!=''){
+			var group_attribute =  allAttribute.filter(value => { return parseInt(value.id) === parseInt(group_id);})
+			item.find('.btn-attribute').attr('data-url',URL.base_url+'/admin/attribute/add/group/'+group_id);
+			item.find('.attribute').find('option').remove();
+			item.find('.attribute').attr('name','group_attribute'+group_id+'[]');
+			item.find('.attribute').attr('id','group_attribute'+group_id);
+			group_attribute[0].attributes.forEach(function(value){ 
+				item.find('.attribute').append('<option value="'+value.id+'" checked>'+value.name+'</option>');
+			});
+			item.find('.attribute').selectpicker('refresh');
+		}else{
+			item.find('.btn-attribute').attr('data-url','');
+			item.find('.attribute').find('option').remove();
+			item.find('.attribute').attr('name','');
+			item.find('.attribute').attr('id','');
+			item.find('.attribute').selectpicker('refresh');
+		}
+		checkSelectedSelectPicker();
+	});
+}
+$(document).on('click','.ajax-form', function(){
+	//Check Attribute
+	if($(this).hasClass('btn-attribute')){if($(this).attr('data-url')==''){notifyDialog("Bạn chưa chọn nhóm thuộc tính");return false;}}
+	// End check attribute
 	var data = data || {};
-		data.url = $(this).data("url");
+		data.id = "#"+$(this).parents(".input-group").find("select").attr("id");
+		data.url = $(this).attr("data-url");
 		data.title = $(this).data("title");
+		data.formsize = $(this).data("form-size");
+		data.formrel = $(this).data("form-rel");
 	$('#pre-loader').show();	
 	loadFormItem(data);
 });

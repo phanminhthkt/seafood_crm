@@ -59,8 +59,8 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $data = $request->except('_token');
-        if($this->_repository->create($data)){
-            return redirect()->route('admin.category.index',['type' => $request->type])->with('success', 'Thêm danh mục <b>'. $request->name .'</b> thành công');
+        if($id = $this->_repository->create($data)->id){
+            return response()->json(['status' => 'Thêm danh mục thành công','item' =>['id' => $id,'name' => $data['name']] ]);
         }else{
             return redirect()->route('admin.category.index',['type' => $request->type])->with('danger', 'Thêm danh mục <b>'. $request->name .'</b> thất bại.Xin vui lòng thử lại');
         }

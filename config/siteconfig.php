@@ -35,6 +35,10 @@ return [
 		'title'	=> 'Đơn vị',
 		'table' => 'units',
 	],
+	'product' => [
+		'title'	=> 'Hàng hoá',
+		'table' => 'products',
+	],
 	'group_attribute' => [
 		'title'	=> 'Nhóm đơn vị',
 		'table' => 'group_attributes',

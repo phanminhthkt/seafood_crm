@@ -59,7 +59,7 @@
                             <a href="{{Route('admin.category.index')}}">- Danh mục</a>
                         </li>
                         <li>
-                            <a href="extras-timeline.html">- Sản phẩm</a>
+                            <a href="{{Route('admin.product.index')}}">- Sản phẩm</a>
                         </li>
                         <li>
                             <a href="{{Route('admin.group_attribute.index')}}">- Nhóm thuộc tính</a>
@@ -157,5 +157,6 @@
     var URL = {
         'type': '<?=isset($_GET['type']) ? $_GET['type'] :''?>',
         'current': '<?=url()->current()?>',
+        'base_url': '<?=URL::to('/');?>',
     };
 </script>

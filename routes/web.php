@@ -147,6 +147,7 @@ Route::group(['as' => 'api.','namespace' => 'App\Http\Controllers\Api', 'prefix'
 		Route::get('/attribute',['uses' => 'AttributeController@index','as' => 'attribute.index'])->middleware('can:view-attribute');
 		Route::get('/attribute/data',['uses' => 'AttributeController@getData','as' => 'attribute.data'])->middleware('can:view-attribute');
 		Route::get('/attribute/add',['uses' => 'AttributeController@create','as' => 'attribute.add'])->middleware('can:create-attribute');
+		Route::get('/attribute/add/group/{group_id}',['uses' => 'AttributeController@create','as' => 'attribute.add'])->middleware('can:create-attribute');
 		Route::post('/attribute/store',['uses' => 'AttributeController@store','as' => 'attribute.store']);
 		Route::get('/attribute/edit/{id}',['uses' => 'AttributeController@edit','as' => 'attribute.edit'])->middleware('can:update-attribute');
 		Route::put('/attribute/update/{id}', ['uses' => 'AttributeController@update','as' => 'attribute.update']);
@@ -162,6 +163,16 @@ Route::group(['as' => 'api.','namespace' => 'App\Http\Controllers\Api', 'prefix'
 		Route::put('/category/update/{id}', ['uses' => 'CategoryController@update','as' => 'category.update']);
 		Route::delete('/category/delete/{id}',['uses' => 'CategoryController@delete','as' => 'category.delete'])->middleware('can:delete-category');
 		Route::delete('/category/delete-multiple/{id}',['uses' => 'CategoryController@deleteMultiple'])->middleware('can:delete-category');
+
+		/*Hàng Hoá */
+		Route::get('/product',['uses' => 'ProductController@index','as' => 'product.index'])->middleware('can:view-product');
+		Route::get('/product/data',['uses' => 'ProductController@getData','as' => 'product.data'])->middleware('can:view-product');
+		Route::get('/product/add',['uses' => 'ProductController@create','as' => 'product.add'])->middleware('can:create-product');
+		Route::post('/product/store',['uses' => 'ProductController@store','as' => 'product.store']);
+		Route::get('/product/edit/{id}',['uses' => 'ProductController@edit','as' => 'product.edit'])->middleware('can:update-product');
+		Route::put('/product/update/{id}', ['uses' => 'ProductController@update','as' => 'product.update']);
+		Route::delete('/product/delete/{id}',['uses' => 'ProductController@delete','as' => 'product.delete'])->middleware('can:delete-product');
+		Route::delete('/product/delete-multiple/{id}',['uses' => 'ProductController@deleteMultiple'])->middleware('can:delete-product');
 	});
 });
 

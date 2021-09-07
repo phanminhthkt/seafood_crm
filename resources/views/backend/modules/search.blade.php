@@ -107,7 +107,9 @@
     <a 
     class="btn btn-secondary bg-gradient-primary text-white  ml-1 {{$form->ajaxform}}"
     data-title="Tạo {{$title}}" 
-    data-url="{{url()->current().'/add'.$path_type}}" title="Thêm mới">
+    data-url="{{url()->current().'/add'.$path_type}}" 
+    title="Thêm mới"
+    >
         <i class="mdi mdi-plus-circle"></i>
     </a>
     <a 
