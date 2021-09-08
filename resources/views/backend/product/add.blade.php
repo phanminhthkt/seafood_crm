@@ -37,7 +37,7 @@
                   <label class="col-sm-3">Danh mục</label>
                   <div class="col-sm-9">
                     <div class="input-group flex-wrap-initial">
-                    <select class="selectpicker" data-live-search="true" name="category_id" id="category" required="">
+                    <select class="select2" name="category_id" id="category" required="">
                     <option value="" >Chọn danh mục</option>
                     @foreach($categories as $v)
                     <option value="{{$v->id}}">{{$v->name}}</option>
@@ -105,7 +105,7 @@
                   <label class="col-sm-3">Đơn vị</label>
                   <div class="col-sm-9">
                     <div class="input-group flex-wrap-initial">
-                      <select class="selectpicker" data-live-search="true" name="unit_id" id="unit" required="">
+                      <select class="select2" name="unit_id" id="unit" required="">
                       <option value="" >Chọn đơn vị</option>
                       @foreach($units as $v)
                       <option value="{{$v->id}}">{{$v->name}}</option>
@@ -133,110 +133,11 @@
             </h5>
             <div class="card">
               <div class="card-body">
-                <div class="list-attribute mb-2">
-                  <div class="item-attribute">
-                    <div class="row">
-                      <div class="col-lg-3 col-md-5">
-                        <div class="input-group flex-wrap-initial">
-                          <select class="selectpicker group_attribute" data-live-search="true" name="group_attribute[]" id="group_attribute">
-                            <option value="" >Chọn nhóm thuộc tính</option>
-                            @foreach($group_attributes as $v)
-                            <option value="{{$v->id}}">{{$v->name}}</option>
-                            @endforeach
-                          </select>
-                          <div class="input-group-append">
-                            <button type='button'
-                            class="btn waves-effect waves-light btn-info ml-1 ajax-form"
-                            data-title='Tạo nhóm thuộc tính'
-                            data-form-size = 'modal-md'
-                            data-form-rel = 'true'
-                            data-url="{{Route('admin.group_attribute.add')}}">
-                              <i class="mdi mdi-plus-circle-outline"></i>
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-lg-8 col-md-6">
-                        <div class="input-group flex-wrap-initial">
-                          <select class="select2 select2-multiple attribute" multiple="multiple" data-live-search="true" name="attribute[]" id="attribute" required="">
-                          </select>
-                          <div class="input-group-append">
-                            <button type='button'
-                            class="btn btn-attribute waves-effect waves-light btn-info ml-1 ajax-form"
-                            data-title='Tạo thuộc tính'
-                            data-form-size = 'modal-md'
-                            data-form-rel = 'true'
-                            data-url="">
-                              <i class="mdi mdi-plus-circle-outline"></i>
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-lg-1 col-md-1">
-                        <button type='button'
-                          class="btn waves-effect waves-light btn-danger ajax-form"
-                          data-title='Xoá thuộc tính'
-                          data-form-size = 'modal-md'
-                          data-form-rel = 'true'
-                          data-url="">
-                            <i class="mdi mdi-trash-can-outline"></i>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="item-attribute mt-2">
-                    <div class="row">
-                      <div class="col-lg-3 col-md-5">
-                        <div class="input-group flex-wrap-initial">
-                          <select class="selectpicker group_attribute" data-live-search="true" name="group_attribute[]" id="group_attribute">
-                            <option value="" >Chọn nhóm thuộc tính</option>
-                            @foreach($group_attributes as $v)
-                            <option value="{{$v->id}}">{{$v->name}}</option>
-                            @endforeach
-                          </select>
-                          <div class="input-group-append">
-                            <button type='button'
-                            class="btn waves-effect waves-light btn-info ml-1 ajax-form"
-                            data-title='Tạo nhóm thuộc tính'
-                            data-form-size = 'modal-md'
-                            data-form-rel = 'true'
-                            data-url="{{Route('admin.group_attribute.add')}}">
-                              <i class="mdi mdi-plus-circle-outline"></i>
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-lg-8 col-md-6">
-                        <div class="input-group flex-wrap-initial">
-                          <select class="select2 select2-multiple attribute" multiple="multiple" data-live-search="true" name="attribute2[]" id="attribute2" required="">
-                          </select>
-                          <div class="input-group-append">
-                            <button type='button'
-                            class="btn btn-attribute waves-effect waves-light btn-info ml-1 ajax-form"
-                            data-title='Tạo thuộc tính'
-                            data-form-size = 'modal-md'
-                            data-form-rel = 'true'
-                            data-url="">
-                              <i class="mdi mdi-plus-circle-outline"></i>
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-lg-1 col-md-1">
-                        <button type='button'
-                          class="btn waves-effect waves-light btn-danger ajax-form"
-                          data-title='Xoá thuộc tính'
-                          data-form-size = 'modal-md'
-                          data-form-rel = 'true'
-                          data-url="">
-                            <i class="mdi mdi-trash-can-outline"></i>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
+                <div class="list-attribute">
+                  <div class="first-attribute"></div>
                 </div>
                 <a href="javascript: void(0);" 
-                class="btn btn-info waves-effect waves-light">
+                class="btn add-attr-pattern btn-info waves-effect waves-light">
                   <i class="mdi mdi-plus-circle mr-1"></i>Thêm thuộc tính
                 </a>
               </div>
@@ -260,4 +161,56 @@
 </div>
 </form>
 <div id="all-attribute" data-value="{{json_encode($group_attributes)}}"></div>
+<script id="attr-pattern" type="text/template">
+  <div class="item-attribute mb-2">
+    <div class="row">
+      <div class="col-lg-3 col-md-5">
+        <div class="input-group flex-wrap-initial">
+          <select class="select2 group_attribute"  name="group_attribute[]" id=''>
+            <option value="" >Nhóm thuộc tính</option>
+            @foreach($group_attributes as $v)
+            <option value="{{$v->id}}">{{$v->name}}</option>
+            @endforeach
+          </select>
+          <div class="input-group-append">
+            <button type='button'
+            class="btn waves-effect waves-light btn-info ml-1 ajax-form"
+            data-title='Tạo nhóm thuộc tính'
+            data-form-size = 'modal-md'
+            data-form-rel = 'true'
+            data-url="{{Route('admin.group_attribute.add')}}">
+              <i class="mdi mdi-plus-circle-outline"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-8 col-md-6">
+        <div class="input-group flex-wrap-initial">
+          <select class="select2 select2-multiple attribute" multiple="multiple" data-live-search="true" name="attribute[]"  required="">
+          </select>
+          <div class="input-group-append">
+            <button type='button'
+            class="btn btn-attribute waves-effect waves-light btn-info ml-1 ajax-form"
+            data-title='Tạo thuộc tính'
+            data-form-size = 'modal-md'
+            data-form-rel = 'true'
+            data-url="">
+              <i class="mdi mdi-plus-circle-outline"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-1 col-md-1">
+        <button type='button'
+          class="btn btn_remove--row-attribute waves-effect waves-light btn-danger"
+          data-title='Xoá thuộc tính'
+          data-form-size = 'modal-md'
+          data-form-rel = 'true'
+          data-url="">
+            <i class="mdi mdi-trash-can-outline"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</script>
 @endsection

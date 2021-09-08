@@ -196,6 +196,18 @@ function ajaxFormItem(){
 		});
 	}
 }
+function checkSelectedSelect2(){
+	$(".group_attribute.select2 option").each(function(i){
+		$(this).prop('disabled',false);
+	});
+	$(".group_attribute.select2").each(function(i){
+		var val = $(this).val();
+		if(val!=''){
+			$(".group_attribute.select2 option[value='"+val+"']").prop('disabled',true);
+		}
+	});
+	$(".group_attribute.select2").select2();
+}
 function ajaxFormInItem(element){
 	if($('.dev-form').exists()){
 		$(document).ready(function() {
@@ -221,24 +233,21 @@ function ajaxFormInItem(element){
 						        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 						    }
 						});
-						//Check element reset select option
-						
+						//Check element append select option
+						$(element).append('<option value="'+data.item.id+'" checked>'+data.item.name+'</option>');
 				       	if($('#all-attribute').exists()){
 				       		if(data.type=='group'){
+				       			$("#attr-pattern").find('.group_attribute').append('<option value="'+data.item.id+'" checked>'+data.item.name+'</option>')
 					       		allAttribute.push({id:data.item.id,name:data.item.name,attributes:[]});
-					       		$('select.group_attribute').append('<option value="'+data.item.id+'" checked>'+data.item.name+'</option>');
+					       		$('select.group_attribute').not(element).append('<option value="'+data.item.id+'" checked>'+data.item.name+'</option>');
 					       		$(element).val(data.item.id);
-					       		$('select.group_attribute').selectpicker('refresh');
 					       		$(element).parents('.item-attribute').find('.btn-attribute').attr('data-url',URL.base_url+'/admin/attribute/add/group/'+data.item.id);
 					       		$(element).parents('.item-attribute').find('.attribute').attr('name','group_attribute'+data.item.id+'[]');
 								$(element).parents('.item-attribute').find('.attribute').attr('id','group_attribute'+data.item.id);
 								$(element).parents('.item-attribute').find('.attribute').find('option').remove();
-					       		$(element).parents('.item-attribute').find('.select2').select2({multiple: true}).val(null).trigger("change");
-					       		checkSelectedSelectPicker();
-					       	}
-					       	if(data.type=='item'){
-					       		$(element).append('<option value="'+data.item.id+'" checked>'+data.item.name+'</option>');
-								if($(element).hasClass('select2')){$(element).trigger('change.select2');}
+					       		$(element).parents('.item-attribute').find('.select2.attribute').select2({multiple: true}).val(null).trigger("change");
+					       		checkSelectedSelect2();
+					       	}else if(data.type=='item'){
 					       		allAttribute.forEach(function(value){ 
 					       			if(parseInt(value.id) === parseInt(data.item.group_id)){
 					       				value.attributes.push({id:data.item.id,name:data.item.name,group_id:data.item.group_id});
@@ -248,11 +257,9 @@ function ajaxFormInItem(element){
 								// $(element+'~ .select2').remove();
 								//Create select old new
 								// $(element).parents('.input-group').find('.select2-multiple').select2({multiple: true}).val(null).trigger("change");
+					       	}else{
+					       		$(element).val(data.item.id);
 					       	}
-				       	}else{
-				       		$(element).append('<option value="'+data.item.id+'" checked>'+data.item.name+'</option>');
-					       	$(element).val(data.item.id);
-					       	if($(element).hasClass('selectpicker')){$(element).selectpicker('refresh');}
 				       	}
 				       	//Reload form
 				       	$('.dev-form').find("button[type='submit']").html('<i class="mdi mdi-check"></i>');
@@ -372,3 +379,6 @@ function login(id)
 	});
 }
 
+function getRndInteger(min, max) {
+    return Math.floor(Math.random() * (max - min) ) + min;
+}

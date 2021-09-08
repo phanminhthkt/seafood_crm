@@ -1,13 +1,16 @@
 if($('#all-attribute').exists()){
-	function checkSelectedSelectPicker(){
-		$(".group_attribute.selectpicker option").not(this).attr('disabled',false);
-		$(".group_attribute.selectpicker").each(function(value){
-			$(".group_attribute.selectpicker option[value='"+$(this).val()+"']").not(this).not(".group_attribute.selectpicker option[value='']").attr('disabled','disabled');
-			$(".group_attribute.selectpicker").not(this).selectpicker('refresh');
-		});
-	}
+	// $(document).on('click','.add-attr-pattern',function(){
+	$('.add-attr-pattern').click(function(){
+		$(".first-attribute").append($("#attr-pattern").html());
+		$("select").select2();
+		checkSelectedSelect2();
+	})
+	$(document).on('click','.btn_remove--row-attribute', function(){
+		$(this).parents('.item-attribute').remove();
+	})
+	
 	var allAttribute = $("#all-attribute").data('value');
-	$(document).on('change','.selectpicker.group_attribute', function(){
+	$(document).on('change','.group_attribute.select2', function(){
 		var group_id = $(this).val();
 		var item  = $(this).parents('.item-attribute');
 		if(group_id!=''){
@@ -19,23 +22,27 @@ if($('#all-attribute').exists()){
 			group_attribute[0].attributes.forEach(function(value){ 
 				item.find('.attribute').append('<option value="'+value.id+'" checked>'+value.name+'</option>');
 			});
-			item.find('.attribute').selectpicker('refresh');
 		}else{
 			item.find('.btn-attribute').attr('data-url','');
 			item.find('.attribute').find('option').remove();
 			item.find('.attribute').attr('name','');
 			item.find('.attribute').attr('id','');
-			item.find('.attribute').selectpicker('refresh');
 		}
-		checkSelectedSelectPicker();
+		checkSelectedSelect2();
 	});
 }
 $(document).on('click','.ajax-form', function(){
 	//Check Attribute
-	if($(this).hasClass('btn-attribute')){if($(this).attr('data-url')==''){notifyDialog("Bạn chưa chọn nhóm thuộc tính");return false;}}
+	if($('#all-attribute').exists()){
+		if($(this).hasClass('btn-attribute')){if($(this).attr('data-url')==''){notifyDialog("Bạn chưa chọn nhóm thuộc tính");return false;}}
+		if($(this).parents(".input-group").find('select').hasClass('group_attribute') && $(this).parents(".input-group").find('.group_attribute').attr('id') == ''){
+			$(this).parents(".input-group").find('.group_attribute').attr('id',getRndInteger(10000,20000));
+		}
+	}
 	// End check attribute
 	var data = data || {};
 		data.id = "#"+$(this).parents(".input-group").find("select").attr("id");
+		alert(data.id);
 		data.url = $(this).attr("data-url");
 		data.title = $(this).data("title");
 		data.formsize = $(this).data("form-size");
