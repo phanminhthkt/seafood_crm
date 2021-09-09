@@ -149,7 +149,22 @@
             </h5>
             <div class="card">
               <div class="card-body">
-                
+                  <div class="table-responsive">
+                    <table class="table table-borderless mb-0">
+                        <thead class="thead-light">
+                        <tr>
+                            <th width="25%"><b class="bold">Tên</b class="bold"></th>
+                            <th><b class="bold">Sku</b class="bold"></th>
+                            <th><b class="bold">Giá bán</b></th>
+                            <th><b class="bold">Giá gốc</b class="bold"></th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody class="first-same-item">
+                          
+                        </tbody>
+                    </table>
+                </div>
               </div>
             </div>
           </div>
@@ -172,6 +187,7 @@
             <option value="{{$v->id}}">{{$v->name}}</option>
             @endforeach
           </select>
+          <input type="hidden" name="group_attribute[]">
           <div class="input-group-append">
             <button type='button'
             class="btn waves-effect waves-light btn-info ml-1 ajax-form"
@@ -185,7 +201,7 @@
         </div>
       </div>
       <div class="col-lg-8 col-md-6">
-        <div class="input-group flex-wrap-initial">
+        <div class="input-group flex-wrap-initial mtb-sm-0-5">
           <select class="select2 select2-multiple attribute" multiple="multiple" data-live-search="true" name="attribute[]"  required="">
           </select>
           <div class="input-group-append">
@@ -212,5 +228,32 @@
       </div>
     </div>
   </div>
+</script>
+<script id="attr-same-item" type="text/template">
+<tr>
+  <th scope="row"><span class="name-product-child">textname</span></th>
+  <td>
+    <div class="input-group input-group--custom">
+      <input type="text" class="form-control" id="sku" name="sku" placeholder="Mã hàng" value="">
+    </div>
+  </td>
+  <td>
+    <div class="input-group input-group--custom">
+      <input type="text" data-toggle="input-mask" data-mask-format="000,000,000,000" data-reverse="true" class="form-control" id="import_price" name="import_price" placeholder="Giá bán" value="">
+    </div>
+  </td>
+  <td>
+    <div class="input-group input-group--custom">
+      <input type="text" data-toggle="input-mask" data-mask-format="000,000,000,000" data-reverse="true" class="form-control" id="export_price" name="export_price" placeholder="Giá nhập" value="">
+    </div>
+  </td>
+  <td>
+      <button type='button'
+        class="btn btn-icon btn_remove--row-attribute waves-effect waves-light btn-warning"
+        data-title='Xoá thuộc tính'>
+          <i class="mdi mdi-trash-can-outline"></i>
+      </button>
+  </td>
+</tr>
 </script>
 @endsection

@@ -39,8 +39,9 @@ h4 {
 h5 { }
 a{color:#29689e;}
 
-
+.mtb-2{margin:2rem 0;}
 .pd-0{padding: 0 !important}
+b.bold{font-weight: bold;}
 .card-body .nav-tabs{margin-top:-15px;}
 .nav-bordered a.active{border-bottom: 2px solid #3bafda!important;}
 
@@ -79,7 +80,7 @@ a.btn{cursor: pointer;}
 .custom-file-dev{position: absolute;top:0;left:0;right:0;bottom:0;cursor: pointer;}
 .custom-file-dev input{width: 100%;height: 100%;opacity: 0;cursor: pointer;}
 .input-group-text--custom{border: none;font-weight: 600;background: #e3e7e8;border-radius: 0px 5px 5px 0px !important;color: #828282;}
-
+.input-group--custom input{background: #fff !important;border: none !important;border-bottom: 1px solid #ccc !important;border-radius: 0px;}
 /*Custom */
 .dropzone{cursor: pointer;}
 .fs-15{font-size: 12px;}
@@ -106,7 +107,7 @@ a.btn{cursor: pointer;}
 
 .bootstrap-select .dropdown-menu{min-width: 100% !important}
 .bootstrap-select .inner{overflow-y: scroll !important;max-height: 300px !important}
-.select2-container--default .select2-results__option--highlighted[aria-selected],.select2-container--default .select2-results__option--highlighted[aria-selected],.select2-container .select2-selection--multiple .select2-selection__choice,.select2-container--default .select2-results__option[aria-selected=true]:hover{background-color:#37cde6;}
+.select2-container--default .select2-results__option--highlighted[aria-selected],.select2-container--default .select2-results__option--highlighted[aria-selected],.select2-container .select2-selection--multiple .select2-selection__choice,.select2-container--default .select2-results__option[aria-selected=true]:hover{background-color:#37cde6;color: #fff;}
 
 .page-title-box{margin: 0 -25px 15px;}
 
@@ -157,7 +158,15 @@ a.btn{cursor: pointer;}
   .table-responsive{overflow: unset;}
 }
 @media (max-width: 767px){
+  .mtb-sm-2{margin:2rem 0;}
+  .mtb-sm-1{margin:1rem 0;}
+  .mtb-sm-0-5{margin:0.5rem 0;}
   #pre-loader .app-loader{left: calc(50% - 35px);}
     li.paginate_button{display: inline-block;}
     li.paginate_button.next, li.paginate_button.previous{font-size: inherit;}
 }  
+
+select[readonly],select[readonly] ~ button.dropdown-toggle,select option[readonly] {
+  pointer-events: none;
+  touch-action: none;
+}

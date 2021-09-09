@@ -1,5 +1,6 @@
 if($('#all-attribute').exists()){
 	// $(document).on('click','.add-attr-pattern',function(){
+
 	$('.add-attr-pattern').click(function(){
 		$(".first-attribute").append($("#attr-pattern").html());
 		$("select").select2();
@@ -17,18 +18,69 @@ if($('#all-attribute').exists()){
 			var group_attribute =  allAttribute.filter(value => { return parseInt(value.id) === parseInt(group_id);})
 			item.find('.btn-attribute').attr('data-url',URL.base_url+'/admin/attribute/add/group/'+group_id);
 			item.find('.attribute').find('option').remove();
-			item.find('.attribute').attr('name','group_attribute'+group_id+'[]');
-			item.find('.attribute').attr('id','group_attribute'+group_id);
+			item.find('input[type="hidden"]').val(group_id);
+			item.find('.attribute').attr('name','attribute'+group_id+'[id][]');
+			item.find('.attribute').attr('id','attribute'+group_id);
 			group_attribute[0].attributes.forEach(function(value){ 
 				item.find('.attribute').append('<option value="'+value.id+'" checked>'+value.name+'</option>');
 			});
 		}else{
 			item.find('.btn-attribute').attr('data-url','');
 			item.find('.attribute').find('option').remove();
+			item.find('input[type="hidden"]').val('');
 			item.find('.attribute').attr('name','');
 			item.find('.attribute').attr('id','');
 		}
 		checkSelectedSelect2();
+	});
+	var check_group_attribute_id = [];
+	var group_attribute_id = [];
+	$(document).on('change','.attribute.select2', function(){
+
+		var root = $(this);
+		var attribute_id = [];
+		var name_group_id = "attribute"+root.parents('.item-attribute').find('.group_attribute option:selected').val().toString();
+		var attribute_text = [];
+		if(check_group_attribute_id.indexOf($(this).attr('id')) == -1){
+			check_group_attribute_id.push($(this).attr('id'));
+			group_attribute_id.push({id:$(this).attr('id'),list_id:[],list_text:[]});
+		}
+		group_attribute_id.forEach(function(value){ 
+			if((value.id.toString() === name_group_id) && (value.list_id.indexOf(root.val()) == -1)){
+				value.list_id = root.val();
+				value.list_text = root.select2('data').map(function(elem){ return elem.text });
+			}
+		});
+		var new_group_attribute_id = group_attribute_id;
+		new_group_attribute_id = new_group_attribute_id.filter(function(value){return value.list_text.length > 0;})
+		var fAttribute = new_group_attribute_id[0].list_text;
+		$(".first-same-item").html('');
+		for (var i = 0; i < fAttribute.length; i++) {
+			if(new_group_attribute_id.length < 2){ 
+				$(".first-same-item").append($("#attr-same-item").text().replace('textname', fAttribute[i]));
+			};
+			for (var j = 1; j < new_group_attribute_id.length; j++) {
+				var f2Attribute = new_group_attribute_id[j].list_text;
+				for(var e = 0;e < f2Attribute.length;e++){
+					$(".first-same-item").append($("#attr-same-item").text().replace('textname', fAttribute[i]+'-'+f2Attribute[e]));
+				}
+			}
+		}
+		// console.log(group_attribute_id);
+		// group_attribute_id.forEach(function(value,index){
+		// 	alert(index);
+		// 	alert(value.id);
+		// })
+
+
+		// $(".group_attribute option:selected").each(function(){
+		// 	group_attribute_id.push($(this).val());
+		// })
+		// $(".attribute option:selected").each(function(){
+		// 	attribute_id.push($(this).val());
+		// 	attribute_text.push($(this).text());
+		// })
+		// alert(attribute_text);
 	});
 }
 $(document).on('click','.ajax-form', function(){
@@ -42,7 +94,6 @@ $(document).on('click','.ajax-form', function(){
 	// End check attribute
 	var data = data || {};
 		data.id = "#"+$(this).parents(".input-group").find("select").attr("id");
-		alert(data.id);
 		data.url = $(this).attr("data-url");
 		data.title = $(this).data("title");
 		data.formsize = $(this).data("form-size");

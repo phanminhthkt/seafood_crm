@@ -66,6 +66,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request);
         $data = $request->except('_token');
         if($this->_repository->create($data)){
             return redirect()->route('admin.product.index')->with('success', 'Thêm sản phẩm <b>'. $request->name .'</b> thành công');

@@ -242,6 +242,7 @@ function ajaxFormInItem(element){
 					       		$('select.group_attribute').not(element).append('<option value="'+data.item.id+'" checked>'+data.item.name+'</option>');
 					       		$(element).val(data.item.id);
 					       		$(element).parents('.item-attribute').find('.btn-attribute').attr('data-url',URL.base_url+'/admin/attribute/add/group/'+data.item.id);
+					       		$(element).parents('.item-attribute').find('input[type="hidden"]').val(data.item.id);
 					       		$(element).parents('.item-attribute').find('.attribute').attr('name','group_attribute'+data.item.id+'[]');
 								$(element).parents('.item-attribute').find('.attribute').attr('id','group_attribute'+data.item.id);
 								$(element).parents('.item-attribute').find('.attribute').find('option').remove();
@@ -253,10 +254,6 @@ function ajaxFormInItem(element){
 					       				value.attributes.push({id:data.item.id,name:data.item.name,group_id:data.item.group_id});
 					       			}
 								});
-								//Remove select old
-								// $(element+'~ .select2').remove();
-								//Create select old new
-								// $(element).parents('.input-group').find('.select2-multiple').select2({multiple: true}).val(null).trigger("change");
 					       	}else{
 					       		$(element).val(data.item.id);
 					       	}
