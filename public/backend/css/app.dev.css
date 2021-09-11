@@ -136,6 +136,7 @@ a.btn{cursor: pointer;}
 
 .no-border,.no-footer{border:0px;}
 .flex-wrap-initial{flex-wrap: initial}
+.form-control.is-invalid~.invalid-feedback.flex-custom-end,.was-validated .form-control:invalid~.invalid-feedback.flex-custom-end{width: 50px;display: flex;align-items: center;justify-content: center;margin: 0px;font-size: 20px;}
 .page-link{border:none;}
 ::-webkit-scrollbar {
   width: 6px; }
@@ -170,3 +171,17 @@ select[readonly],select[readonly] ~ button.dropdown-toggle,select option[readonl
   pointer-events: none;
   touch-action: none;
 }
+
+/*datatable*/
+.tablesaw td{border:none;}
+.tablesaw{border: 1px solid #f1f5f7}
+.tablesaw tbody tr:nth-of-type(odd){background:none;}
+td.details-control {
+    background: url(../images/details_open.png) no-repeat center center;
+    cursor: pointer;
+    width: 18px;
+}
+tr.shown td.details-control {
+    background: url(../images/details_close.png) no-repeat center center;
+}
+/*End datatable*/

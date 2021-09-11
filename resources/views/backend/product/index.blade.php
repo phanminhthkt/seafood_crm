@@ -28,10 +28,11 @@
         </div>
          <div class="card-body">
               <div class="table-responsive">
-                 <table id="datatable-buttons" class="table table-striped dt-responsive no-border">
+                 <table id="datatable-buttons" class="table dt-responsive no-border">
                     <thead>
                        <tr role="row">
                           <th>Id</th>
+                          <th></th>
                           <th width="1%">
                               <div class="custom-control custom-checkbox text-center">
                                 <input type="checkbox" class="custom-control-input" id="selectall-checkbox">
@@ -45,7 +46,7 @@
                           <th width="3%" class="text-center">Đ/v</th>
                           <th width="15%" class="text-center">Danh mục</th>
                           <th width="10%" class="text-center">Trạng thái</th>
-                          <th width="10%">Hành động</th>
+                          <th width="12%">Hành động</th>
                        </tr>
                     </thead>
                 </table>
@@ -64,6 +65,13 @@
     },
     columns:[
         {data: 'id',name: 'id', visible: false},
+        {
+            "className":      'details-control',
+            "orderable":      false,
+            "searchable":      false,
+            "data":           null,
+            "defaultContent": ''
+        },
         {data: 'checkbox', orderable: false, searchable: false},
         {data: 'priority',name: 'priority', orderable: false, searchable: false},
         {data: 'name',name: 'name'},
@@ -75,6 +83,24 @@
         {data: 'action', name: 'action', orderable: false, searchable: false}
     ]
   };
+</script>
+<script id="details-template" type="text/x-handlebars-template">
+  <table class="tablesaw table  details-table" id="products-6">
+      <thead>
+         <tr role="row">
+            <th>Id</th>
+            <th width="1%">
+                
+            </th>
+            <th width="5%" class="text-center">STT</th>
+            <th class="text-center"width="20%">{{$title}}</th>
+            <th width="15%" class="text-center">Giá bán</th>
+            <th width="15%" class="text-center">Giá nhập</th>
+            <th width="10%" class="text-center">Trạng thái</th>
+            <th width="10%">Hành động</th>
+         </tr>
+      </thead>
+  </table>
 </script>
 @endsection
 

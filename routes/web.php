@@ -167,6 +167,7 @@ Route::group(['as' => 'api.','namespace' => 'App\Http\Controllers\Api', 'prefix'
 		/*Hàng Hoá */
 		Route::get('/product',['uses' => 'ProductController@index','as' => 'product.index'])->middleware('can:view-product');
 		Route::get('/product/data',['uses' => 'ProductController@getData','as' => 'product.data'])->middleware('can:view-product');
+		Route::get('/product/child/{id}',['uses' => 'ProductController@getDataChild','as' => 'product.data.child'])->middleware('can:view-product');
 		Route::get('/product/add',['uses' => 'ProductController@create','as' => 'product.add'])->middleware('can:create-product');
 		Route::post('/product/store',['uses' => 'ProductController@store','as' => 'product.store']);
 		Route::get('/product/edit/{id}',['uses' => 'ProductController@edit','as' => 'product.edit'])->middleware('can:update-product');

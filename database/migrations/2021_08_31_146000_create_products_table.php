@@ -18,10 +18,11 @@ class CreateProductsTable extends Migration
             $table->string('name', 255)->nullable();
             $table->string('sku', 255)->nullable();
             $table->string('type', 50)->nullable();
-            $table->integer('is_status')->default(0);
-            $table->integer('is_priority')->default(0);
-            $table->double('import_price', 15, 8)->default(0);
-            $table->double('export_price', 15, 8)->default(0);
+            $table->integer('is_status')->default(1);
+            $table->integer('is_priority')->default(1);
+            $table->double('import_price')->default(0);
+            $table->double('export_price')->default(0);
+            $table->foreignId('parent_id')->constrained("products")->onDelete('cascade')->nullable();
             $table->foreignId('category_id')->constrained("categories")->onDelete('cascade');
             $table->foreignId('unit_id')->constrained("units")->onDelete('cascade');
             $table->timestamps();

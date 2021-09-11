@@ -1,90 +1,4 @@
-if($('#all-attribute').exists()){
-	// $(document).on('click','.add-attr-pattern',function(){
-
-	$('.add-attr-pattern').click(function(){
-		$(".first-attribute").append($("#attr-pattern").html());
-		$("select").select2();
-		checkSelectedSelect2();
-	})
-	$(document).on('click','.btn_remove--row-attribute', function(){
-		$(this).parents('.item-attribute').remove();
-	})
-	
-	var allAttribute = $("#all-attribute").data('value');
-	$(document).on('change','.group_attribute.select2', function(){
-		var group_id = $(this).val();
-		var item  = $(this).parents('.item-attribute');
-		if(group_id!=''){
-			var group_attribute =  allAttribute.filter(value => { return parseInt(value.id) === parseInt(group_id);})
-			item.find('.btn-attribute').attr('data-url',URL.base_url+'/admin/attribute/add/group/'+group_id);
-			item.find('.attribute').find('option').remove();
-			item.find('input[type="hidden"]').val(group_id);
-			item.find('.attribute').attr('name','attribute'+group_id+'[id][]');
-			item.find('.attribute').attr('id','attribute'+group_id);
-			group_attribute[0].attributes.forEach(function(value){ 
-				item.find('.attribute').append('<option value="'+value.id+'" checked>'+value.name+'</option>');
-			});
-		}else{
-			item.find('.btn-attribute').attr('data-url','');
-			item.find('.attribute').find('option').remove();
-			item.find('input[type="hidden"]').val('');
-			item.find('.attribute').attr('name','');
-			item.find('.attribute').attr('id','');
-		}
-		checkSelectedSelect2();
-	});
-	var check_group_attribute_id = [];
-	var group_attribute_id = [];
-	$(document).on('change','.attribute.select2', function(){
-
-		var root = $(this);
-		var attribute_id = [];
-		var name_group_id = "attribute"+root.parents('.item-attribute').find('.group_attribute option:selected').val().toString();
-		var attribute_text = [];
-		if(check_group_attribute_id.indexOf($(this).attr('id')) == -1){
-			check_group_attribute_id.push($(this).attr('id'));
-			group_attribute_id.push({id:$(this).attr('id'),list_id:[],list_text:[]});
-		}
-		group_attribute_id.forEach(function(value){ 
-			if((value.id.toString() === name_group_id) && (value.list_id.indexOf(root.val()) == -1)){
-				value.list_id = root.val();
-				value.list_text = root.select2('data').map(function(elem){ return elem.text });
-			}
-		});
-		var new_group_attribute_id = group_attribute_id;
-		new_group_attribute_id = new_group_attribute_id.filter(function(value){return value.list_text.length > 0;})
-		var fAttribute = new_group_attribute_id[0].list_text;
-		$(".first-same-item").html('');
-		for (var i = 0; i < fAttribute.length; i++) {
-			if(new_group_attribute_id.length < 2){ 
-				$(".first-same-item").append($("#attr-same-item").text().replace('textname', fAttribute[i]));
-			};
-			for (var j = 1; j < new_group_attribute_id.length; j++) {
-				var f2Attribute = new_group_attribute_id[j].list_text;
-				for(var e = 0;e < f2Attribute.length;e++){
-					$(".first-same-item").append($("#attr-same-item").text().replace('textname', fAttribute[i]+'-'+f2Attribute[e]));
-				}
-			}
-		}
-		// console.log(group_attribute_id);
-		// group_attribute_id.forEach(function(value,index){
-		// 	alert(index);
-		// 	alert(value.id);
-		// })
-
-
-		// $(".group_attribute option:selected").each(function(){
-		// 	group_attribute_id.push($(this).val());
-		// })
-		// $(".attribute option:selected").each(function(){
-		// 	attribute_id.push($(this).val());
-		// 	attribute_text.push($(this).text());
-		// })
-		// alert(attribute_text);
-	});
-}
 $(document).on('click','.ajax-form', function(){
-	//Check Attribute
 	if($('#all-attribute').exists()){
 		if($(this).hasClass('btn-attribute')){if($(this).attr('data-url')==''){notifyDialog("Bạn chưa chọn nhóm thuộc tính");return false;}}
 		if($(this).parents(".input-group").find('select').hasClass('group_attribute') && $(this).parents(".input-group").find('.group_attribute').attr('id') == ''){
@@ -250,6 +164,7 @@ $(document).on('click', function (e) {
 
 // $(".ajax-form").
 if($('#datatable-buttons').exists()){
+	var template = Handlebars.compile($("#details-template").html());
 	$(document).ready(function(){
 		var oTable = $('#datatable-buttons').DataTable({
 			initComplete: function( settings, json ) {
@@ -280,8 +195,51 @@ if($('#datatable-buttons').exists()){
 	        oTable.draw();
 	        e.preventDefault();
 	    });
-	});
+		$('body').on('click', 'td.details-control', function () {
+	        var tr = $(this).closest('tr');
+	        var row = oTable.row(tr);
+	        var tableId = 'products-' + row.data().id;
+	        if (row.child.isShown()) {
+	            // This row is already open - close it
+	            row.child.hide();
+	            tr.removeClass('shown');
+	        } else {
+	            // Open this row
+	            row.child(template(row.data())).show();
+	            initTable(tableId, row.data());
+	            tr.addClass('shown');
+	            tr.next().find('td').addClass('pd-1 bg-gray');
+	        }
+	    });
+    });
+    function initTable(tableId, data) {
+        $('#' + tableId).DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: data.details_url,
+            language: {
+		    	paginate: {
+		      		previous: '<i class="mdi mdi-chevron-left"></i>',
+		      		next: '<i class="mdi mdi-chevron-right"></i>'
+		    	},
+		    	sProcessing: '<span class="spinner-border spinner-border-sm mr-1"></span>Loading...',
 
+		  	},
+			order: ['0', 'desc'],
+			searching: false,
+			lengthChange: false,
+            columns: [
+            	{data: 'id',name: 'id', visible: false},
+                {data: 'checkbox', orderable: false, searchable: false},
+		        {data: 'priority',name: 'priority', orderable: false, searchable: false},
+		        {data: 'name',name: 'name'},
+		        {data: 'export_price',name: 'export_price'},
+		        {data: 'import_price',name: 'import_price'},
+		        {data: 'status',name: 'status', orderable: false, searchable: false},
+		        {data: 'action', name: 'action', orderable: false, searchable: false}
+            ]
+        })
+    }
 }else{
 	$(window).on('load', function () {
 		$(".container-fluid").css({'opacity':'1'});
@@ -290,3 +248,4 @@ if($('#datatable-buttons').exists()){
 	    });
 	});
 }
+	
