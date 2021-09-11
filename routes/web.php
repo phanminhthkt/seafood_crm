@@ -167,11 +167,18 @@ Route::group(['as' => 'api.','namespace' => 'App\Http\Controllers\Api', 'prefix'
 		/*Hàng Hoá */
 		Route::get('/product',['uses' => 'ProductController@index','as' => 'product.index'])->middleware('can:view-product');
 		Route::get('/product/data',['uses' => 'ProductController@getData','as' => 'product.data'])->middleware('can:view-product');
-		Route::get('/product/child/{id}',['uses' => 'ProductController@getDataChild','as' => 'product.data.child'])->middleware('can:view-product');
+		Route::get('/product/data-child/{id}',['uses' => 'ProductController@getDataChild','as' => 'product.data.child'])->middleware('can:view-product');
 		Route::get('/product/add',['uses' => 'ProductController@create','as' => 'product.add'])->middleware('can:create-product');
 		Route::post('/product/store',['uses' => 'ProductController@store','as' => 'product.store']);
 		Route::get('/product/edit/{id}',['uses' => 'ProductController@edit','as' => 'product.edit'])->middleware('can:update-product');
 		Route::put('/product/update/{id}', ['uses' => 'ProductController@update','as' => 'product.update']);
+
+		Route::get('/product/child/add/{id}',['uses' => 'ProductController@createChild','as' => 'product.child.add'])->middleware('can:update-product');
+		Route::post('/product/child/store/{id}', ['uses' => 'ProductController@storeChild','as' => 'product.child.store']);
+		
+		Route::get('/product/child/edit/{id}',['uses' => 'ProductController@editChild','as' => 'product.child.edit'])->middleware('can:update-product');
+		Route::put('/product/child/update/{id}', ['uses' => 'ProductController@updateChild','as' => 'product.child.update']);
+
 		Route::delete('/product/delete/{id}',['uses' => 'ProductController@delete','as' => 'product.delete'])->middleware('can:delete-product');
 		Route::delete('/product/delete-multiple/{id}',['uses' => 'ProductController@deleteMultiple'])->middleware('can:delete-product');
 	});

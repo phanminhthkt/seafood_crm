@@ -18,16 +18,14 @@
          @include('blocks.messages')
     </div>
   </div>
-
   <form 
     class='needs-validation {{$form->devform}}'
     role="form" 
     method="POST" 
-    action="{{$pageIndex.'/update/'.$item->id.$path_type}}" 
+    action="{{$pageIndex.'/child/store/'.$item->id.$path_type}}" 
     enctype="multipart/form-data" 
     novalidate>
    @csrf
-   {{ method_field('PUT') }}
    <div class="row d-flex flex-sm-row-reverse">
    <div class="col-lg-12">
       <div class="card">
@@ -148,39 +146,15 @@
               </div>
             </div>
           </div>
-          <div id="product-same">
-            <h5 class="text-uppercase bg-light p-2 mb-0">
-              <i class="mdi mdi-settings mr-1"></i>Hàng hoá cùng loại
-            </h5>
-            <div class="card">
-              <div class="card-body">
-                  <div class="table-responsive">
-                    <table class="table table-borderless mb-0">
-                        <thead class="thead-light">
-                        <tr>
-                            <th width="35%"><b class="bold">Tên</b></th>
-                            <th><b class="bold">Sku</b></th>
-                            <th><b class="bold">Giá bán</b></th>
-                            <th><b class="bold">Giá gốc</b></th>
-                            <th></th>
-                        </tr>
-                        </thead>
-                        <tbody class="first-same-item">
-                          
-                        </tbody>
-                    </table>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
-      <button type="submit" class="btn btn-success waves-effect waves-light"><i class="far fa-plus-square mr-1"></i>Cập nhật</button>
+      <button type="submit" class="btn btn-success waves-effect waves-light"><i class="far fa-plus-square mr-1"></i>Tạo</button>
       <button type="reset" class="btn btn-secondary waves-effect waves-light"><i class="fa fas fa-redo mr-1"></i>Làm mới</button>
    </div>
 </div>
 </form>
 <div id="all-attribute" data-value="{{json_encode($group_attributes)}}"></div>
+
 <script id="attr-pattern" type="text/template">
   <div class="item-attribute mb-2">
     <div class="row">
@@ -206,7 +180,7 @@
       </div>
       <div class="col-lg-8 col-md-6">
         <div class="input-group flex-wrap-initial mtb-sm-0-5">
-          <select class="select2 select2-multiple attribute" multiple="multiple" data-live-search="true"  required="">
+          <select class="select2 select2-multiple attribute attribute__child--edit" multiple="multiple" data-live-search="true" name='attribute_id[]'  required="">
           </select>
           <div class="input-group-append">
             <button type='button'

@@ -1,4 +1,8 @@
 if($('#all-attribute').exists()){
+
+
+
+
 	//$("#attr-pattern").html() chưa dom nên bọc nó vào 1 tag rồi call như dom
 function addOptionTemp(eMain,eFind,value){
 	container = $('<dev/>').html($(eMain).html());
@@ -45,7 +49,6 @@ function addValueGroupAttributeId(){
 			group_attribute_id.push({
 				id:$(this).attr('id'),
 				list_id:$(this).val(),
-				list_group_id:$(this).parents('.item-attribute').find('.group_attribute option:selected').val(),
 				list_text:$(this).select2('data').map(function(elem){ return elem.text })
 			});
 		}
@@ -54,24 +57,20 @@ function addValueGroupAttributeId(){
 function addChildProduct(){
 	var group_attribute_list_text = [];
 	var group_attribute_list_id = [];
-	var group_attribute_list_group_id = [];
 	group_attribute_id.forEach(function(value){
 		if(value.list_text.length > 0){group_attribute_list_text.push(value.list_text);} 
 	});
 	group_attribute_id.forEach(function(value){
 		if(value.list_id.length > 0){group_attribute_list_id.push(value.list_id);} 
 	});
-	group_attribute_id.forEach(function(value){
-		if(value.list_group_id.length > 0){group_attribute_list_group_id.push(value.list_group_id);} 
-	});
 	group_attribute_list_text = generate(group_attribute_list_text,' ');
 	group_attribute_list_id = generate(group_attribute_list_id,',');
+
 	$(".first-same-item").html('');
 	if(!$.isEmptyObject(group_attribute_list_text)){
 		for (var i = 0; i < group_attribute_list_text.length; i++) {
 			addValueTemp('#attr-same-item','input[name="data_child[name][]"]',$('input[name="name"]').val()+' '+group_attribute_list_text[i]);
 			addValueTemp('#attr-same-item','input[name="data_child[attribute_id][]"]',group_attribute_list_id[i].split(','));
-			addValueTemp('#attr-same-item','input[name="data_child[group_attribute_id][]"]',group_attribute_list_group_id[i]);
 			$(".first-same-item").append($('#attr-same-item').html());
 		}
 	}
@@ -121,6 +120,7 @@ function ajaxFormInItem(element){
 					       				value.attributes.push({id:data.item.id,name:data.item.name,group_id:data.item.group_id});
 					       			}
 								});
+
 					       	}else{
 					       		$(element).val(data.item.id);
 					       	}
@@ -147,6 +147,7 @@ function ajaxFormInItem(element){
 $('.add-attr-pattern').click(function(){
 	$(".first-attribute").append($("#attr-pattern").html());
 	$("select").select2();
+	if($('.attribute__child--edit').exists()){$('.attribute__child--edit').select2({maximumSelectionLength: 1});}
 	checkSelectedSelect2();
 })
 //Remove attribute pattern
@@ -192,6 +193,10 @@ $(document).on('change','.attribute.select2', function(){
 	addValueGroupAttributeId();
 	addChildProduct();
 });
-
+if($('.attribute__child--edit').exists()){
+	$(document).ready(function(){
+		$('.attribute__child--edit').select2({maximumSelectionLength: 1});
+	});
+}
 
 }

@@ -234,7 +234,6 @@
       <div class="input-group input-group--custom">
       <input type="text" class="form-control"  name="data_child[name][]" placeholder="Tên sản phẩm" value="">
       <input type="hidden" name="data_child[attribute_id][]">
-      <input type="hidden" name="data_child[group_attribute_id][]">
     </div>
   </td>
   <td>

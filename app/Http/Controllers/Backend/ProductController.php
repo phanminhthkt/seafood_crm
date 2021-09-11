@@ -91,7 +91,7 @@ class ProductController extends Controller
                     $dataPerChild['import_price'] = str_replace(',', '', $dataChild['data_child']['import_price'][$k]);;
                     if($idChild = $this->_repository->create($dataPerChild)->id){
                         $productChild = $this->_repository->findOrFail($idChild);
-                        $productChild->attributes()->attach(explode(",",$dataChild['data_child']['attribute_id'][$k]),['group_attribute_id' => $dataChild['data_child']['group_attribute_id'][$k]]);
+                         $productChild->attributes()->attach(explode(",",$dataChild['data_child']['attribute_id'][$k]));
                     }
                 }
             }
@@ -120,7 +120,11 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
+        if($this->_repository->findOrFail($id)->children->count() > 0 || $this->_repository->findOrFail($id)->parent_id!=NULL){
+            return redirect()->route('admin.product.index')->with('warning', 'Vui lòng chọn sản phẩm cùng loại để chỉnh sửa');
+        }
         $this->_data['item'] = $this->_repository->findOrFail($id);
+        // dd($this->_data['item']);
         return view('backend.product.edit',$this->_data);
     }
 
@@ -131,10 +135,31 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
     public function update(Request $request, $id)
     {
         $data = $request->except('_token','_method');//# request only
+        $data['export_price'] = str_replace(',', '', $request->export_price);
+        $data['import_price'] = str_replace(',', '', $request->import_price);
+        $dataChild = $request->only('data_child');
         if($this->_repository->update($id,$data)){
+            if(isset($dataChild['data_child']['name'])){
+            $productParent = $this->_repository->findOrFail($id);
+                foreach($dataChild['data_child']['name'] as $k => $value){
+                    $dataPerChild = [];
+                    $dataPerChild['parent_id'] = $id;
+                    $dataPerChild['category_id'] = $data['category_id'];
+                    $dataPerChild['unit_id'] = $data['unit_id'];
+                    $dataPerChild['name'] = $dataChild['data_child']['name'][$k];
+                    $dataPerChild['sku'] = $dataChild['data_child']['sku'][$k];
+                    $dataPerChild['export_price'] = str_replace(',', '', $dataChild['data_child']['export_price'][$k]);
+                    $dataPerChild['import_price'] = str_replace(',', '', $dataChild['data_child']['import_price'][$k]);;
+                    if($idChild = $this->_repository->create($dataPerChild)->id){
+                        $productChild = $this->_repository->findOrFail($idChild);
+                        $productChild->attributes()->attach(explode(",",$dataChild['data_child']['attribute_id'][$k]));
+                    }
+                }
+            }
             return redirect()->route('admin.product.index')->with('success', 'Chỉnh sửa sản phẩm <b>'. $request->name .'</b> thành công');
         }else{
             return redirect()->route('admin.product.index')->with('danger', 'Chỉnh sửa sản phẩm <b>'. $request->name .'</b> thất bại.Xin vui lòng thử lại');
@@ -161,6 +186,47 @@ class ProductController extends Controller
             return ['success' => true, 'message' => 'Xóa sản phẩm thành công !!'];
         }else{
             return ['error' => true, 'message' => 'Xóa sản phẩm thất bại.Xin vui lòng thử lại !!'];
+        }
+    }
+
+    public function createChild($id)
+    {
+        // dd($this->_data['item']);
+        $this->_data['item'] = $this->_repository->findOrFail($id);
+        return view('backend.product.add_child',$this->_data);
+    }
+    public function storeChild(Request $request, $id)
+    {
+        $data = $request->except('_token','_method');//# request only
+        
+        $data['export_price'] = str_replace(',', '', $request->export_price);
+        $data['import_price'] = str_replace(',', '', $request->import_price);
+        $data['parent_id'] = $id;
+        if($idChild = $this->_repository->create($data)->id){
+            $product = $this->_repository->findOrFail($idChild);
+            $product->attributes()->attach($request->attribute_id);
+            return redirect()->route('admin.product.index')->with('success', 'Tạo sản phẩm con <b>'. $request->name .'</b> thành công');
+        }else{
+            return redirect()->route('admin.product.index')->with('danger', 'Tạo sản phẩm con <b>'. $request->name .'</b> thất bại.Xin vui lòng thử lại');
+        }
+    }
+    public function editChild($id)
+    {
+        $this->_data['item'] = $this->_repository->findOrFail($id);
+        // dd($this->_data['item']);
+        return view('backend.product.edit_child',$this->_data);
+    }
+    public function updateChild(Request $request, $id)
+    {
+        $data = $request->except('_token','_method');//# request only
+        $product = $this->_repository->findOrFail($id);
+        $data['export_price'] = str_replace(',', '', $request->export_price);
+        $data['import_price'] = str_replace(',', '', $request->import_price);
+        if($this->_repository->update($id,$data)){
+            $product->attributes()->sync($request->attribute_id);
+            return redirect()->route('admin.product.index')->with('success', 'Chỉnh sửa sản phẩm <b>'. $request->name .'</b> thành công');
+        }else{
+            return redirect()->route('admin.product.index')->with('danger', 'Chỉnh sửa sản phẩm <b>'. $request->name .'</b> thất bại.Xin vui lòng thử lại');
         }
     }
 }

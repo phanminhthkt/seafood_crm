@@ -19,7 +19,7 @@
     </div>
 </div>
 <!-- end page title --> 
-<div class="row">
+<div class="row row-product">
    <div class="col-12">
       <div class="card">
         <div class="card-header flex-wrap d-inline-flex justify-content-between py-1">
@@ -85,15 +85,18 @@
   };
 </script>
 <script id="details-template" type="text/x-handlebars-template">
-  <table class="tablesaw table  details-table" id="products-6">
+  <button type="button" 
+  class="btn btn-outline-primary waves-effect waves-light direct-form"
+  data-url="admin/product/child/add/@{{id}}"
+  >
+    <i class="mdi mdi-plus-circle mr-1"></i>Thêm hàng cùng loại</button>
+  <table class="tablesaw table  details-table" id="products-@{{id}}">
       <thead>
          <tr role="row">
             <th>Id</th>
-            <th width="1%">
-                
-            </th>
+            <th width="1%"></th>
             <th width="5%" class="text-center">STT</th>
-            <th class="text-center"width="20%">{{$title}}</th>
+            <th class="text-center" width="20%">{{$title}}</th>
             <th width="15%" class="text-center">Giá bán</th>
             <th width="15%" class="text-center">Giá nhập</th>
             <th width="10%" class="text-center">Trạng thái</th>

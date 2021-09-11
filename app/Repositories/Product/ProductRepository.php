@@ -18,7 +18,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
             }
         })
         ->addColumn('details_url', function($value) {
-            return url('/admin/product/child/' . $value->id);
+            return url('/admin/product/data-child/' . $value->id);
         })
         ->addColumn('export_price', function ($value) use ($data) {
                 return number_format($value->export_price, 0,'',',');})
@@ -67,7 +67,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
                             >
                             <i class="mdi mdi-close"></i>
                         </a>';
-          }
+          }else{ return 'No action';}
                 })
         ->rawColumns(['action','checkbox','status','priority'])->make(true);
     }
@@ -113,7 +113,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
                             href="javascript:void(0)"
                             class="btn btn-icon waves-effect waves-light btn-info '.$data['form']->ajaxform.'"
                             data-title="Sửa '.$data['title'].'"
-                            data-url="'.$data['pageIndex'].'/edit/'.$value->id.$data['path_type'].'"  
+                            data-url="'.$data['pageIndex'].'/child/edit/'.$value->id.$data['path_type'].'"  
                                   >
                             <i class="mdi mdi-pencil"></i>
                         </a>

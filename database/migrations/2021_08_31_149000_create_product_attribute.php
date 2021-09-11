@@ -15,7 +15,6 @@ class CreateProductAttribute extends Migration
     {
         Schema::create('product_attribute', function (Blueprint $table) {
             $table->foreignId('product_id')->constrained("products")->onDelete('cascade');
-            $table->foreignId('group_attribute_id')->constrained("group_attributes")->onDelete('cascade');
             $table->foreignId('attribute_id')->constrained("attributes")->onDelete('cascade');
         });
     }

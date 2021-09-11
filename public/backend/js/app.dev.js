@@ -164,7 +164,9 @@ $(document).on('click', function (e) {
 
 // $(".ajax-form").
 if($('#datatable-buttons').exists()){
-	var template = Handlebars.compile($("#details-template").html());
+	if($('.row-product').exists()){
+		var template = Handlebars.compile($("#details-template").html());
+	}
 	$(document).ready(function(){
 		var oTable = $('#datatable-buttons').DataTable({
 			initComplete: function( settings, json ) {
@@ -195,22 +197,24 @@ if($('#datatable-buttons').exists()){
 	        oTable.draw();
 	        e.preventDefault();
 	    });
-		$('body').on('click', 'td.details-control', function () {
-	        var tr = $(this).closest('tr');
-	        var row = oTable.row(tr);
-	        var tableId = 'products-' + row.data().id;
-	        if (row.child.isShown()) {
-	            // This row is already open - close it
-	            row.child.hide();
-	            tr.removeClass('shown');
-	        } else {
-	            // Open this row
-	            row.child(template(row.data())).show();
-	            initTable(tableId, row.data());
-	            tr.addClass('shown');
-	            tr.next().find('td').addClass('pd-1 bg-gray');
-	        }
-	    });
+	    if($(".row-product").exists()){
+			$('body').on('click', 'td.details-control', function () {
+		        var tr = $(this).closest('tr');
+		        var row = oTable.row(tr);
+		        var tableId = 'products-' + row.data().id;
+		        if (row.child.isShown()) {
+		            // This row is already open - close it
+		            row.child.hide();
+		            tr.removeClass('shown');
+		        } else {
+		            // Open this row
+		            row.child(template(row.data())).show();
+		            initTable(tableId, row.data());
+		            tr.addClass('shown');
+		            tr.next().find('td').addClass('pd-1 bg-gray');
+		        }
+		    });
+	    }
     });
     function initTable(tableId, data) {
         $('#' + tableId).DataTable({
@@ -228,6 +232,7 @@ if($('#datatable-buttons').exists()){
 			order: ['0', 'desc'],
 			searching: false,
 			lengthChange: false,
+			pageLength: 5,
             columns: [
             	{data: 'id',name: 'id', visible: false},
                 {data: 'checkbox', orderable: false, searchable: false},
