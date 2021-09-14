@@ -17,7 +17,7 @@ class CreateCustomers extends Migration
             $table->id();
             $table->string('name', 255)->nullable();
             $table->string('phone', 255)->nullable();
-            $table->string('email', 255)->unique();
+            $table->string('email', 255)->nullable();
             $table->string('address', 255)->nullable();
             $table->integer('is_priority')->default(0);
             $table->integer('is_status')->default(1);

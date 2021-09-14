@@ -10,7 +10,11 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         return \App\Models\Product::class;
     }
     public function getDataByCondition($request,$data){
-        $value = $this->_model::with(['category','unit','children'])->select('name','id','export_price','import_price','unit_id','category_id','is_status','is_priority')->where('id','<>', 0)->where('parent_id','=',null);
+        if(isset($request->type) && $request->type=='noparent'){
+          $value = $this->_model::select('name','id','export_price','import_price','unit_id','category_id','is_status','is_priority')->withCount('children')->with(['category:id,name','unit:id,name'])->having('children_count','<',1);
+        }else{
+          $value = $this->_model::with(['category','unit','children'])->select('name','id','export_price','import_price','unit_id','category_id','is_status','is_priority')->where('id','<>', 0)->where('parent_id','=',null);
+        }
         return Datatables::of($value)
         ->filter(function ($query) use ($request) {
             if ($request->has('name')) {

@@ -34,13 +34,13 @@
                     </a>
                     <ul class="nav-second-level mm-collapse" aria-expanded="false">
                         <li>
-                            <a href="extras-profile.html">- Chi nhánh</a>
+                            <a href="{{Route('admin.wms.index')}}">- Chi nhánh</a>
                         </li>
                         <li>
                             <a href="extras-profile.html">- Xuất kho</a>
                         </li>
                         <li>
-                            <a href="extras-timeline.html"> - Nhập kho</a>
+                            <a href="{{Route('admin.wms.import.index')}}"> - Nhập kho</a>
                         </li>
                         <li>
                             <a href="extras-timeline.html"> - Kiểm kho</a>
@@ -124,13 +124,19 @@
                     </ul>
                 </li>
                 @endif
-
+                <li 
+                class="{{ request()->routeIs('admin.customer.*') ? 'mm-active' : '' }}">
+                    <a href="{{Route('admin.customer.index')}}" class="waves-effect">
+                        <i class="remixicon-user-smile-line"></i>
+                        <span>Khách hàng</span>
+                    </a>
+                </li>
                 @can('view-user')
                 <li 
                 class="{{ request()->routeIs('admin.user.*') ? 'mm-active' : '' }}">
                     <a href="{{Route('admin.user.index')}}" class="waves-effect">
-                        <i class="remixicon-group-line"></i>
-                        <span>Người dùng</span>
+                        <i class="remixicon-admin-line"></i>
+                        <span>Quản trị viên</span>
                     </a>
                 </li>
                 @endcan

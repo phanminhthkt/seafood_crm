@@ -175,6 +175,7 @@ if($('#datatable-buttons').exists()){
 			        // $('#pre-loader').remove();
 			    });
 			},
+			autoWidth: false,
 			language: {
 		    	paginate: {
 		      		previous: '<i class="mdi mdi-chevron-left"></i>',
@@ -252,5 +253,21 @@ if($('#datatable-buttons').exists()){
 	        // $('#pre-loader').remove();
 	    });
 	});
-}
-	
+}	
+
+$(document).on("click",'.dev-touchspin-btn',function(){
+	var $button = $(this);
+	var value = $button.parent().find("input").val();
+	if($(this).attr('data-type') == 'plus'){
+		value++;
+		if(value > $button.parent().find("input").attr('max')){
+			value = $button.parent().find("input").attr('max');
+		}
+	}else{
+		value--;
+		if(value < $button.parent().find("input").attr('min')){
+			value = $button.parent().find("input").attr('min');
+		}
+	}
+	$button.parent().find("input").val(value);
+})

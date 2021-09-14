@@ -17,7 +17,7 @@ class CreateWmsStores extends Migration
             $table->id();
             $table->string('name', 255)->nullable();
             $table->string('phone', 255)->nullable();
-            $table->string('email', 255)->unique();
+            $table->string('email', 255)->nullable();
             $table->string('address', 255)->nullable();
             $table->string('description')->nullable();
             $table->integer('is_active')->default(0);

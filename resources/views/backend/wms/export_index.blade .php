@@ -19,7 +19,7 @@
     </div>
 </div>
 <!-- end page title --> 
-<div class="row row-product">
+<div class="row">
    <div class="col-12">
       <div class="card">
         <div class="card-header flex-wrap d-inline-flex justify-content-between py-1">
@@ -28,25 +28,21 @@
         </div>
          <div class="card-body">
               <div class="table-responsive">
-                 <table id="datatable-buttons" class="table dt-responsive no-border">
+                 <table id="datatable-buttons" class="table table-striped dt-responsive no-border">
                     <thead>
                        <tr role="row">
                           <th>Id</th>
-                          <th></th>
                           <th width="1%">
                               <div class="custom-control custom-checkbox text-center">
                                 <input type="checkbox" class="custom-control-input" id="selectall-checkbox">
                                 <label class="custom-control-label" for="selectall-checkbox"></label>
                               </div>
                           </th>
-                          <th width="5%" class="text-center">STT</th>
+                          <th width="5%" class="text-center">Thứ tự</th>
                           <th class="text-center"width="20%">{{$title}}</th>
-                          <th width="15%" class="text-center">Giá bán</th>
-                          <th width="15%" class="text-center">Giá nhập</th>
-                          <th width="3%" class="text-center">Đ/v</th>
-                          <th width="15%" class="text-center">Danh mục</th>
-                          <th width="10%" class="text-center">Trạng thái</th>
-                          <th width="12%">Hành động</th>
+                          <th width="15%" class="text-center">Nhóm</th>
+                          <th width="5%" class="text-center">Trạng thái</th>
+                          <th width="10%">Hành động</th>
                        </tr>
                     </thead>
                 </table>
@@ -65,46 +61,14 @@
     },
     columns:[
         {data: 'id',name: 'id', visible: false},
-        {
-            "className":      'details-control',
-            "orderable":      false,
-            "searchable":      false,
-            "data":           null,
-            "defaultContent": ''
-        },
         {data: 'checkbox', orderable: false, searchable: false},
         {data: 'priority',name: 'priority', orderable: false, searchable: false},
         {data: 'name',name: 'name'},
-        {data: 'export_price',name: 'export_price'},
-        {data: 'import_price',name: 'import_price'},
-        {data: 'unit.name',name: 'unit', orderable: false, searchable: false},
-        {data: 'category.name',name: 'category', orderable: false, searchable: false},
+        {data: 'group.name',name: 'group', orderable: false, searchable: false},
         {data: 'status',name: 'status', orderable: false, searchable: false},
         {data: 'action', name: 'action', orderable: false, searchable: false}
     ]
   };
-</script>
-<script id="details-template" type="text/x-handlebars-template">
-  <div class="text-left"><button type="button" 
-  class="btn btn-outline-primary waves-effect waves-light direct-form"
-  data-url="admin/product/child/add/@{{id}}"
-  >
-    <i class="mdi mdi-plus-circle mr-1"></i>Thêm hàng cùng loại</button>
-  </div>
-  <table class="tablesaw table  details-table" id="products-@{{id}}">
-      <thead>
-         <tr role="row">
-            <th>Id</th>
-            <th width="1%"></th>
-            <th width="5%" class="text-center">STT</th>
-            <th class="text-center" width="20%">{{$title}}</th>
-            <th width="15%" class="text-center">Giá bán</th>
-            <th width="15%" class="text-center">Giá nhập</th>
-            <th width="10%" class="text-center">Trạng thái</th>
-            <th width="10%">Hành động</th>
-         </tr>
-      </thead>
-  </table>
 </script>
 @endsection
 

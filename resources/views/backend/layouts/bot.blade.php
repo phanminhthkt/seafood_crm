@@ -27,7 +27,8 @@
 <script  src="{{asset('backend')}}\libs\jquery-mask-plugin\jquery.mask.min.js"></script>
 <!-- App js -->
 <script  src="{{asset('backend')}}\js\functions.js"></script>
-<script  src="{{asset('backend')}}\js\app.attribute.js"></script>
 <script  src="{{asset('backend')}}\js\app.dev.js"></script>
+<script  src="{{asset('backend')}}\js\app.attribute.js"></script>
+<script  src="{{asset('backend')}}\js\app.wms.js"></script>
 <script  src="{{asset('backend')}}\js\app.report.js"></script>
 <script  src="{{asset('backend')}}\js\app.min.js"></script>

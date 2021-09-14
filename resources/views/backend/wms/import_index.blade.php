@@ -38,11 +38,12 @@
                                 <label class="custom-control-label" for="selectall-checkbox"></label>
                               </div>
                           </th>
-                          <th width="5%" class="text-center">Thứ tự</th>
-                          <th class="text-center" width="20%">{{$title}}</th>
-                          <th width="15%" class="text-center">Nhóm</th>
-                          <th width="5%" class="text-center">Trạng thái</th>
-                          <th width="5%" >Hành động</th>
+                          <th class="text-center"width="13%">Mã {{$title}}</th>
+                          <th class="text-center"width="20%">Chi nhánh</th>
+                          <th class="text-center"width="10%">Ngày tạo</th>
+                          <th width="10%" class="text-center">Trạng thái</th>
+                          <th class="text-center"width="10%">Tổng tiền</th>
+                          <th width="10%">Hành động</th>
                        </tr>
                     </thead>
                 </table>
@@ -62,10 +63,11 @@
     columns:[
         {data: 'id',name: 'id', visible: false},
         {data: 'checkbox', orderable: false, searchable: false},
-        {data: 'priority',name: 'priority', orderable: false, searchable: false},
-        {data: 'name',name: 'name'},
-        {data: 'group.name',name: 'group', orderable: false, searchable: false},
-        {data: 'status',name: 'status', orderable: false, searchable: false},
+        {data: 'code',name: 'code'},
+        {data: 'store.name',name: 'store', orderable: false, searchable: false},
+        {data: 'created_at',name: 'created_at'},
+        {data: 'status.name',name: 'status', orderable: false, searchable: false},
+        {data: 'total_price',name: 'total_price', orderable: false, searchable: false},
         {data: 'action', name: 'action', orderable: false, searchable: false}
     ]
   };

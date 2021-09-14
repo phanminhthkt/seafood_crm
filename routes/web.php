@@ -14,31 +14,7 @@ use Illuminate\Support\Facades\Route;
 // Route::group(['as'=>'', 'namespace'=>'App\Http\Controllers\Frontend'], function(){
 	// Auth::routes();
 // });
-Route::group(['as' => 'api.','namespace' => 'App\Http\Controllers\Api', 'prefix' => 'api'], function(){	
-	// Route::group(['middleware' => 'auth:members'], function(){	
-		Route::get('/status',['uses' => 'StatusController@index','as' => 'status.index']);
-		/*Project */
-		Route::get('/project',['uses' => 'ProjectController@index','as' => 'project.index'])->middleware('can:member-view-project');
-
-		Route::get('/project/add',['uses' => 'ProjectController@create','as' => 'project.add'])->middleware('can:member-create-project');
-		
-		Route::post('/project/store',['uses' => 'ProjectController@store','as' => 'project.store'])->middleware('can:member-create-project');;
-		Route::get('/project/edit-dev/{id}',['uses' => 'ProjectController@editDev','as' => 'project.dev.edit'])->middleware('can:member-update-dev-project');
-		Route::put('/project/update-dev/{id}', ['uses' => 'ProjectController@updateDev','as' => 'project.dev.update'])->middleware('can:member-update-dev-project');
-
-		Route::get('/project/edit-sale/{id}',['uses' => 'ProjectController@editSale','as' => 'project.sale.edit'])->middleware('can:member-update-sale-project');
-		Route::put('/project/update-sale/{id}',['uses' => 'ProjectController@updateSale','as' => 'project.sale.update'])->middleware('can:member-update-sale-project');
-
-
-		Route::get('/project/edit/{id}',['uses' => 'ProjectController@edit','as' => 'project.edit']);
-
-		Route::get('/project/send-mail/{id}',['uses' => 'ProjectController@sendMailMember'])->middleware('can:member-send-mail-project');
-	// });
-});
-
-
-
- Route::group(['as' => 'admin.','namespace' => 'App\Http\Controllers\Backend', 'prefix' => 'admin'], function(){	
+Route::group(['as' => 'admin.','namespace' => 'App\Http\Controllers\Backend', 'prefix' => 'admin'], function(){	
 
  	Route::get('user/login',['uses' => 'UserController@getLogin','as'=>'user.login']);
  	Route::post('user/login',['uses' => 'UserController@postLogin']);
@@ -181,22 +157,35 @@ Route::group(['as' => 'api.','namespace' => 'App\Http\Controllers\Api', 'prefix'
 
 		Route::delete('/product/delete/{id}',['uses' => 'ProductController@delete','as' => 'product.delete'])->middleware('can:delete-product');
 		Route::delete('/product/delete-multiple/{id}',['uses' => 'ProductController@deleteMultiple'])->middleware('can:delete-product');
+
+		/*Khách hàng */
+		Route::get('/customer',['uses' => 'CustomerController@index','as' => 'customer.index'])->middleware('can:view-status');
+		Route::get('/customer/data',['uses' => 'CustomerController@getData','as' => 'customer.data'])->middleware('can:view-status');
+		Route::get('/customer/add',['uses' => 'CustomerController@create','as' => 'customer.add'])->middleware('can:create-status');
+		Route::post('/customer/store',['uses' => 'CustomerController@store','as' => 'customer.store']);
+		Route::get('/customer/edit/{id}',['uses' => 'CustomerController@edit','as' => 'customer.edit'])->middleware('can:update-status');
+		Route::put('/customer/update/{id}', ['uses' => 'CustomerController@update','as' => 'customer.update']);
+		Route::delete('/customer/delete/{id}',['uses' => 'CustomerController@delete','as' => 'customer.delete'])->middleware('can:delete-status');
+		Route::delete('/customer/delete-multiple/{id}',['uses' => 'CustomerController@deleteMultiple'])->middleware('can:delete-status');
+
+		/*Chi nhánh,kho */
+		Route::get('/wms',['uses' => 'WmsController@index','as' => 'wms.index'])->middleware('can:view-status');
+		Route::get('/wms/data',['uses' => 'WmsController@getData','as' => 'wms.data'])->middleware('can:view-status');
+		Route::get('/wms/add',['uses' => 'WmsController@create','as' => 'wms.add'])->middleware('can:create-status');
+		Route::post('/wms/store',['uses' => 'WmsController@store','as' => 'wms.store']);
+		Route::get('/wms/edit/{id}',['uses' => 'WmsController@edit','as' => 'wms.edit'])->middleware('can:update-status');
+		Route::put('/wms/update/{id}', ['uses' => 'WmsController@update','as' => 'wms.update']);
+		Route::delete('/wms/delete/{id}',['uses' => 'WmsController@delete','as' => 'wms.delete'])->middleware('can:delete-status');
+		Route::delete('/wms/delete-multiple/{id}',['uses' => 'WmsController@deleteMultiple'])->middleware('can:delete-status');
+
+		/*Chi nhánh,kho */
+		Route::get('/wms-import',['uses' => 'WmsImportController@index','as' => 'wms.import.index'])->middleware('can:view-status');
+		Route::get('/wms-import/data',['uses' => 'WmsImportController@getData','as' => 'wms.import.data'])->middleware('can:view-status');
+		Route::get('/wms-import/add',['uses' => 'WmsImportController@create','as' => 'wms.import.add'])->middleware('can:create-status');
+		Route::post('/wms-import/store',['uses' => 'WmsImportController@store','as' => 'wms.import.store']);
+		Route::get('/wms-import/edit/{id}',['uses' => 'WmsImportController@edit','as' => 'wms.import.edit'])->middleware('can:update-status');
+		Route::put('/wms-import/update/{id}', ['uses' => 'WmsImportController@update','as' => 'wms.import.update']);
+		Route::delete('/wms-import/delete/{id}',['uses' => 'WmsImportController@delete','as' => 'wms.import.delete'])->middleware('can:delete-status');
+		Route::delete('/wms-import/delete-multiple/{id}',['uses' => 'WmsImportController@deleteMultiple'])->middleware('can:delete-status');
 	});
 });
-
-
-
-Route::group(['as'=>'client.', 'namespace'=>'App\Http\Controllers\Frontend'], function(){
-		// Member
-	Route::get('/login',['uses' => 'MemberController@getLogin','as'=>'member.login']);
-	Route::post('/login',['uses' => 'MemberController@postLogin','as'=>'post.login']);
-	Route::get('/register',['uses' => 'MemberController@getRegister','as'=>'member.register']);
-	Route::post('/register', ['uses' => 'MemberController@postRegister','as'=>'post.register']);
-	Route::group(['middleware' => 'auth:members'], function(){
-		Route::get('/',['uses' => 'IndexController@index','as'=>'index']);
-		Route::get('/logout',['uses' => 'MemberController@logout','as'=>'member.logout']);
-		Route::get('{any}', 'IndexController@index')->where("any", ".*");
-	});
-		// End Member
-});
-

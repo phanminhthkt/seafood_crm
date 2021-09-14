@@ -19,7 +19,11 @@ return [
 		'title'	=> 'Nhóm thành viên',
 		'table' => 'group_member',
 	],
-	'status' => [
+	'group_status' => [
+		'title'	=> 'Nhóm trạng thái',
+		'table' => 'group_status',
+	]
+	,'status' => [
 		'title'	=> 'Tình trạng',
 		'table' => 'status',
 	],
@@ -50,5 +54,23 @@ return [
 	'category' => [
 		'title'	=> 'Danh mục',
 		'table' => 'categories',
+	],
+	'wms' => [
+		'title'	=> 'Kho',
+		'table' => 'wms_stores',
+	],
+	'wmsImport' => [
+		'title'	=> 'Nhập kho',
+		'table' => 'wms_imports',
+		'code'  => 'PNK',
+	],
+	'wmsExport' => [
+		'title'	=> 'Xuất kho',
+		'table' => 'wms_exports',
+		'code'  => 'PXK',
+	],
+	'customer' => [
+		'title'	=> 'Khách hàng',
+		'table' => 'customers',
 	],
 ];

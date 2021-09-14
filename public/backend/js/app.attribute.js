@@ -1,19 +1,6 @@
 if($('#all-attribute').exists()){
-
-
-
-
 	//$("#attr-pattern").html() chưa dom nên bọc nó vào 1 tag rồi call như dom
-function addOptionTemp(eMain,eFind,value){
-	container = $('<dev/>').html($(eMain).html());
-	container.find(eFind).append(value);
-	$(eMain).html(container.html());
-}
-function addValueTemp(eMain,eFind,value){
-	container = $('<dev/>').html($(eMain).html());
-	container.find(eFind).attr('value',value);
-	$(eMain).html(container.html());
-}
+
 function checkSelectedSelect2(){
 	$(".group_attribute.select2 option").each(function(i){
 		$(this).prop('disabled',false);
