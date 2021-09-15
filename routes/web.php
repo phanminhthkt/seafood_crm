@@ -184,6 +184,7 @@ Route::group(['as' => 'admin.','namespace' => 'App\Http\Controllers\Backend', 'p
 		Route::get('/wms-import/add',['uses' => 'WmsImportController@create','as' => 'wms.import.add'])->middleware('can:create-status');
 		Route::post('/wms-import/store',['uses' => 'WmsImportController@store','as' => 'wms.import.store']);
 		Route::get('/wms-import/edit/{id}',['uses' => 'WmsImportController@edit','as' => 'wms.import.edit'])->middleware('can:update-status');
+		Route::get('/wms-import/print/{id}',['uses' => 'WmsImportController@print','as' => 'wms.import.print'])->middleware('can:print-status');
 		Route::put('/wms-import/update/{id}', ['uses' => 'WmsImportController@update','as' => 'wms.import.update']);
 		Route::delete('/wms-import/delete/{id}',['uses' => 'WmsImportController@delete','as' => 'wms.import.delete'])->middleware('can:delete-status');
 		Route::delete('/wms-import/delete-multiple/{id}',['uses' => 'WmsImportController@deleteMultiple'])->middleware('can:delete-status');

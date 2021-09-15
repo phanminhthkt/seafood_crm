@@ -16,6 +16,7 @@ class CreateWmsImportDetails extends Migration
         Schema::create('wms_import_details', function (Blueprint $table) {
             $table->id();
             $table->foreignId('import_id')->constrained("wms_imports")->onDelete('cascade');
+            $table->integer('product_id')->default(0);
             $table->string('product_code', 255)->nullable();
             $table->string('product_name', 255)->nullable();
             $table->double('product_price')->default(0);

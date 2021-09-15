@@ -10,6 +10,7 @@ class WmsImportDetail extends Model
     protected $table = 'wms_import_details';
     protected $fillable = [
         'import_id',
+        'product_id',
         'product_code',
         'product_name',
         'product_price',

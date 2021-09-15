@@ -22,8 +22,12 @@ class WmsImportRepository extends BaseRepository implements WmsImportRepositoryI
                                   <input type="checkbox" class="custom-control-input select-checkbox" value="'.$value->id.'" id="autoSizingCheck-'.$value->id.'">
                                   <label class="custom-control-label" for="autoSizingCheck-'.$value->id.'"></label>
                                 </div>';})
+        ->addColumn('code', function ($value) use ($data) {
+                return '<a href="'.$data['pageIndex'].'/edit/'.$value->id.'" class="text-success">'.$value->code.'</a>';})
         ->addColumn('total_price', function ($value) use ($data) {
                 return number_format($value->total_price, 0,'',',');})
+        ->addColumn('status', function ($value) use ($data) {
+                return '<span class="'.classStyleStatus($value->status_id,'button').'">'.$value->status->name.'</span>';})
         ->addColumn('created_at', function ($value) use ($data) {
                 return formatDate($value->created_at,'d/m/Y');})
         ->addColumn('action', function ($value) use ($data) {
@@ -43,6 +47,6 @@ class WmsImportRepository extends BaseRepository implements WmsImportRepositoryI
                             >
                             <i class="mdi mdi-close"></i>
                         </a>';})
-        ->rawColumns(['action','checkbox'])->make(true);
+        ->rawColumns(['action','status','code','checkbox'])->make(true);
     }
 }

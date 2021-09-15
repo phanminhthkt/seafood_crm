@@ -24,6 +24,6 @@ class WmsImport extends Model
         return $this->belongsTo(Wms::class,'store_id');
     }
     public function details(){
-        return $this->hasMany(WmsImportDetail::class,'import_id');
+        return $this->hasMany(WmsImportDetail::class,'import_id','id');
     }
 }

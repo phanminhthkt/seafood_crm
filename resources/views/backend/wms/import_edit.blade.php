@@ -96,9 +96,16 @@
         
       </div>
     </div>
+    @if($item->status_id == 2)
     <button type="submit" name="save_draft" value="2" class="hidden-xs btn btn-warning waves-effect waves-light">Lưu nháp</button>
+    @endif
     <button type="submit" name="save_success" value="3" class="hidden-xs btn btn-success waves-effect waves-light">Nhập kho</button>
     <button type="submit" name="save_cancel" value="1" class="hidden-xs btn btn-danger waves-effect waves-light">Huỷ phiếu</button>
+    @if($item->status_id !== 2)
+    <button type="button"
+    onclick="loadOtherPage('{{route('admin.wms.import.print', ['id' => $item->id])}}')" class="hidden-xs btn btn-purple waves-effect waves-light"><i class="mdi mdi-cloud-print-outline mr-1"></i>Xuất phiếu</button>
+
+    @endif
   </div>
   <div class="col-lg-4">
     <div class="card">
@@ -119,6 +126,7 @@
               </select>
               <div class="invalid-feedback">Vui lòng chọn kho</div>
           </div>
+          @if($item->status_id == 2)
           <div class="form-group">
             <label id="created_at">Ngày tạo đơn</label>
             <div class="input-group">
@@ -137,9 +145,15 @@
             </div>
             <div class="invalid-feedback">Vui lòng chọn ngày tạo đơn</div>
           </div>
+          @else
+          <div class="form-group row">
+              <label class="col-sm-5">Ngày tạo đơn:</label>
+              <div class="col-sm-7 text-purple text-right">{{formatDate($item->created_at,'d/m/Y H:i')}}</div>
+          </div>
+          @endif
           <div class="form-group row">
             <label class="col-sm-4">Trạng thái:</label>
-            <div class="col-sm-8 text-warning text-right">Phiếu tạm</div>
+            <div class="col-sm-8 text-right"><span class="{{classStyleStatus($item->status_id,'text')}}">{{$item->status->name}}</span></div>
           </div>
           <div class="form-group row">
             <label class="col-sm-4">Tổng tiền:</label>
@@ -154,9 +168,15 @@
           
       </div>
     </div>
+    @if($item->status_id == 2)
     <button type="submit" name="save_draft" value="2" class="hidden-sm btn btn-warning waves-effect waves-light">Lưu nháp</button>
+    @endif
     <button type="submit" name="save_success" value="3" class="hidden-sm btn btn-success waves-effect waves-light">Nhập kho</button>
     <button type="submit" name="save_cancel" value="1" class="hidden-sm btn btn-danger waves-effect waves-light">Huỷ phiếu</button>
+    @if($item->status_id !== 2)
+    <button type="button"
+    onclick="loadOtherPage('{{route('admin.wms.import.print', ['id' => $item->id])}}')" class="hidden-sm btn btn-purple waves-effect waves-light"><i class="mdi mdi-cloud-print-outline mr-1"></i>Xuất phiếu</button>
+    @endif
   </div>
 </div>
 </form>

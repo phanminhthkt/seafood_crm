@@ -6,7 +6,7 @@ if($('.row-wms').exists()){
 	function calulateTotal(){
     	var total = 0;
     	$(".first-same-item tr").each(function(){
-    		total+=(parseInt($(this).find('input[name="data_child[quantity][]"]').val()) * parseInt($(this).find('input[name="data_child[import_price][]"]').val().replaceAll(',','')));
+    		total+=(parseFloat($(this).find('input[name="data_child[quantity][]"]').val()) * parseInt($(this).find('input[name="data_child[import_price][]"]').val().replaceAll(',','')));
     	});
     	return number_format(total, 0,'',',');
     }

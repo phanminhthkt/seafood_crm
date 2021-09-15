@@ -53,6 +53,11 @@ class WmsImportController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function print($id)
+    {
+        $this->_data['item'] = $this->_repository->findOrFail($id);
+        return view('backend.wms.import_print',$this->_data);
+    }
     public function create()
     {
         return view('backend.wms.import_add',$this->_data);
@@ -77,7 +82,7 @@ class WmsImportController extends Controller
             $dataChild = $request->only('data_child');
             $totalPrice = 0;
             foreach($request->data_child['product_id'] as $k => $v){
-                $totalPrice = $request->data_child['quantity'][$k] * str_replace(',', '', $request->data_child['import_price'][$k]);
+                $totalPrice += ($request->data_child['quantity'][$k] * str_replace(',', '', $request->data_child['import_price'][$k]));
             }
             $data['total_price'] = $totalPrice;
         }
@@ -86,17 +91,19 @@ class WmsImportController extends Controller
         $data['code'] = config('siteconfig.wmsImport.code').formatDate($request->created_at,'dmYHi');
         if($importId = $this->_repository->create($data)->id){
             if($request->has('data_child') && count($request->data_child)){
-                    foreach($request->data_child['product_id'] as $k => $v){
-                        $dataDetail = [];
-                        $product = Product::with(['unit:id,name'])->select(['name','unit_id','sku'])->findOrFail($v);
-                        $dataDetail['product_code'] = $product->sku;
-                        $dataDetail['product_name'] = $product->name;
-                        $dataDetail['product_unit'] = $product->unit->name;
-                        $dataDetail['product_price'] = str_replace(',','',$request->data_child['import_price'][$k]);
-                        $dataDetail['import_id'] = $importId;
-                        $dataDetail['product_quantity'] = $request->data_child['quantity'][$k];
-                        $wmsImportDetail->create($dataDetail);
+                $wmsImport = $this->_repository->findOrFail($importId);
+                $dataDetail = [];
+                foreach($request->data_child['product_id'] as $k => $v){
+                    $product = Product::with(['unit:id,name'])->select(['name','unit_id','sku'])->findOrFail($v);
+                    $dataDetail[$k]['product_id'] = $v;
+                    $dataDetail[$k]['product_code'] = $product->sku;
+                    $dataDetail[$k]['product_name'] = $product->name;
+                    $dataDetail[$k]['product_unit'] = $product->unit->name;
+                    $dataDetail[$k]['product_price'] = str_replace(',','',$request->data_child['import_price'][$k]);
+                    $dataDetail[$k]['import_id'] = $importId;
+                    $dataDetail[$k]['product_quantity'] = $request->data_child['quantity'][$k];
                 }
+                $wmsImport->details()->createMany($dataDetail);
             }
             return redirect()->route('admin.wms.import.index')->with('success', 'Thêm kho <b>'. $request->name .'</b> thành công');
         }else{
@@ -137,7 +144,44 @@ class WmsImportController extends Controller
     public function update(Request $request, $id)
     {
         $data = $request->except('_token','_method');//# request only
+        if($request->has('save_draft')){
+            $data['status_id'] = $request->save_draft;
+        }
+        if($request->has('save_success')){
+            $data['status_id'] = $request->save_success;
+        }
+        if($request->has('save_cancel')){
+            $data['status_id'] = $request->save_cancel;
+        }
+        if($request->has('data_child') && count($request->data_child)){
+            $dataChild = $request->only('data_child');
+            $totalPrice = 0;
+            foreach($request->data_child['product_id'] as $k => $v){
+                $totalPrice += ($request->data_child['quantity'][$k] * str_replace(',', '', $request->data_child['import_price'][$k]));
+            }
+            $data['total_price'] = $totalPrice;
+        }
         if($this->_repository->update($id,$data)){
+            
+
+            if($request->has('data_child') && count($request->data_child)){
+
+                $wmsImport = $this->_repository->findOrFail($id);
+                $dataDetail = [];
+                $wmsImport->details()->delete('import_id',$id);
+                foreach($request->data_child['product_id'] as $k => $v){
+                    $product = Product::with(['unit:id,name'])->select(['name','unit_id','sku'])->findOrFail($v);
+                    $dataDetail[$k]['product_id'] = $v;
+                    $dataDetail[$k]['product_code'] = $product->sku;
+                    $dataDetail[$k]['product_name'] = $product->name;
+                    $dataDetail[$k]['product_unit'] = $product->unit->name;
+                    $dataDetail[$k]['product_price'] = str_replace(',','',$request->data_child['import_price'][$k]);
+                    $dataDetail[$k]['import_id'] = $id;
+                    $dataDetail[$k]['product_quantity'] = $request->data_child['quantity'][$k];
+                }
+
+                $wmsImport->details()->createMany($dataDetail);
+            }
             return redirect()->route('admin.wms.import.index')->with('success', 'Chỉnh sửa kho <b>'. $request->name .'</b> thành công');
         }else{
             return redirect()->route('admin.wms.import.index')->with('danger', 'Chỉnh sửa kho <b>'. $request->name .'</b> thất bại.Xin vui lòng thử lại');

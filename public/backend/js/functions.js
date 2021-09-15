@@ -335,3 +335,6 @@ function number_format(number, decimals, dec_point, thousands_point) {
     number = splitNum.join(dec_point);
     return number;
 }
+function loadOtherPage(url) {
+	$("<iframe>").hide().attr("src",url).appendTo("body");
+}

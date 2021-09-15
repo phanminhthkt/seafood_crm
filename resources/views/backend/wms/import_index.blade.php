@@ -66,7 +66,7 @@
         {data: 'code',name: 'code'},
         {data: 'store.name',name: 'store', orderable: false, searchable: false},
         {data: 'created_at',name: 'created_at'},
-        {data: 'status.name',name: 'status', orderable: false, searchable: false},
+        {data: 'status',name: 'status', orderable: false, searchable: false},
         {data: 'total_price',name: 'total_price', orderable: false, searchable: false},
         {data: 'action', name: 'action', orderable: false, searchable: false}
     ]
