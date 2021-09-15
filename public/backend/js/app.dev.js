@@ -144,8 +144,24 @@ $(document).ready(function(){
 		enableTime:true,
 		dateFormat: 'd-m-Y H:i',
 	})
-
-	
+	$(".flatpickr-input.flatpickr-input-range").flatpickr({
+		mode: "range",
+		enableTime:false,
+		dateFormat: 'd-m-Y',
+	})
+	$('#khoanggia').ionRangeSlider({
+        skin: "flat",
+        min     : 0,
+        max     : 10000000,
+        from    : 0,
+        to      : 10000000,
+        type    : 'double',
+        step    : 1,
+        // prefix  : 'đ ',
+        postfix : ' đ',
+        prettify: true,
+        hasGrid : true
+    })
 	
 	$(".dropdown-custom .dropdown-toggle-custom").click(function(){
 		if($('.dropdown-custom .dropdown-menu-custom').is(":hidden")){
@@ -193,8 +209,14 @@ if($('#datatable-buttons').exists()){
 	        ajax: Datatable.ajax,
 	        columns: Datatable.columns,
 	    });
-
-	    $('#search-form').on('submit', function(e) {
+		$('.btn-destroy__filter').click(function(){
+			$(".select2").val('').trigger('change');
+			$('.search-form').each(function(){
+				$(this)[0].reset();
+			})
+			oTable.draw();
+		})
+	    $('.search-form').on('submit', function(e) {
 	        oTable.draw();
 	        e.preventDefault();
 	    });
