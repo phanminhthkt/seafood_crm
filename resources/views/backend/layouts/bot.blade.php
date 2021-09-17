@@ -5,9 +5,8 @@
 <!-- <script  src="{{asset('backend')}}\libs\dropzone\dropzone.min.js"></script> -->
 <!-- Init js-->
 <!-- <script  src="{{asset('backend')}}\js\pages\form-fileuploads.init.js"></script> -->
-<script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
-<script  src="{{asset('backend')}}\libs\datatables\jquery.dataTables.min.js"></script>
-<script  src="{{asset('backend')}}\libs\datatables\dataTables.bootstrap4.js"></script>
+<script  src="{{asset('backend')}}\libs\handlebars/handlebars.js"></script>
+
 <script  src="{{asset('backend')}}\libs\multiselect\jquery.multi-select.js"></script>
 <script  src="{{asset('backend')}}\libs\select2\select2.min.js"></script>
 <script  src="{{asset('backend')}}\libs\bootstrap-select\bootstrap-select.min.js"></script>
@@ -25,7 +24,11 @@
 <script  src="{{asset('backend')}}\libs\sweetalert2\sweetalert2.js"></script>
 <script  src="{{asset('backend')}}\libs\flatpickr/flatpickr.min.js"></script>
 <script  src="{{asset('backend')}}\libs\jquery-mask-plugin\jquery.mask.min.js"></script>
+
+<script  src="{{asset('backend')}}\libs/ion-rangeslider/ion.rangeSlider.min.js"></script>
 <!-- App js -->
+<script  src="{{asset('backend')}}\libs\datatables\jquery.dataTables.min.js"></script>
+<script  src="{{asset('backend')}}\libs\datatables\dataTables.bootstrap4.js"></script>
 <script  src="{{asset('backend')}}\js\functions.js"></script>
 <script  src="{{asset('backend')}}\js\app.dev.js"></script>
 <script  src="{{asset('backend')}}\js\app.attribute.js"></script>

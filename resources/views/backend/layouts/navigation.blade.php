@@ -37,7 +37,7 @@
                             <a href="{{Route('admin.wms.index')}}">- Chi nhánh</a>
                         </li>
                         <li>
-                            <a href="extras-profile.html">- Xuất kho</a>
+                            <a href="{{Route('admin.wms.export.index')}}">- Xuất kho</a>
                         </li>
                         <li>
                             <a href="{{Route('admin.wms.import.index')}}"> - Nhập kho</a>
@@ -48,13 +48,17 @@
                     </ul>
                 </li>
                 
-                <li>
+                <li class="{{ request()->routeIs('admin.category.*') || request()->routeIs('admin.product.*') || request()->routeIs('admin.group_attribute.*') ||
+                request()->routeIs('admin.unit.*') || request()->routeIs('admin.attribute.*') ? 'mm-active' : '' }}">
                     <a href="javascript: void(0);" class="waves-effect">
                         <i class="remixicon-stack-line"></i>
                         <span>Hàng hoá</span>
                         <span class="menu-arrow"></span>
                     </a>
-                    <ul class="nav-second-level mm-collapse" aria-expanded="false">
+                    <ul class="nav-second-level mm-collapse {{ request()->routeIs('admin.category.*') || request()->routeIs('admin.product.*') || request()->routeIs('admin.group_attribute.*') ||
+                request()->routeIs('admin.unit.*') || request()->routeIs('admin.attribute.*') ? 'mm-show' : '' }}" 
+
+                    aria-expanded="false">
                         <li>
                             <a href="{{Route('admin.category.index')}}">- Danh mục</a>
                         </li>

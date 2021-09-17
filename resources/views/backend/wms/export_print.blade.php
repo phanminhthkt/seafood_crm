@@ -6,7 +6,7 @@
    window.print();
 </script>
 <div class="printBox">
-    <div style="text-align:center; padding:10px 0 0;"><strong style="font-size:16px">HÓA ĐƠN NHẬP HÀNG</strong></div>
+    <div style="text-align:center; padding:10px 0 0;"><strong style="font-size:16px">HÓA ĐƠN XUẤT HÀNG</strong></div>
     <table width="100%">
         <tbody>
             <tr>

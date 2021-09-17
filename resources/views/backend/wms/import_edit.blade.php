@@ -101,7 +101,7 @@
     @endif
     <button type="submit" name="save_success" value="3" class="hidden-xs btn btn-success waves-effect waves-light">Nhập kho</button>
     <button type="submit" name="save_cancel" value="1" class="hidden-xs btn btn-danger waves-effect waves-light">Huỷ phiếu</button>
-    @if($item->status_id !== 2)
+    @if($item->status_id !== 2 && $item->status_id !== 1)
     <button type="button"
     onclick="loadOtherPage('{{route('admin.wms.import.print', ['id' => $item->id])}}')" class="hidden-xs btn btn-purple waves-effect waves-light"><i class="mdi mdi-cloud-print-outline mr-1"></i>Xuất phiếu</button>
 
@@ -128,14 +128,14 @@
           </div>
           @if($item->status_id == 2)
           <div class="form-group">
-            <label id="created_at">Ngày tạo đơn</label>
+            <label id="import_created_at">Ngày tạo đơn</label>
             <div class="input-group">
               <input 
                 type="text" 
-                name="created_at" 
+                name="import_created_at" 
                 class="form-control input-dev-default flatpickr-input" 
-                id="created_at" 
-                value="{{formatDate($item->created_at,'d-m-Y H:i')}}" 
+                id="import_created_at" 
+                value="{{formatDate($item->import_created_at,'d-m-Y H:i')}}" 
                 readonly="readonly"
                 placeholder="Ngày tạo đơn"
                 >
@@ -165,7 +165,13 @@
               <textarea name="note" class="form-control"  id="note"  rows="3">{{$item->note}}</textarea>
             </div>
           </div>
-          
+          @if($item->status_id !== 2)
+          <label>Ghi chú huỷ</label>
+            <div class="input-group input-group--custom">
+              <textarea name="note_cancel" class="form-control"  id="note_cancel"  rows="3">{{$item->note_cancel}}</textarea>
+            </div>
+          </div>
+          @endif
       </div>
     </div>
     @if($item->status_id == 2)
@@ -173,7 +179,7 @@
     @endif
     <button type="submit" name="save_success" value="3" class="hidden-sm btn btn-success waves-effect waves-light">Nhập kho</button>
     <button type="submit" name="save_cancel" value="1" class="hidden-sm btn btn-danger waves-effect waves-light">Huỷ phiếu</button>
-    @if($item->status_id !== 2)
+    @if($item->status_id !== 2 && $item->status_id !== 1)
     <button type="button"
     onclick="loadOtherPage('{{route('admin.wms.import.print', ['id' => $item->id])}}')" class="hidden-sm btn btn-purple waves-effect waves-light"><i class="mdi mdi-cloud-print-outline mr-1"></i>Xuất phiếu</button>
     @endif
@@ -229,6 +235,7 @@
       </div>
   </div>
 </div>
+<div class="method" data-method='import'></div>
 <script id="product-pattern" type="text/template">
   <tr>
     <td scope="row">

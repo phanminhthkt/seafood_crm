@@ -87,7 +87,7 @@
 <script id="details-template" type="text/x-handlebars-template">
   <div class="text-left"><button type="button" 
   class="btn btn-outline-primary waves-effect waves-light direct-form"
-  data-url="admin/product/child/add/@{{id}}"
+  data-url="product/child/add/@{{id}}"
   >
     <i class="mdi mdi-plus-circle mr-1"></i>Thêm hàng cùng loại</button>
   </div>

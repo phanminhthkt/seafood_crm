@@ -31,7 +31,7 @@
   <div class="col-lg-8">
     <div class="card">
       <div class="card-header py-2">
-          <h5 class="card-title mb-0">THÔNG TIN HOÁ ĐƠN</h5>
+          <h5 class="card-title mb-0">THÔNG TIN ĐƠN</h5>
       </div>
       <div class="card-body">
         <a href="javascript: void(0);" data-toggle="modal" data-target="#productModal" class="btn btn-modal--product btn-info waves-effect waves-light">
@@ -77,13 +77,13 @@
               <div class="invalid-feedback">Vui lòng chọn kho</div>
           </div>
           <div class="form-group">
-            <label id="created_at">Ngày tạo đơn</label>
+            <label id="import_created_at">Ngày tạo đơn</label>
             <div class="input-group">
               <input 
                 type="text" 
-                name="created_at" 
+                name="import_created_at" 
                 class="form-control input-dev-default flatpickr-input" 
-                id="created_at" 
+                id="import_created_at" 
                 value="{{formatDate(Carbon\Carbon::now(),'d-m-Y H:i')}}" 
                 readonly="readonly"
                 placeholder="Ngày tạo đơn"
@@ -165,6 +165,7 @@
       </div>
   </div>
 </div>
+<div class="method" data-method='import'></div>
 <script id="product-pattern" type="text/template">
   <tr>
     <td scope="row">
