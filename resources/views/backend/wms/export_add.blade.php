@@ -88,7 +88,7 @@
       </div>
     </div>
     <button type="submit" name="save_draft" value="2" class="hidden-xs btn btn-warning waves-effect waves-light">Lưu nháp</button>
-    <button type="submit" name="save_success" value="3" class="hidden-xs btn btn-success waves-effect waves-light">Xuất kho</button>
+    <button type="submit" name="save_success" value="3" class="hidden-xs btn btn-success waves-effect waves-light">Hoàn thành</button>
   </div>
   <div class="col-lg-4">
     <div class="card">
@@ -135,7 +135,7 @@
             <select name="customer[id]" id="customer">
              
             </select>
-            <small class="text-primary mt-1 d-block">Bỏ qua ô chọn nếu là khách hàng mới</small>
+            <small class="text-primary mt-1 d-block">Bỏ trống ô chọn nếu muốn tạo khách hàng mới</small>
         </div>
         <div class="form-group">
           <label>Họ tên: </label>
@@ -167,7 +167,7 @@
       </div>
     </div>
     <button type="submit" name="save_draft" value="2" class="hidden-sm btn btn-warning waves-effect waves-light">Lưu nháp</button>
-    <button type="submit" name="save_success" value="3" class="hidden-sm btn btn-success waves-effect waves-light">Xuất kho</button>
+    <button type="submit" name="save_success" value="3" class="hidden-sm btn btn-success waves-effect waves-light">Hoàn thành</button>
   </div>
 </div>
 </form>

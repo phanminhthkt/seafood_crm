@@ -23,7 +23,7 @@
                 <td style="text-align:center; font-size:13px;">Số HĐ: {{$item->code}}</td>
             </tr>
             <tr>
-                <td style="text-align:center; font-size:13px;">Ngày: {{formatDate($item->created_at,'d/m/Y H:i')}}</td>
+                <td style="text-align:center; font-size:13px;">Ngày: {{formatDate($item->import_created_at,'d/m/Y H:i')}}</td>
             </tr>
         </tbody>
     </table>

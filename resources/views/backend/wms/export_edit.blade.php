@@ -72,7 +72,7 @@
                       </td>
                       <td>
                         <div class="input-group input-group--custom">
-                          <input type="text" data-toggle="input-mask" data-mask-format="000,000,000,000" data-reverse="true" class="form-control price--format" value='{{$v->product_price}}' name="data_child[import_price][]" placeholder="Giá nhập" >
+                          <input type="text" data-toggle="input-mask" data-mask-format="000,000,000,000" data-reverse="true" class="form-control price--format" value='{{$v->product_price}}' name="data_child[export_price][]" placeholder="Giá nhập" >
                         </div>
                       </td>
                       <td>
@@ -102,6 +102,7 @@
               </div>
             </div>
             @if($item->status_id !== 2)
+            <div class="form-group">
             <label>Ghi chú huỷ</label>
               <div class="input-group input-group--custom">
                 <textarea name="note_cancel" class="form-control"  id="note_cancel"  rows="4">{{$item->note_cancel}}</textarea>
@@ -137,18 +138,17 @@
     @if($item->status_id == 2)
     <button type="submit" name="save_draft" value="2" class="hidden-xs btn btn-warning waves-effect waves-light">Lưu nháp</button>
     @endif
-    <button type="submit" name="save_success" value="3" class="hidden-xs btn btn-success waves-effect waves-light">Nhập kho</button>
+    <button type="submit" name="save_success" value="3" class="hidden-xs btn btn-success waves-effect waves-light">Hoàn thành</button>
     <button type="submit" name="save_cancel" value="1" class="hidden-xs btn btn-danger waves-effect waves-light">Huỷ phiếu</button>
     @if($item->status_id !== 2 && $item->status_id !== 1)
     <button type="button"
-    onclick="loadOtherPage('{{route('admin.wms.import.print', ['id' => $item->id])}}')" class="hidden-xs btn btn-purple waves-effect waves-light"><i class="mdi mdi-cloud-print-outline mr-1"></i>Xuất phiếu</button>
-
+    onclick="loadOtherPage('{{route('admin.wms.export.print', ['id' => $item->id])}}')" class="hidden-xs btn btn-purple waves-effect waves-light"><i class="mdi mdi-cloud-print-outline mr-1"></i>Xuất phiếu</button>
     @endif
   </div>
   <div class="col-lg-4">
     <div class="card">
       <div class="card-header py-2">
-          <h5 class="card-title mb-0">THÔNG TIN NHẬP HÀNG</h5>
+          <h5 class="card-title mb-0">THÔNG TIN XUẤT HÀNG</h5>
       </div>
       <div class="card-body">
           <div class="form-group">
@@ -189,14 +189,54 @@
               <div class="col-sm-7 text-purple text-right">{{formatDate($item->created_at,'d/m/Y H:i')}}</div>
           </div>
           @endif
-         
-          
+          <div class="row">
+            <label class="col-sm-4">Trạng thái:</label>
+            <div class="col-sm-8 text-right"><span class="{{classStyleStatus($item->status_id,'text')}}">{{$item->status->name}}</span></div>
+          </div>
+      </div>    
+      <div class="card-body border-top">
+        <div class="form-group">
+            <label>Chọn khách hàng trong hệ thống</label>
+            <select name="customer[id]" id="customer">
+             
+            </select>
+            <small class="text-primary mt-1 d-block">Bỏ trống ô chọn nếu muốn tạo khách hàng mới</small>
+        </div>
+        <div class="form-group">
+          <label>Họ tên: </label>
+          <div>
+            <div class="input-group">
+              <input type="text" class="input-dev-default form-control" id="name" name="customer[name]" placeholder="Họ tên" value="{{old('name')}}" required="">
+              <div class="invalid-feedback">Vui lòng nhập họ tên</div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Số điện thoại: </label>
+          <div>
+            <div class="input-group">
+              <input type="text" class="input-dev-default form-control" id="phone" name="customer[phone]" placeholder="Số điện thoại" value="{{old('phone')}}" required="">
+              <div class="invalid-feedback">Vui lòng nhập số điện thoại</div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Địa chỉ: </label>
+          <div>
+            <div class="input-group">
+              <input type="text" class="input-dev-default form-control" id="address" name="customer[address]" placeholder="Địa chỉ" value="{{old('address')}}" required="">
+              <div class="invalid-feedback">Vui lòng nhập địa chỉ</div>
+            </div>
+          </div>
+        </div>
       </div>
+          
+      
     </div>
     @if($item->status_id == 2)
     <button type="submit" name="save_draft" value="2" class="hidden-sm btn btn-warning waves-effect waves-light">Lưu nháp</button>
     @endif
-    <button type="submit" name="save_success" value="3" class="hidden-sm btn btn-success waves-effect waves-light">Nhập kho</button>
+    <button type="submit" name="save_success" value="3" class="hidden-sm btn btn-success waves-effect waves-light">Hoàn thành</button>
     <button type="submit" name="save_cancel" value="1" class="hidden-sm btn btn-danger waves-effect waves-light">Huỷ phiếu</button>
     @if($item->status_id !== 2 && $item->status_id !== 1)
     <button type="button"
@@ -255,6 +295,7 @@
   </div>
 </div>
 <div class="method" data-method='export'></div>
+<div id="data-customer" data-value='{{$item->customer}}'></div>
 <script id="product-pattern" type="text/template">
   <tr>
     <td scope="row">

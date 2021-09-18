@@ -99,7 +99,7 @@
     @if($item->status_id == 2)
     <button type="submit" name="save_draft" value="2" class="hidden-xs btn btn-warning waves-effect waves-light">Lưu nháp</button>
     @endif
-    <button type="submit" name="save_success" value="3" class="hidden-xs btn btn-success waves-effect waves-light">Nhập kho</button>
+    <button type="submit" name="save_success" value="3" class="hidden-xs btn btn-success waves-effect waves-light">Hoàn thành</button>
     <button type="submit" name="save_cancel" value="1" class="hidden-xs btn btn-danger waves-effect waves-light">Huỷ phiếu</button>
     @if($item->status_id !== 2 && $item->status_id !== 1)
     <button type="button"
@@ -177,7 +177,7 @@
     @if($item->status_id == 2)
     <button type="submit" name="save_draft" value="2" class="hidden-sm btn btn-warning waves-effect waves-light">Lưu nháp</button>
     @endif
-    <button type="submit" name="save_success" value="3" class="hidden-sm btn btn-success waves-effect waves-light">Nhập kho</button>
+    <button type="submit" name="save_success" value="3" class="hidden-sm btn btn-success waves-effect waves-light">Hoàn thành</button>
     <button type="submit" name="save_cancel" value="1" class="hidden-sm btn btn-danger waves-effect waves-light">Huỷ phiếu</button>
     @if($item->status_id !== 2 && $item->status_id !== 1)
     <button type="button"
