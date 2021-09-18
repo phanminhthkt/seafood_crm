@@ -42,6 +42,7 @@ a{color:#29689e;}
 .mtb-2{margin:2rem 0;}
 .pd-0{padding: 0 !important}
 b.bold{font-weight: bold;}
+.border-top{border-top:1px solid #ccc;}
 .card-body .nav-tabs{margin-top:-15px;}
 .nav-bordered a.active{border-bottom: 2px solid #3bafda!important;}
 
@@ -93,6 +94,8 @@ input.btn-operator.form-control::-webkit-inner-spin-button {
 input.btn-operator.form-control[type=number] {
   -moz-appearance: textfield;
 }
+.select2-container--default .select2-selection--single .select2-selection__clear {cursor: pointer;float: left;font-weight: bold;background: #3bafda;width: 15px;height: 16px;display: flex;align-items: center;justify-content: center;color: #fff;border-radius: 2px;margin-top: 10px;margin-right: 5px;}
+.select2-results__option--highlighted *{color:#fff !important;}
 /*Custom */
 .dropzone{cursor: pointer;}
 .fs-15{font-size: 12px;}
@@ -133,7 +136,7 @@ input.btn-operator.form-control[type=number] {
 
 /*loading*/
 .container-fluid{transition: 1s;opacity:0;}
-#pre-loader{position: absolute;height: 90vh;left: 0;right:0;}
+#pre-loader{position: fixed;height: 90vh;left: 0;right:0;z-index: 99;}
 .app-loader {width: 90px;height: 90px;margin: auto;position: absolute;/*bottom: 45px;*//*right: 5px;*/padding: 10px;border-radius: 50%;background: transparent;z-index: 99;}
 .app-loader .loading {width: 70px;height: 70px;border-radius: 50%;-webkit-box-sizing: border-box;box-sizing: border-box;border: solid 2px #6690F4;border-top-color: #fff;animation: spin 1s infinite linear;-webkit-animation: spin 1s infinite linear;display: inline-block; }
 .table-loader .loading {width: 50px;height: 50px;border-radius: 50%;-webkit-box-sizing: border-box;box-sizing: border-box;border: solid 2px #6690F4;border-top-color: #fff;animation: spin 1s infinite linear;-webkit-animation: spin 1s infinite linear;display: inline-block; }
@@ -208,6 +211,8 @@ table.dataTable td, table.dataTable th{text-align: center;}
 div.dataTables_wrapper div.dataTables_info{text-align: left;}
 table.dataTable th:last-child{min-width: 75px !important;}
 th.mw-100{min-width: 100px !important;}
+
 /*End datatable*/
+
 
 

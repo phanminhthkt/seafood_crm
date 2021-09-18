@@ -293,3 +293,84 @@ $(document).on("click",'.dev-touchspin-btn',function(){
 	}
 	$button.parent().find("input").val(value);
 })
+if($("#customer").exists()){
+function formatRepo(repo) {
+	
+    if (repo.loading) return 'Đang tìm kiếm thông tin...';
+ 	if(repo.name!=undefined){
+    	var markup = '<div class="media">' + '<div class="user-avatar mr-2 d-none"></div>' + '<div class="media-body">' + '<h6 class="my-0">' + repo.name + '</h6>';
+    	markup += '<div class="small text-muted"><i class=" mdi mdi-map-marker-outline"></i>' + repo.address + '</div>';
+    	markup += '<ul class="list-inline small text-muted">' + '<li class="list-inline-item"><i class="mdi mdi-phone"></i> ' + repo.phone + ' </li></ul>' + '</div></div>';
+    	return markup;
+	}else{return 'Chưa tồn tại khách hàng';}
+};
+function formatRepoSelection(repo) {
+	if(repo.name==undefined){return 'Chọn khách hàng';}
+	if( repo.id == "" || !parseInt(repo.id)){
+		return 'Khách hàng chưa có trong hệ thống';
+	}else{
+		return '<div class="user-avatar user-avatar-xs mr-2  d-none"></div>' + repo.name +' - '+ repo.phone;
+	}
+  
+};	
+$(document).ready(function(){
+
+	var selected = [];
+    var initials = [];
+    if($('#data-customer').exists()){
+		var dataCus = JSON.parse($('#data-customer').attr("data-value"));
+		initials.push({id: dataCus.id, name: dataCus.name, phone: dataCus.phone, address: dataCus.address});
+    	selected.push(dataCus.id);
+    	$("input[name='customer[name]']").val(dataCus.name);
+      	$("input[name='customer[address]']").val(dataCus.address);
+      	$("input[name='customer[phone]']").val(dataCus.phone);
+	}
+	$('#customer').select2({
+		data: initials,
+		ajax: {
+          url: URL.base_url + '/admin/customer/show',
+          type: 'GET',
+          dataType: 'json',
+          delay: 250,
+          data: function data(params) {
+            return {
+              term: params.term,
+              page: params.page
+            };
+          },
+          processResults: function processResults(data, params) {
+            params.page = params.page || 1;
+            return {
+		        results: data.items,
+		        pagination: {
+		          more: (params.page * 30) < data.total_count
+		        }
+	      	};
+          },
+
+        },
+        escapeMarkup: function escapeMarkup(markup) {
+          return markup;
+        },
+        minimumInputLength: 1,
+		allowClear: true,
+		placeholder: 'Chọn khách hàng',
+		templateResult: formatRepo,
+		templateSelection: formatRepoSelection    
+    });
+    $('#customer').val(selected).trigger('change');
+    $('#customer').on('change',function(){
+      var customer_id = $(this).val();
+      if(customer_id){
+      	var data = $(this).select2('data')[0];
+      	$("input[name='customer[name]']").val(data.name);
+      	$("input[name='customer[address]']").val(data.address);
+      	$("input[name='customer[phone]']").val(data.phone);
+      }else{
+      	$("input[name='customer[name]']").val('');
+      	$("input[name='customer[address]']").val('');
+      	$("input[name='customer[phone]']").val('');
+      }
+    });
+})
+}

@@ -253,6 +253,9 @@ function deleteAll(data)
     	type: 'DELETE',
     	// headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
     	data: { listId: data.listId },
+    	beforeSend: function() {
+	        $('#pre-loader').show();
+	    },
     	error:function(x,e) {
 		    backErrorAjax(x,e);
 		},
@@ -337,4 +340,6 @@ function number_format(number, decimals, dec_point, thousands_point) {
 }
 function loadOtherPage(url) {
 	$("<iframe>").hide().attr("src",url).appendTo("body");
+	$('#pre-loader').show();
+	setTimeout(function(){ $('#pre-loader').delay(250).fadeOut(function () {}); }, 2000);
 }
