@@ -40,7 +40,8 @@
                           </th>
                           <th width="7%" class="text-center">Thứ tự</th>
                           <th class="text-center" >{{$title}}</th>
-                          <th class="text-center" >Điện thoại</th>
+                          <th class="text-center" >Số điện thoại</th>
+                          <th class="text-center" >Tổng mua hàng</th>
                           <th width="10%" class="text-center">Trạng thái</th>
                           <th width="10%" >Hành động</th>
                        </tr>
@@ -65,6 +66,7 @@
         {data: 'priority',name: 'priority', orderable: false, searchable: false},
         {data: 'name',name: 'name'},
         {data: 'phone',name: 'phone', orderable: false, searchable: false},
+        {data: 'sum_order',name: 'sum_order', orderable: false, searchable: false},
         {data: 'status',name: 'status', orderable: false, searchable: false},
         {data: 'action', name: 'action', orderable: false, searchable: false}
     ]

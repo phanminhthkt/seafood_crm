@@ -4,12 +4,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class WmsImportDetail extends Model
+class WmsExportDetail extends Model
 {
     use HasFactory;
-    protected $table = 'wms_import_details';
+    protected $table = 'wms_export_details';
     protected $fillable = [
-        'import_id',
+        'export_id',
         'product_id',
         'product_code',
         'product_name',
@@ -17,4 +17,7 @@ class WmsImportDetail extends Model
         'product_quantity',
         'product_unit',
     ];
+    public function wmsExport(){
+        return $this->belongsTo(WmsExport::class,'export_id');
+    }
 }

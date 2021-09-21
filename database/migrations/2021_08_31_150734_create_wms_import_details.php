@@ -20,9 +20,8 @@ class CreateWmsImportDetails extends Migration
             $table->string('product_code', 255)->nullable();
             $table->string('product_name', 255)->nullable();
             $table->double('product_price')->default(0);
-            $table->integer('product_quantity')->default(0);
+            $table->double('product_quantity')->default(0);
             $table->string('product_unit', 55)->nullable();
-            $table->timestamps();
         });
     }
 

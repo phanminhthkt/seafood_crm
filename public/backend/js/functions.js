@@ -152,8 +152,36 @@ function sendMail(data)
 	});
 }
 /* Delete */
+function dataTableModalInPage(){
+	if($('#datatable-in').exists()){
+		$('#datatable-in').DataTable({
+			initComplete: function( settings, json ) {
+			    $(".container-fluid").css({'opacity':'1'});
+			    $('#pre-loader').delay(250).fadeOut(function () {});
+			},
+			autoWidth: false,
+			language: {
+		    	paginate: {
+		      		previous: '<i class="mdi mdi-chevron-left"></i>',
+		      		next: '<i class="mdi mdi-chevron-right"></i>'
+		    	},
+		    	sProcessing: '<span class="spinner-border spinner-border-sm mr-1"></span>Loading...',
+
+		  	},
+			pageLength: 7,
+			order: ['0', 'desc'],
+			searching: false,
+			lengthChange: false,
+	        processing: true,
+	        serverSide: true,
+	        ajax: Datatable.ajax,
+	        columns: Datatable.columns,
+	    });
+	}
+}
 function ajaxFormItem(){
 	if($('.dev-form').exists()){
+		dataTableModalInPage();
 		$(document).ready(function() {
 			$('.dev-form').on('submit', function(e){
 				e.preventDefault();
@@ -180,6 +208,7 @@ function ajaxFormItem(){
 				       	$('.dev-form').find("button[type='submit']").html('<i class="mdi mdi-check"></i>');
 				       	$('.dev-form').removeClass('was-validated');
 				       	$('#datatable-buttons').DataTable().ajax.reload();
+
 				       	setTimeout(function(){ 
 				       		var textBtn = 'Sửa';
 				       		if(!form.find('input[name="_method"]').val()){

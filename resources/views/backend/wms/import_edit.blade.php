@@ -196,7 +196,7 @@
           </div>
           <div class="modal-body p-2">
             <div class="table-responsive ">
-              <form role="form" id="search-form" class="d-flex " method="GET" action="<?=URL::to('/admin/product/data?type=noparent');?>" enctype="multipart/form-data" >
+              <form role="form" id="search-form" class="d-flex search-form" method="GET" action="<?=URL::to('/admin/product/data?type=noparent');?>" enctype="multipart/form-data" >
                 <div  class="form-inline form-search d-inline-block align-middle">
                     <div class="input-group input-group-sm">
                         <input class="form-control form-control-navbar text-sm" type="search" id="keyword" placeholder="Tìm kiếm" aria-label="Tìm kiếm" name='term' value="{{Request('term')}}" >

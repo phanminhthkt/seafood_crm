@@ -5,15 +5,15 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Wms;
-use App\Models\WmsImportDetail;
+use App\Models\WmsExportDetail;
 use App\Models\Status;
 use DataTables;
-use App\Repositories\Wms\WmsImportRepositoryInterface;
+use App\Repositories\Wms\WmsExportRepositoryInterface;
 use Illuminate\Support\Arr;
 use Auth;
 
 
-class WmsImportController extends Controller
+class WmsExportController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -24,13 +24,13 @@ class WmsImportController extends Controller
     private $_pathType;
     private $_repository;
 
-    public function __construct(WmsImportRepositoryInterface $wmsImportRepository,Request $request)
+    public function __construct(WmsExportRepositoryInterface $wmsExportRepository,Request $request)
     {
-        $this->_repository = $wmsImportRepository;
+        $this->_repository = $wmsExportRepository;
         $this->_pathType = '';
-        $this->_data['pageIndex'] = route('admin.wms.import.index');
-        $this->_data['title'] = config('siteconfig.wmsImport.title');
-        $this->_data['table'] = config('siteconfig.wmsImport.table');
+        $this->_data['pageIndex'] = route('admin.wms.export.index');
+        $this->_data['title'] = config('siteconfig.wmsExport.title');
+        $this->_data['table'] = config('siteconfig.wmsExport.table');
         $this->_data['wms'] = Wms::get(['id','name']);
         $this->_data['status'] = Status::where('group_id','=',1)->get(['id','name'])    ;
         //Load ajax if ajax-form,dev-form for add,edit.
@@ -42,7 +42,7 @@ class WmsImportController extends Controller
 
     public function index(Request $request)
     {
-        return view('backend.wms.import_index', $this->_data);
+        return view('backend.wms.export_index', $this->_data);
     }
     public function getData(Request $request)
     {   
@@ -55,12 +55,12 @@ class WmsImportController extends Controller
      */
     public function print($id)
     {
-        $this->_data['item'] = $this->_repository->getModel()::with(['store:id,name,phone,address'])->findOrFail($id);
-        return view('backend.wms.import_print',$this->_data);
+        $this->_data['item'] = $this->_repository->getModel()::with(['customer:id,name,phone,address','store:id,name,phone,address'])->findOrFail($id);
+        return view('backend.wms.export_print',$this->_data);
     }
     public function create()
     {
-        return view('backend.wms.import_add',$this->_data);
+        return view('backend.wms.export_add',$this->_data);
     }
 
     /**
@@ -72,9 +72,9 @@ class WmsImportController extends Controller
     public function store(Request $request)
     {   
         if($id = $this->_repository->createHasRelation($request)){
-            return redirect()->route('admin.wms.import.edit',['id'=>$id])->with('success', 'Thêm phiếu phiếu nhập kho <b>'. $request->code .'</b> thành công');
+            return redirect()->route('admin.wms.export.edit',['id'=>$id])->with('success', 'Thêm phiếu phiếu xuất kho <b>'. $request->code .'</b> thành công');
         }else{
-            return redirect()->route('admin.wms.import.index')->with('danger', 'Thêm phiếu nhập kho <b>'. $request->name .'</b> thất bại.Xin vui lòng thử lại');
+            return redirect()->route('admin.wms.export.index')->with('danger', 'Thêm phiếu xuất kho <b>'. $request->code .'</b> thất bại.Xin vui lòng thử lại');
         }
     }
 
@@ -97,8 +97,8 @@ class WmsImportController extends Controller
      */
     public function edit($id)
     {
-        $this->_data['item'] = $this->_repository->findOrFail($id);
-        return view('backend.wms.import_edit',$this->_data);
+        $this->_data['item'] = $this->_repository->getModel()::with(['customer:id,name,phone,address'])->findOrFail($id);
+        return view('backend.wms.export_edit',$this->_data);
     }
 
     /**
@@ -111,9 +111,9 @@ class WmsImportController extends Controller
     public function update(Request $request, $id)
     {
         if($this->_repository->updateHasRelation($request,$id)){
-            return redirect()->route('admin.wms.import.edit',['id'=>$id])->with('success', 'Cập nhật phiếu nhập kho <b>'. $request->name .'</b> thành công');
+            return redirect()->route('admin.wms.export.edit',['id'=>$id])->with('success', 'Cập nhật phiếu xuất kho <b>'. $request->code .'</b> thành công');
         }else{
-            return redirect()->route('admin.wms.import.edit',['id'=>$id])->with('danger', 'Cập nhật phiếu nhập kho <b>'. $request->name .'</b> thất bại.Xin vui lòng thử lại');
+            return redirect()->route('admin.wms.export.edit',['id'=>$id])->with('danger', 'Cập nhật phiếu xuất kho <b>'. $request->code .'</b> thất bại.Xin vui lòng thử lại');
         }
     }
 
@@ -126,17 +126,17 @@ class WmsImportController extends Controller
     public function delete($id)
     {
         if($this->_repository->delete($id)){
-            return ['success' => true, 'message' => 'Xóa phiếu nhập kho thành công !!'];
+            return ['success' => true, 'message' => 'Xóa phiếu xuất kho thành công !!'];
         }else{
-            return ['error' => true, 'message' => 'Xóa phiếu nhập kho thất bại.Xin vui lòng thử lại !!'];
+            return ['error' => true, 'message' => 'Xóa phiếu xuất kho thất bại.Xin vui lòng thử lại !!'];
         }
     }
     public function deleteMultiple($listId)
     {
         if($this->_repository->deleteMultiple($listId)){
-            return ['success' => true, 'message' => 'Xóa phiếu nhập kho thành công !!'];
+            return ['success' => true, 'message' => 'Xóa phiếu xuất kho thành công !!'];
         }else{
-            return ['error' => true, 'message' => 'Xóa phiếu nhập kho thất bại.Xin vui lòng thử lại !!'];
+            return ['error' => true, 'message' => 'Xóa phiếu xuất kho thất bại.Xin vui lòng thử lại !!'];
         }
     }
 }

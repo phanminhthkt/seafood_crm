@@ -2,6 +2,7 @@
 namespace App\Repositories\Customer;
 use App\Repositories\BaseRepository;
 use DataTables;
+use App\Models\WmsExport;
 class CustomerRepository extends BaseRepository implements CustomerRepositoryInterface
 {
     //lấy model tương ứng
@@ -10,7 +11,8 @@ class CustomerRepository extends BaseRepository implements CustomerRepositoryInt
         return \App\Models\Customer::class;
     }
     public function getDataByCondition($request,$data){
-        $value = $this->_model::select('name','phone','id','is_status','is_priority')->where('id','<>', 0);
+        $value = $this->_model::with(['orders'])->select('name','phone','id','is_status','is_priority')->where('id','<>', 0);
+
         return Datatables::of($value)
         ->filter(function ($query) use ($request) {
             if ($request->has('name')) {
@@ -29,6 +31,8 @@ class CustomerRepository extends BaseRepository implements CustomerRepositoryInt
                                 data-id="'.$value->id.'"
                                 class="form-control input-mini input-priority p-0 text-center" 
                                 value="'.$value->is_priority.'" />';})
+        ->addColumn('sum_order', function ($value) use ($data) {
+                return '<span class="text-success">'.number_format($value->getTotalPerCustomer(), 0,'',',').' đ</span>';})
         ->addColumn('status', function ($value) use ($data) {
                 return '<div class="custom-control custom-checkbox text-center">
                                   <input 
@@ -59,6 +63,20 @@ class CustomerRepository extends BaseRepository implements CustomerRepositoryInt
                             >
                             <i class="mdi mdi-close"></i>
                         </a>';})
-        ->rawColumns(['action','checkbox','status','priority'])->make(true);
+        ->rawColumns(['action','checkbox','sum_order','status','priority'])->make(true);
+    }
+
+    public function getDataOrders($id,$data){
+        $value = WmsExport::with(['status'])->select('id','code','status_id','total_price','ship_price','reduce_price','is_status','export_created_at')->where('id','<>', 0)->where('customer_id','=',$id);
+        return Datatables::of($value)
+        ->addColumn('code', function ($value) use ($data) {
+                return '<a href="javascript:void(0)" onclick="loadOtherPage('."'".route('admin.wms.export.print', ['id' => $value->id])."'".')" class="text-success">'.$value->code.'</a>';})
+        ->addColumn('total', function ($value) use ($data) {
+                return number_format($value->total_price + $value->ship_price - $value->reduce_price, 0,'',',');})
+        ->addColumn('status', function ($value) use ($data) {
+                return '<span class="'.classStyleStatus($value->status_id,'button').'">'.$value->status->name.'</span>';})
+        ->addColumn('created_at', function ($value) use ($data) {
+                return formatDate($value->export_created_at,'d/m/Y H:i');})
+        ->rawColumns(['status','total','code'])->make(true);
     }
 }

@@ -17,11 +17,17 @@ class CreateWmsExports extends Migration
             $table->id();
             $table->string('code', 255)->nullable();
             $table->double('total_price')->default(0);
+            $table->double('ship_price')->default(0);
+            $table->double('reduce_price')->default(0);
             $table->integer('store_id')->default(0);
             $table->integer('user_id')->default(0);
+            $table->integer('customer_id')->default(0);
+            $table->integer('status_id')->default(0);
             $table->integer('is_status')->default(0);
             $table->integer('is_priority')->default(0);
+            $table->string('note')->nullable();
             $table->string('note_cancel')->nullable();
+            $table->string('export_created_at')->nullable();
             $table->timestamps();
         });
     }

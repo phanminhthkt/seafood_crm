@@ -64,6 +64,10 @@ class RepositoryServiceProvider extends ServiceProvider
             \App\Repositories\Wms\WmsImportRepository::class,
         );
         $this->app->singleton(
+            \App\Repositories\Wms\WmsExportRepositoryInterface::class,
+            \App\Repositories\Wms\WmsExportRepository::class,
+        );
+        $this->app->singleton(
             \App\Repositories\Customer\CustomerRepositoryInterface::class,
             \App\Repositories\Customer\CustomerRepository::class,
         );

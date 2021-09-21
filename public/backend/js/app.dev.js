@@ -107,13 +107,13 @@ $('body').on('keyup','.input-priority',function(){
 	return false;
 })
 // Active menu third
-if(URL.type!=''){
-	$('.mm-active ul li a').each(function(i,v){
-	    if($(this).attr('href').indexOf(URL.type) != -1){
-	        $(this).addClass('waves-effect active');
-	    }
-	})
-}
+// if(URL.type!=''){
+// 	$('.mm-active ul li a').each(function(i,v){
+// 	    if($(this).attr('href').indexOf(URL.type) != -1){
+// 	        $(this).addClass('waves-effect active');
+// 	    }
+// 	})
+// }
 if(URL.current!=''){
 		$('li.mm-active > a').addClass('active')
 	$('li.mm-active ul li a').each(function(i,v){
@@ -148,6 +148,10 @@ $(document).ready(function(){
 		mode: "range",
 		enableTime:false,
 		dateFormat: 'd-m-Y',
+	})
+	$(".flatpickr-input.flatpickr-only-year").flatpickr({
+		enableTime:false,
+		dateFormat: 'Y',
 	})
 	$('#khoanggia').ionRangeSlider({
         skin: "flat",
@@ -374,3 +378,21 @@ $(document).ready(function(){
     });
 })
 }
+
+$(document).ready(function(){
+	$(".nav-link-ajax").click(function(){
+		var href = $(this).attr('data-href');
+		$('#pre-loader').show();	
+		$.ajax({
+	        url: href,
+	        type: 'GET',
+	        error:function(x,e) {
+			    backErrorAjax(x,e);
+			},
+			success:function(result){
+				$('#pre-loader').delay(250).fadeOut(function () {});
+				$('.report-html').html($(result).find('.report-html').html());
+			},
+	    });
+	})
+})

@@ -41,6 +41,10 @@ class CustomerController extends Controller
     {   
         return $this->_repository->getDataByCondition($request,Arr::except($this->_data, ''));
     }
+    public function getDataOrders($id)
+    {   
+        return $this->_repository->getDataOrders($id,Arr::except($this->_data, ''));
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -73,9 +77,16 @@ class CustomerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        //
+    public function show(Request $request)
+    {   
+        $query = $this->_repository->getModel()::select(['id','name','phone','address']);
+
+
+        if($request->has('term')){
+            $query->where('name', 'Like', '%' . $request->term . '%')->orWhere('phone', 'Like', '%' . $request->term . '%');
+        }
+        $this->_data['item'] = $query->get();
+        return response(["items" =>$this->_data['item'],"total_count" => count($this->_data['item'])]);
     }
 
     /**
@@ -86,10 +97,9 @@ class CustomerController extends Controller
      */
     public function edit($id)
     {
-        $this->_data['item'] = $this->_repository->findOrFail($id);
+        $this->_data['item'] = $this->_repository->getModel()::with(['orders'])->findOrFail($id);
         return view('backend.customer.edit',$this->_data);
     }
-
     /**
      * Update the specified resource in storage.
      *

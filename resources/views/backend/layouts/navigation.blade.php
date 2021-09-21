@@ -4,25 +4,28 @@
             <ul class="metismenu" id="side-menu">
                 <li>
                     <a href="{{Route('admin.index')}}" class="waves-effect">
-                        <i class="remixicon-dashboard-line"></i>
+                        <i class="mdi mdi-view-dashboard-outline"></i>
                         <span> Tổng quan </span>
                     </a>
                 </li>
-                <li>
-                    <a href="javascript: void(0);" class="waves-effect">
-                        <i class="remixicon-pie-chart-line"></i>
+                <li class="{{ $activeMenu->report == true ? 'mm-active' : '' }}">
+                    <a href="javascript: void(0);" class="waves-effect {{ $activeMenu->report == true ? 'active' : '' }}">
+                        <i class="mdi mdi-chart-bar-stacked"></i>
                         <span>Báo cáo</span>
                         <span class="menu-arrow"></span>
                     </a>
-                    <ul class="nav-second-level mm-collapse" aria-expanded="false">
+                    <ul class="nav-second-level mm-collapse {{ $activeMenu->report == true ? 'mm-show' : '' }}" aria-expanded="false">
                         <li>
-                            <a href="extras-profile.html">- Báo cáo doanh thu</a>
+                            <a href="{{Route('admin.report.revenue.index')}}">- Báo cáo doanh thu</a>
+                        </li>
+                        <li>
+                            <a href="{{Route('admin.report.product.index')}}">- Báo cáo hàng hoá</a>
                         </li>
                     </ul>
                 </li>
                 <li class="{{ $activeMenu->wms == true ? 'mm-active' : '' }}">
                     <a href="javascript: void(0);" class="waves-effect {{ $activeMenu->wms == true ? 'active' : '' }}">
-                        <i class="remixicon-building-4-line"></i>
+                        <i class="mdi mdi-home-outline"></i>
                         <span>Kho</span>
                         <span class="menu-arrow"></span>
                     </a>
@@ -41,7 +44,7 @@
                 
                 <li class="{{ $activeMenu->product == true ? 'mm-active' : '' }}">
                     <a href="javascript: void(0);" class="waves-effect {{ $activeMenu->product == true ? 'active' : '' }}">
-                        <i class="remixicon-stack-line"></i>
+                        <i class="mdi mdi-buffer"></i>
                         <span>Hàng hoá</span>
                         <span class="menu-arrow"></span>
                     </a>
@@ -71,7 +74,7 @@
 
                 <li class="{{ $activeMenu->status == true ? 'mm-active' : '' }}">
                     <a href="javascript: void(0)" class="waves-effect {{ $activeMenu->status == true ? 'active' : '' }}">
-                        <i class="remixicon-contrast-drop-2-line"></i>
+                        <i class="mdi mdi-adjust"></i>
                         <span>Trạng thái</span>
                         <span class="menu-arrow"></span>
                     </a>
@@ -100,7 +103,7 @@
                 <li 
                 class="{{ $activeMenu->role_permission == true ? 'mm-active' : '' }}">
                     <a href="#" class="waves-effect">
-                        <i class="remixicon-vip-crown-2-line"></i>
+                        <i class="mdi mdi-crown"></i>
                         <span>Phân quyền</span>
                         <span class="menu-arrow"></span>
                     </a>
@@ -122,7 +125,7 @@
                 <li 
                 class="{{ $activeMenu->customer == true ? 'mm-active' : '' }}">
                     <a href="{{Route('admin.customer.index')}}" class="waves-effect">
-                        <i class="remixicon-user-smile-line"></i>
+                        <i class="mdi mdi-emoticon-happy"></i>
                         <span>Khách hàng</span>
                     </a>
                 </li>
@@ -130,7 +133,7 @@
                 <li 
                 class="{{  $activeMenu->user == true ? 'mm-active' : '' }}">
                     <a href="{{Route('admin.user.index')}}" class="waves-effect">
-                        <i class="remixicon-admin-line"></i>
+                        <i class="mdi mdi-account-key-outline"></i>
                         <span>Quản trị viên</span>
                     </a>
                 </li>
@@ -139,7 +142,7 @@
                 <li class="menu-title">cấu hình</li>
                 <li>
                     <a href="javascript: void(0);" class="waves-effect">
-                        <i class="fe-settings"></i>
+                        <i class="mdi mdi-settings-outline"></i>
                         <span> Cấu hình website</span>
                     </a>
                 </li>

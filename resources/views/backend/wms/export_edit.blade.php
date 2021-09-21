@@ -255,7 +255,7 @@
           </div>
           <div class="modal-body p-2">
             <div class="table-responsive ">
-              <form role="form" id="search-form" class="d-flex " method="GET" action="<?=URL::to('/admin/product/data?type=noparent');?>" enctype="multipart/form-data" >
+              <form role="form" id="search-form" class="d-flex search-form" method="GET" action="<?=URL::to('/admin/product/data?type=noparent');?>" enctype="multipart/form-data" >
                 <div  class="form-inline form-search d-inline-block align-middle">
                     <div class="input-group input-group-sm">
                         <input class="form-control form-control-navbar text-sm" type="search" id="keyword" placeholder="Tìm kiếm" aria-label="Tìm kiếm" name='term' value="{{Request('term')}}" >
@@ -318,7 +318,7 @@
     </td>
     <td>
       <div class="input-group input-group--custom">
-        <input type="text" data-toggle="input-mask" data-mask-format="000,000,000,000" data-reverse="true" class="form-control price--format"  name="data_child[import_price][]" placeholder="Giá nhập" value="">
+        <input type="text" data-toggle="input-mask" data-mask-format="000,000,000,000" data-reverse="true" class="form-control price--format"  name="data_child[export_price][]" placeholder="Giá bán" value="">
       </div>
     </td>
     <td>

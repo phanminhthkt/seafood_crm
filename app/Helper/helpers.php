@@ -31,6 +31,19 @@ function countByMonthYear($value,$year,$model){
     $value = $model::whereYear('created_at', '=', $year)->whereMonth('created_at','=', $value)->count();
     return $value;
 }
+function revenueByTime($day,$date,$year,$model,$status){
+
+    $value = $model::where('status_id','=',$status);
+    if($year) $value = $value->whereYear('export_created_at', '=', $year);
+    if($date) $value = $value->whereMonth('export_created_at','=', $date);
+    if($day && $day < 10){ $day = '0'.$day; }
+    if($day) $value = $value->whereDay('export_created_at', '=', $day);
+    
+    $value = $value->get(['total_price','ship_price','reduce_price'])->sum(function($val){ 
+                                return ($val->total_price + $val->ship_price - $val->reduce_price); 
+                            });
+    return $value;
+}
 function classStyleStatus($statusId,$type){
     if($type == 'button') $str = 'badge badge-';
     if($type == 'text') $str = 'text-';

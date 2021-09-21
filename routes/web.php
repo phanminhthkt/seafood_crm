@@ -20,7 +20,7 @@ Route::group(['as' => 'admin.','namespace' => 'App\Http\Controllers\Backend', 'p
  	Route::post('user/login',['uses' => 'UserController@postLogin']);
  	
 
-	Route::group(['middleware' => ['auth:web'] ], function(){	
+	Route::group(['middleware' => ['auth:web','middleware'=>'HtmlMinifier'] ], function(){	
 		Route::put('/ajax/status/{id}', ['uses' => 'AjaxController@updateStatus']);
 		Route::put('/ajax/priority/{id}', ['uses' => 'AjaxController@updatePriority']);
 		// Route::resource('member', 'MemberController');
@@ -161,22 +161,24 @@ Route::group(['as' => 'admin.','namespace' => 'App\Http\Controllers\Backend', 'p
 		/*Khách hàng */
 		Route::get('/customer',['uses' => 'CustomerController@index','as' => 'customer.index'])->middleware('can:view-status');
 		Route::get('/customer/data',['uses' => 'CustomerController@getData','as' => 'customer.data'])->middleware('can:view-status');
+		Route::get('/customer/data-order/{id}',['uses' => 'CustomerController@getDataOrders','as' => 'customer.dataOrder'])->middleware('can:view-status');
 		Route::get('/customer/add',['uses' => 'CustomerController@create','as' => 'customer.add'])->middleware('can:create-status');
 		Route::post('/customer/store',['uses' => 'CustomerController@store','as' => 'customer.store']);
 		Route::get('/customer/edit/{id}',['uses' => 'CustomerController@edit','as' => 'customer.edit'])->middleware('can:update-status');
+		Route::get('/customer/show',['uses' => 'CustomerController@show','as' => 'customer.show'])->middleware('can:update-status');
 		Route::put('/customer/update/{id}', ['uses' => 'CustomerController@update','as' => 'customer.update']);
 		Route::delete('/customer/delete/{id}',['uses' => 'CustomerController@delete','as' => 'customer.delete'])->middleware('can:delete-status');
 		Route::delete('/customer/delete-multiple/{id}',['uses' => 'CustomerController@deleteMultiple'])->middleware('can:delete-status');
 
 		/*Chi nhánh,kho */
-		Route::get('/wms',['uses' => 'WmsController@index','as' => 'wms.index'])->middleware('can:view-status');
-		Route::get('/wms/data',['uses' => 'WmsController@getData','as' => 'wms.data'])->middleware('can:view-status');
-		Route::get('/wms/add',['uses' => 'WmsController@create','as' => 'wms.add'])->middleware('can:create-status');
-		Route::post('/wms/store',['uses' => 'WmsController@store','as' => 'wms.store']);
-		Route::get('/wms/edit/{id}',['uses' => 'WmsController@edit','as' => 'wms.edit'])->middleware('can:update-status');
-		Route::put('/wms/update/{id}', ['uses' => 'WmsController@update','as' => 'wms.update']);
-		Route::delete('/wms/delete/{id}',['uses' => 'WmsController@delete','as' => 'wms.delete'])->middleware('can:delete-status');
-		Route::delete('/wms/delete-multiple/{id}',['uses' => 'WmsController@deleteMultiple'])->middleware('can:delete-status');
+		Route::get('/wms-store',['uses' => 'WmsController@index','as' => 'wms.index'])->middleware('can:view-status');
+		Route::get('/wms-store/data',['uses' => 'WmsController@getData','as' => 'wms.data'])->middleware('can:view-status');
+		Route::get('/wms-store/add',['uses' => 'WmsController@create','as' => 'wms.add'])->middleware('can:create-status');
+		Route::post('/wms-store/store',['uses' => 'WmsController@store','as' => 'wms.store']);
+		Route::get('/wms-store/edit/{id}',['uses' => 'WmsController@edit','as' => 'wms.edit'])->middleware('can:update-status');
+		Route::put('/wms-store/update/{id}', ['uses' => 'WmsController@update','as' => 'wms.update']);
+		Route::delete('/wms-store/delete/{id}',['uses' => 'WmsController@delete','as' => 'wms.delete'])->middleware('can:delete-status');
+		Route::delete('/wms-store/delete-multiple/{id}',['uses' => 'WmsController@deleteMultiple'])->middleware('can:delete-status');
 
 		/*Chi nhánh,kho */
 		Route::get('/wms-import',['uses' => 'WmsImportController@index','as' => 'wms.import.index'])->middleware('can:view-status');
@@ -188,5 +190,20 @@ Route::group(['as' => 'admin.','namespace' => 'App\Http\Controllers\Backend', 'p
 		Route::put('/wms-import/update/{id}', ['uses' => 'WmsImportController@update','as' => 'wms.import.update']);
 		Route::delete('/wms-import/delete/{id}',['uses' => 'WmsImportController@delete','as' => 'wms.import.delete'])->middleware('can:delete-status');
 		Route::delete('/wms-import/delete-multiple/{id}',['uses' => 'WmsImportController@deleteMultiple'])->middleware('can:delete-status');
+
+		/*Chi nhánh,kho */
+		Route::get('/wms-export',['uses' => 'WmsExportController@index','as' => 'wms.export.index'])->middleware('can:view-status');
+		Route::get('/wms-export/data',['uses' => 'WmsExportController@getData','as' => 'wms.export.data'])->middleware('can:view-status');
+		Route::get('/wms-export/add',['uses' => 'WmsExportController@create','as' => 'wms.export.add'])->middleware('can:create-status');
+		Route::post('/wms-export/store',['uses' => 'WmsExportController@store','as' => 'wms.export.store']);
+		Route::get('/wms-export/edit/{id}',['uses' => 'WmsExportController@edit','as' => 'wms.export.edit'])->middleware('can:update-status');
+		Route::get('/wms-export/print/{id}',['uses' => 'WmsExportController@print','as' => 'wms.export.print'])->middleware('can:print-status');
+		Route::put('/wms-export/update/{id}', ['uses' => 'WmsExportController@update','as' => 'wms.export.update']);
+		Route::delete('/wms-export/delete/{id}',['uses' => 'WmsExportController@delete','as' => 'wms.export.delete'])->middleware('can:delete-status');
+		Route::delete('/wms-export/delete-multiple/{id}',['uses' => 'WmsExportController@deleteMultiple'])->middleware('can:delete-status');
+
+		/*Báo cáo */
+		Route::get('/report-product',['uses' => 'ReportController@reportTopProduct','as' => 'report.product.index'])->middleware('can:view-status');
+		Route::get('/report-revenue',['uses' => 'ReportController@reportRevenue','as' => 'report.revenue.index'])->middleware('can:view-status');
 	});
 });

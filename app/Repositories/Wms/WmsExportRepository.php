@@ -2,19 +2,20 @@
 namespace App\Repositories\Wms;
 use App\Repositories\BaseRepository;
 use App\Models\Product;
+use App\Models\Customer;
 use Auth;
 use DataTables;
 use Carbon\Carbon;
 
-class WmsImportRepository extends BaseRepository implements WmsImportRepositoryInterface
+class WmsExportRepository extends BaseRepository implements WmsExportRepositoryInterface
 {
     //lấy model tương ứng
     public function getModel()
     {
-        return \App\Models\WmsImport::class;
+        return \App\Models\WmsExport::class;
     }
     public function getDataByCondition($request,$data){
-        $value = $this->_model::with(['status','store'])->select('id','code','store_id','status_id','user_id','total_price','is_status','import_created_at')->where('id','<>', 0);
+        $value = $this->_model::with(['status','store'])->select('id','code','store_id','status_id','user_id','total_price','ship_price','reduce_price','is_status','export_created_at')->where('id','<>', 0);
         return Datatables::of($value)
         ->filter(function ($query) use ($request) {
             if ($request->has('status') && $request->status!='') {
@@ -27,10 +28,10 @@ class WmsImportRepository extends BaseRepository implements WmsImportRepositoryI
                 $time = explode('to',str_replace(' ','',$request->created_at));
                 if(count($time)>1){
                     $next_day = Carbon::parse($time[1])->addDay()->format('Y-m-d');
-                    $query->whereBetween('import_created_at', array(formatDate($time[0],'Y-m-d'),$next_day));
+                    $query->whereBetween('export_created_at', array(formatDate($time[0],'Y-m-d'),$next_day));
                 }else{
                     $next_day = Carbon::parse($time[0])->addDay()->format('Y-m-d');
-                    $query->whereBetween('import_created_at', array(formatDate($time[0],'Y-m-d'),$next_day));
+                    $query->whereBetween('export_created_at', array(formatDate($time[0],'Y-m-d'),$next_day));
                 }
             }
             if ($request->has('name')) {
@@ -45,13 +46,13 @@ class WmsImportRepository extends BaseRepository implements WmsImportRepositoryI
         ->addColumn('code', function ($value) use ($data) {
                 return '<a href="'.$data['pageIndex'].'/edit/'.$value->id.'" class="text-success">'.$value->code.'</a>';})
         ->addColumn('total_price', function ($value) use ($data) {
-                return number_format($value->total_price, 0,'',',');})
+                return number_format($value->total_price + $value->ship_price - $value->reduce_price, 0,'',',');})
         ->addColumn('status', function ($value) use ($data) {
                 return '<span class="'.classStyleStatus($value->status_id,'button').'">'.$value->status->name.'</span>';})
         ->addColumn('created_at', function ($value) use ($data) {
-                return formatDate($value->import_created_at,'d/m/Y');})
+                return formatDate($value->export_created_at,'d/m/Y');})
         ->addColumn('action', function ($value) use ($data) {
-                $str = '<a  
+            $str = '<a  
                             href="javascript:void(0)"
                             class="btn btn-icon waves-effect waves-light btn-info '.$data['form']->ajaxform.'"
                             data-title="Sửa '.$data['title'].'"
@@ -71,7 +72,7 @@ class WmsImportRepository extends BaseRepository implements WmsImportRepositoryI
                 $str.='
                 <a 
                         href="javascript:void(0)"
-                        onclick="loadOtherPage('."'".route('admin.wms.import.print', ['id' => $value->id])."'".')" class="btn btn-icon waves-effect waves-light btn-purple mt-1 mt-lg-0"><i class="mdi mdi-cloud-print-outline"></i></a>';
+                        onclick="loadOtherPage('."'".route('admin.wms.export.print', ['id' => $value->id])."'".')" class="btn btn-icon waves-effect waves-light btn-purple mt-1 mt-lg-0"><i class="mdi mdi-cloud-print-outline"></i></a>';
             }           
             return $str;
         })
@@ -80,11 +81,11 @@ class WmsImportRepository extends BaseRepository implements WmsImportRepositoryI
     public function totalPrice($data){
         $totalPrice = 0;
         foreach($data['product_id'] as $k => $v){
-            $totalPrice += ($data['quantity'][$k] * str_replace(',', '', $data['import_price'][$k]));
+            $totalPrice += ($data['quantity'][$k] * str_replace(',', '', $data['export_price'][$k]));
         }
         return $totalPrice;
     }
-    public function arrayDetail($data,$importId){
+    public function arrayDetail($data,$exportId){
         $dataDetail = [];
         foreach($data['product_id'] as $k => $v){
             $product = Product::with(['unit:id,name'])->select(['name','unit_id','sku'])->findOrFail($v);
@@ -92,45 +93,62 @@ class WmsImportRepository extends BaseRepository implements WmsImportRepositoryI
             $dataDetail[$k]['product_code'] = $product->sku;
             $dataDetail[$k]['product_name'] = $product->name;
             $dataDetail[$k]['product_unit'] = $product->unit->name;
-            $dataDetail[$k]['product_price'] = str_replace(',','',$data['import_price'][$k]);
-            $dataDetail[$k]['import_id'] = $importId;
+            $dataDetail[$k]['product_price'] = str_replace(',','',$data['export_price'][$k]);
+            $dataDetail[$k]['export_id'] = $exportId;
             $dataDetail[$k]['product_quantity'] = $data['quantity'][$k];
         }
         return $dataDetail;
     }
+    public function saveCustomerToId($customer = []){
+        $id = isset($customer['id']) ? $customer['id'] : '';
+        if($id){
+            Customer::whereId($id)->update($customer);
+        }else{
+            $id =Customer::create($customer)->id;
+        }
+        return $id;
+    }
     public function createHasRelation($request){
-        $data = $request->except('_token','save_draft','save_success','data_child');
+        $data = $request->except('_token','save_draft','save_success','data_child','customer');
         
         $data['status_id'] = $request->save_draft ?? $request->save_success;
         $data['total_price'] = $this->totalPrice($request->data_child) ?? 0;
+        $data['reduce_price'] = str_replace(',','',$request->reduce_price ?: 0);
+        $data['ship_price'] = str_replace(',','',$request->ship_price ?: 0);
+        $data['customer_id'] = $this->saveCustomerToId($request->customer) ?? 0;
         $data['user_id'] = Auth::guard()->user()->id;
-        $data['code'] = config('siteconfig.wmsImport.code').formatDate($request->import_created_at,'dmYHi');
-        $data['import_created_at'] = formatDate($request->import_created_at,'Y-m-d H:i:s');
-        if($importId = $this->_model->create($data)->id){
+        $data['code'] = config('siteconfig.wmsExport.code').formatDate($request->export_created_at,'dmYHi');
+        $data['export_created_at'] = formatDate($request->export_created_at,'Y-m-d H:i:s');
+        if($exportId = $this->_model->create($data)->id){
             if($request->has('data_child') && count($request->data_child)){
-                $wmsImport = $this->_model->findOrFail($importId);
-                $dataDetail = $this->arrayDetail($request->data_child,$importId);
-                $wmsImport->details()->createMany($dataDetail);
+                $wmsExport = $this->_model->findOrFail($exportId);
+                $dataDetail = $this->arrayDetail($request->data_child,$exportId);
+                $wmsExport->details()->createMany($dataDetail);
             }
-            return $importId;
+            return $exportId;
         }else{
             return false;
         }
     }
 
     public function updateHasRelation($request,$id){
-        $data = $request->except('_token','_method','data_child');//# request only
+        $data = $request->except('_token','_method','data_child','customer');//# request only
         $data['status_id'] = $request->save_draft ?? $request->save_success ?? $request->save_cancel;
         $data['total_price'] = $this->totalPrice($request->data_child) ?? 0;
-        if($request->has('import_created_at')){
-            $data['import_created_at'] = formatDate($request->import_created_at,'Y-m-d H:i:s');
+        $data['reduce_price'] = str_replace(',','',$request->reduce_price ?: 0);
+        $data['ship_price'] = str_replace(',','',$request->ship_price ?: 0);
+        $data['customer_id'] = $this->saveCustomerToId($request->customer) ?? 0;
+
+        if($request->has('export_created_at')){
+            $data['export_created_at'] = formatDate($request->export_created_at,'Y-m-d H:i:s');
         }
+
         if($this->_model->findOrFail($id)->update($data)){
             if($request->has('data_child') && count($request->data_child)){
-                $wmsImport = $this->_model->findOrFail($id);
-                if($wmsImport->details()->delete('import_id',$id)){
+                $wmsExport = $this->_model->findOrFail($id);
+                if($wmsExport->details()->delete('export_id',$id)){
                     $dataDetail = $this->arrayDetail($request->data_child,$id);
-                    $wmsImport->details()->createMany($dataDetail);
+                    $wmsExport->details()->createMany($dataDetail);
                 }
             }
             return true;

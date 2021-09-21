@@ -22,8 +22,8 @@
                 
             </div>
             <div class="text-right">
-                <h3 class="text-dark mt-1"><span class="counter">{{$report->totalProject}}</span></h3>
-                <p class="text-muted mb-0">Tổng dự án</p>
+                <h3 class="font-17 text-info mt-1"><b class="bold"><span class="counter">{{number_format($report->totalOrder, 0,'',',');}} đ</span></b></h3>
+                <p class="text-muted mb-0">Bán hôm nay</p>
             </div>
             <div class="clearfix"></div>
         </div>
@@ -34,8 +34,8 @@
                 <i class="mdi mdi-bullseye font-24 avatar-title text-white"></i>
             </div>
             <div class="text-right">
-                <h3 class="text-dark mt-1"><span class="counter">{{$report->handoverTotalProject}}</span></h3>
-                <p class="text-muted mb-0">Đã bàn giao</p>
+                <h3 class="font-17 text-danger mt-1"><span class="counter">{{$report->countOrder}}</span></h3>
+                <p class="text-muted mb-0">đơn hàng</p>
             </div>
             <div class="clearfix"></div>
         </div>
@@ -47,8 +47,8 @@
                 
             </div>
             <div class="text-right">
-                <h3 class="text-dark mt-1"><span class="counter">{{$report->nohandoverTotalProject}}</span></h3>
-                <p class="text-muted mb-0">Chưa bàn giao</p>
+                <h3 class="font-17 text-purple mt-1"><span class="counter">{{$report->countProduct}}</span></h3>
+                <p class="text-muted mb-0">Top sản phẩm</p>
             </div>
             <div class="clearfix"></div>
         </div>
@@ -56,12 +56,12 @@
     <!-- end col -->
     <div class="col-xl-3 col-md-6">
         <div class="widget-bg-color-icon card-box">
-            <div class="avatar-lg rounded-circle bg-icon-dark float-left">
-                <i class="mdi mdi-close-circle font-24 avatar-title text-white"></i>
+            <div class="avatar-lg rounded-circle bg-icon-primary float-left">
+                <i class="mdi mdi-check-circle font-24 avatar-title text-white"></i>
             </div>
             <div class="text-right">
-                <h3 class="text-dark mt-1"><span class="counter">{{$report->cancelTotalProject}}</span></h3>
-                <p class="text-muted mb-0">Đã huỷ</p>
+                <h3 class="font-17 text-primary mt-1"><span class="counter ">{{$report->maxProduct->product_name}}</span></h3>
+                <p class="text-muted mb-0">Bán nhiều nhất</p>
             </div>
             <div class="clearfix"></div>
         </div>
@@ -70,29 +70,10 @@
     <!-- end col -->
 </div>
 <div class="row">
-    <div class="col-xl-8">
+    <div class="col-xl-12">
         <div class="card-box">
-            <h4 class="header-title">Báo cáo hàng tháng</h4>
-            <canvas id="myChart" width="400" height="190"></canvas>
-        </div>
-        <!-- end card-box -->
-    </div>
-    <!-- end col -->
-
-    <div class="col-xl-4">
-        <div class="card-box">
-
-            <h4 class="header-title">Báo cáo tổng</h4>
-            <div class="mt-3 text-center">
-                <p class="text-muted font-15 font-family-secondary mb-0">
-                    <span class="mx-2"><i class="mdi mdi-checkbox-blank-circle text-danger"></i> Đã bàn giao</span>
-                    <span class="mx-2"><i class="mdi mdi-checkbox-blank-circle text-purple"></i> Chưa bàn giao</span>
-                    <span class="d-block"><i class="mdi mdi-checkbox-blank-circle text-secondary"></i> Đã huỷ</span>
-                </p>
-                <div id="sparkline_total" class="text-center mt-3">
-                    <canvas width="210" height="210" style="display: inline-block; width: 210px; height: 210px; vertical-align: top;"></canvas>
-                </div>
-            </div>
+            <h4 class="header-title">Báo cáo tháng</h4>
+            <canvas id="revenue-chart-date" width="1000" height="400"></canvas>
         </div>
         <!-- end card-box -->
     </div>
@@ -100,12 +81,7 @@
 </div>
 <script type="text/javascript">
     var report = {
-        total: { 
-            handoverProject:<?=$report->handoverTotalProject?>,
-            nohandoverProject:<?=$report->nohandoverTotalProject?>,
-            cancelProject:<?=$report->cancelTotalProject?>
-        },
-        date:'<?=implode(',',$report->date)?>',
+        total_year:'<?=implode(',',$report->date)?>',
     };
 </script>
 @endsection

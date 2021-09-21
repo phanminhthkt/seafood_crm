@@ -24,6 +24,7 @@ class CreateWmsImports extends Migration
             $table->integer('is_priority')->default(0);
             $table->string('note')->nullable();
             $table->string('note_cancel')->nullable();
+            $table->string('import_created_at')->nullable();
             $table->timestamps();
         });
     }
