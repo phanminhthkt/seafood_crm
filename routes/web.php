@@ -202,6 +202,18 @@ Route::group(['as' => 'admin.','namespace' => 'App\Http\Controllers\Backend', 'p
 		Route::delete('/wms-export/delete/{id}',['uses' => 'WmsExportController@delete','as' => 'wms.export.delete'])->middleware('can:delete-status');
 		Route::delete('/wms-export/delete-multiple/{id}',['uses' => 'WmsExportController@deleteMultiple'])->middleware('can:delete-status');
 
+
+		/*Chi nhánh,kho điều chuyển*/
+		Route::get('/wms-transfer',['uses' => 'WmsTransferController@index','as' => 'wms.transfer.index'])->middleware('can:view-status');
+		Route::get('/wms-transfer/data',['uses' => 'WmsTransferController@getData','as' => 'wms.transfer.data'])->middleware('can:view-status');
+		Route::get('/wms-transfer/add',['uses' => 'WmsTransferController@create','as' => 'wms.transfer.add'])->middleware('can:create-status');
+		Route::post('/wms-transfer/store',['uses' => 'WmsTransferController@store','as' => 'wms.transfer.store']);
+		Route::get('/wms-transfer/edit/{id}',['uses' => 'WmsTransferController@edit','as' => 'wms.transfer.edit'])->middleware('can:update-status');
+		Route::get('/wms-transfer/print/{id}',['uses' => 'WmsTransferController@print','as' => 'wms.transfer.print'])->middleware('can:print-status');
+		Route::put('/wms-transfer/update/{id}', ['uses' => 'WmsTransferController@update','as' => 'wms.transfer.update']);
+		Route::delete('/wms-transfer/delete/{id}',['uses' => 'WmsTransferController@delete','as' => 'wms.transfer.delete'])->middleware('can:delete-status');
+		Route::delete('/wms-transfer/delete-multiple/{id}',['uses' => 'WmsTransferController@deleteMultiple'])->middleware('can:delete-status');
+
 		/*Báo cáo */
 		Route::get('/report-product',['uses' => 'ReportController@reportTopProduct','as' => 'report.product.index'])->middleware('can:view-status');
 		Route::get('/report-revenue',['uses' => 'ReportController@reportRevenue','as' => 'report.revenue.index'])->middleware('can:view-status');

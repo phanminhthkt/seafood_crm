@@ -72,29 +72,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request);
-        $data = $request->except('_token','data_child');
-        $data['export_price'] = str_replace(',', '', $request->export_price);
-        $data['import_price'] = str_replace(',', '', $request->import_price);
-        $dataChild = $request->only('data_child');
-        if($id = $this->_repository->create($data)->id){
-            if(isset($dataChild['data_child']['name'])){
-            $productParent = $this->_repository->findOrFail($id);
-                foreach($dataChild['data_child']['name'] as $k => $value){
-                    $dataPerChild = [];
-                    $dataPerChild['parent_id'] = $id;
-                    $dataPerChild['category_id'] = $data['category_id'];
-                    $dataPerChild['unit_id'] = $data['unit_id'];
-                    $dataPerChild['name'] = $dataChild['data_child']['name'][$k];
-                    $dataPerChild['sku'] = $dataChild['data_child']['sku'][$k];
-                    $dataPerChild['export_price'] = str_replace(',', '', $dataChild['data_child']['export_price'][$k]);
-                    $dataPerChild['import_price'] = str_replace(',', '', $dataChild['data_child']['import_price'][$k]);;
-                    if($idChild = $this->_repository->create($dataPerChild)->id){
-                        $productChild = $this->_repository->findOrFail($idChild);
-                         $productChild->attributes()->attach(explode(",",$dataChild['data_child']['attribute_id'][$k]));
-                    }
-                }
-            }
+        if($this->_repository->createHasRelation($request)){
             return redirect()->route('admin.product.index')->with('success', 'Thêm sản phẩm <b>'. $request->name .'</b> thành công');
         }else{
             return redirect()->route('admin.product.index')->with('danger', 'Thêm sản phẩm <b>'. $request->name .'</b> thất bại.Xin vui lòng thử lại');
@@ -138,28 +116,7 @@ class ProductController extends Controller
 
     public function update(Request $request, $id)
     {
-        $data = $request->except('_token','_method');//# request only
-        $data['export_price'] = str_replace(',', '', $request->export_price);
-        $data['import_price'] = str_replace(',', '', $request->import_price);
-        $dataChild = $request->only('data_child');
-        if($this->_repository->update($id,$data)){
-            if(isset($dataChild['data_child']['name'])){
-            $productParent = $this->_repository->findOrFail($id);
-                foreach($dataChild['data_child']['name'] as $k => $value){
-                    $dataPerChild = [];
-                    $dataPerChild['parent_id'] = $id;
-                    $dataPerChild['category_id'] = $data['category_id'];
-                    $dataPerChild['unit_id'] = $data['unit_id'];
-                    $dataPerChild['name'] = $dataChild['data_child']['name'][$k];
-                    $dataPerChild['sku'] = $dataChild['data_child']['sku'][$k];
-                    $dataPerChild['export_price'] = str_replace(',', '', $dataChild['data_child']['export_price'][$k]);
-                    $dataPerChild['import_price'] = str_replace(',', '', $dataChild['data_child']['import_price'][$k]);;
-                    if($idChild = $this->_repository->create($dataPerChild)->id){
-                        $productChild = $this->_repository->findOrFail($idChild);
-                        $productChild->attributes()->attach(explode(",",$dataChild['data_child']['attribute_id'][$k]));
-                    }
-                }
-            }
+        if($this->_repository->updateHasRelation($request, $id) ){
             return redirect()->route('admin.product.index')->with('success', 'Chỉnh sửa sản phẩm <b>'. $request->name .'</b> thành công');
         }else{
             return redirect()->route('admin.product.index')->with('danger', 'Chỉnh sửa sản phẩm <b>'. $request->name .'</b> thất bại.Xin vui lòng thử lại');

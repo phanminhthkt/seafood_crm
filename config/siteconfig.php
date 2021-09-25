@@ -69,6 +69,11 @@ return [
 		'table' => 'wms_exports',
 		'code'  => 'PXK',
 	],
+	'wmsTransfer' => [
+		'title'	=> 'Điều chuyển kho',
+		'table' => 'wms_transfers',
+		'code'  => 'DCK',
+	],
 	'customer' => [
 		'title'	=> 'Khách hàng',
 		'table' => 'customers',

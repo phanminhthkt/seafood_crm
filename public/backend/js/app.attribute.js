@@ -68,6 +68,7 @@ function ajaxFormInItem(element){
 		$(document).ready(function() {
 			$('.dev-form').on('submit', function(e){
 				e.preventDefault();
+				if(!$(this)[0].checkValidity()){return false;}
 				var form = $(this);
 				var url = form.attr('action');
 				$.ajax({

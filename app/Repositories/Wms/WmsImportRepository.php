@@ -14,7 +14,7 @@ class WmsImportRepository extends BaseRepository implements WmsImportRepositoryI
         return \App\Models\WmsImport::class;
     }
     public function getDataByCondition($request,$data){
-        $value = $this->_model::with(['status','store'])->select('id','code','store_id','status_id','user_id','total_price','is_status','import_created_at')->where('id','<>', 0);
+        $value = $this->_model::with(['status:id,name','store:id,name'])->select('id','code','store_id','status_id','user_id','total_price','is_status','import_created_at')->where('id','<>', 0);
         return Datatables::of($value)
         ->filter(function ($query) use ($request) {
             if ($request->has('status') && $request->status!='') {

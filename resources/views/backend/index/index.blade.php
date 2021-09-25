@@ -60,7 +60,7 @@
                 <i class="mdi mdi-check-circle font-24 avatar-title text-white"></i>
             </div>
             <div class="text-right">
-                <h3 class="font-17 text-primary mt-1"><span class="counter ">{{$report->maxProduct->product_name}}</span></h3>
+                <h3 class="font-17 text-primary mt-1"><span class="counter ">{{$report->maxProduct->product_name ?? ''}}</span></h3>
                 <p class="text-muted mb-0">Bán nhiều nhất</p>
             </div>
             <div class="clearfix"></div>

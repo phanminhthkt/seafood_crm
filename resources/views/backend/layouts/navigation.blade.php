@@ -39,6 +39,9 @@
                         <li>
                             <a href="{{Route('admin.wms.import.index')}}"> - Nhập kho</a>
                         </li>
+                        <li>
+                            <a href="{{Route('admin.wms.transfer.index')}}"> - Điều chuyển kho</a>
+                        </li>
                     </ul>
                 </li>
                 
