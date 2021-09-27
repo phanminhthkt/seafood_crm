@@ -219,7 +219,16 @@ if($('#datatable-buttons').exists()){
 				$(this)[0].reset();
 			})
 			oTable.draw();
-		})
+		});
+		if($('.has-inventory-number').exists()){
+			oTable.on( 'draw', function () {
+			    $('tbody tr').each(function (){
+			    	if(parseFloat($(this).find('td:nth-child(6)').text()) < 0.1){
+				        $(this).addClass('no-event');
+				    }
+			    });
+			});
+		}
 	    $('.search-form').on('submit', function(e) {
 	        oTable.draw();
 	        e.preventDefault();

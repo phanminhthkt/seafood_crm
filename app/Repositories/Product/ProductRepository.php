@@ -2,29 +2,24 @@
 namespace App\Repositories\Product;
 use App\Repositories\BaseRepository;
 use App\Models\WmsImportDetail;
+use App\Traits\WmsTrait;
 use DataTables;
 use DB;
 class ProductRepository extends BaseRepository implements ProductRepositoryInterface
 {
-    //lấy model tương ứng
+    use WmsTrait;
     
+    //lấy model tương ứng
     public function getModel()
     {
         return \App\Models\Product::class;
     }
-    public function subQueryWms($charTable,$store_id){
-      $querySub = DB::table('wms_'.$charTable.'_details')
-          ->selectRaw('IFNULL(sum(product_quantity),0) as '.$charTable.'_quantity,product_id as '.$charTable.'_product_id')
-          ->groupBy('product_id')
-          ->join('wms_'.$charTable.'s','wms_'.$charTable.'s.id','=','wms_'.$charTable.'_details.'.$charTable.'_id')
-          ->where('wms_'.$charTable.'s.store_id','=',$store_id);
-      return $querySub;
-    }
-    public function queryProductNoParent(){
-      $value = $this->_model::select('name','id','export_price','import_price','unit_id','category_id','is_status','is_priority')
-        ->withCount('children')
-        ->with(['category:id,name','unit:id,name'])
-        ->having('children_count','<',1);
+    
+    public function queryProductDefault(){
+      $value = $this->_model::with(['category','unit','children'])
+            ->select('name','id','export_price','import_price','unit_id','category_id','is_status','is_priority')
+            ->where('id','<>', 0)
+            ->where('parent_id','=',null);
       return $value;
     }
     //Load product have child
@@ -33,21 +28,11 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         case ($request->type=='noparent'):
           $value = $this->queryProductNoParent();
           break;
-        case $request->has('store'): // Check sản phẩm theo kho
-          $value = $this->queryProductNoParent()
-            ->leftjoinSub($this->subQueryWms('export',$request->store),'export_product_id',function($query){
-              $query->on('products.id','=','export_product_id');
-            })
-            ->leftjoinSub($this->subQueryWms('import',$request->store),'import_product_id',function($query){
-              $query->on('products.id','=','import_product_id');
-            })
-            ->selectRaw('import_quantity - export_quantity  as total_quantity');
+        case $request->has('store'):
+          $value = $this->fullQueryWareHouse($request);
           break;
         default:
-          $value = $this->_model::with(['category','unit','children'])
-            ->select('name','id','export_price','import_price','unit_id','category_id','is_status','is_priority')
-            ->where('id','<>', 0)
-            ->where('parent_id','=',null);
+          $value = $this->queryProductDefault();
           break;
       }
       return $value;

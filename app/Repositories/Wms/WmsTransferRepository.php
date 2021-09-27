@@ -5,9 +5,11 @@ use App\Models\Product;
 use Auth;
 use DataTables;
 use Carbon\Carbon;
+use App\Traits\WmsTrait;
 
 class WmsTransferRepository extends BaseRepository implements WmsTransferRepositoryInterface
 {
+    use WmsTrait;
     //lấy model tương ứng
     public function getModel()
     {
@@ -87,23 +89,24 @@ class WmsTransferRepository extends BaseRepository implements WmsTransferReposit
         }
         return $totalPrice;
     }
-    public function arrayDetail($data,$transferId){
+    public function arrayDetail($request,$transferId){
         $dataDetail = [];
-        foreach($data['product_id'] as $k => $v){
-            $product = Product::with(['unit:id,name'])->select(['name','unit_id','sku'])->findOrFail($v);
-            $dataDetail[$k]['product_id'] = $v;
-            $dataDetail[$k]['product_code'] = $product->sku;
-            $dataDetail[$k]['product_name'] = $product->name;
-            $dataDetail[$k]['product_unit'] = $product->unit->name;
-            $dataDetail[$k]['product_price'] = str_replace(',','',$data['import_price'][$k]);
-            $dataDetail[$k]['transfer_id'] = $transferId;
-            $dataDetail[$k]['product_quantity'] = $data['quantity'][$k];
+        foreach($request->data_child['product_id'] as $k => $v){
+            if($this->checkNumberInventory($request,$v) > 0){
+                $product = Product::with(['unit:id,name'])->select(['name','unit_id','sku'])->findOrFail($v);
+                $dataDetail[$k]['product_id'] = $v;
+                $dataDetail[$k]['product_code'] = $product->sku;
+                $dataDetail[$k]['product_name'] = $product->name;
+                $dataDetail[$k]['product_unit'] = $product->unit->name;
+                $dataDetail[$k]['product_price'] = str_replace(',','',$request->data_child['import_price'][$k]);
+                $dataDetail[$k]['transfer_id'] = $transferId;
+                $dataDetail[$k]['product_quantity'] = $request->data_child['quantity'][$k];
+            }
         }
         return $dataDetail;
     }
     public function createHasRelation($request){
         $data = $request->except('_token','save_draft','save_success','data_child');
-        
         $data['status_id'] = $request->save_draft ?? $request->save_success;
         $data['total_price'] = $this->totalPrice($request->data_child) ?? 0;
         $data['user_id'] = Auth::guard()->user()->id;
@@ -112,7 +115,7 @@ class WmsTransferRepository extends BaseRepository implements WmsTransferReposit
         if($transferId = $this->_model->create($data)->id){
             if($request->has('data_child') && count($request->data_child)){
                 $wmsTransfer = $this->_model->findOrFail($transferId);
-                $dataDetail = $this->arrayDetail($request->data_child,$transferId);
+                $dataDetail = $this->arrayDetail($request,$transferId);
                 $wmsTransfer->details()->createMany($dataDetail);
             }
             return $transferId;
@@ -132,7 +135,7 @@ class WmsTransferRepository extends BaseRepository implements WmsTransferReposit
             if($request->has('data_child') && count($request->data_child)){
                 $wmsTransfer = $this->_model->findOrFail($id);
                 if($wmsTransfer->details()->delete('transfer_id',$id)){
-                    $dataDetail = $this->arrayDetail($request->data_child,$id);
+                    $dataDetail = $this->arrayDetail($request,$id);
                     $wmsTransfer->details()->createMany($dataDetail);
                 }
             }

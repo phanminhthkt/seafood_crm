@@ -67,25 +67,25 @@
       <div class="card-body">
           <div class="form-group">
               <label>Từ chi nhánh</label>
-              <select class="selectpicker" data-live-search="true" name="store_id" id="store" required="">
+              <select class="selectpicker" data-live-search="true" name="store_from_id" id="store_from" required="">
                 @foreach($wms as $v)
                 <option value="{{$v->id}}">
                 {{$v->name}}
                 </option>
                 @endforeach
               </select>
-              <div class="invalid-feedback">Vui lòng chọn kho</div>
+              <div class="invalid-feedback">Vui lòng chọn kho xuất</div>
           </div>
           <div class="form-group">
               <label>Đến chi nhánh</label>
-              <select class="selectpicker" data-live-search="true" name="store_id" id="store" required="">
+              <select class="selectpicker" data-live-search="true" name="store_to_id" id="store_to" required="">
                 @foreach($wms as $v)
                 <option value="{{$v->id}}">
                 {{$v->name}}
                 </option>
                 @endforeach
               </select>
-              <div class="invalid-feedback">Vui lòng chọn kho</div>
+              <div class="invalid-feedback">Vui lòng chọn kho nhập</div>
           </div>
           <div class="form-group">
             <label id="import_created_at">Ngày tạo đơn</label>
@@ -149,7 +149,7 @@
                     </div>
                 </div>
               </form>
-               <table id="datatable-buttons" class="table table-striped dt-responsive no-border w-100">
+               <table id="datatable-buttons" class="table has-inventory-number dt-responsive no-border w-100">
                   <thead>
                      <tr role="row">
                         <th>Id</th>
@@ -162,8 +162,8 @@
                         <th class="text-center" width="45%">Tên sản phẩm</th>
                         <th width="15%" class="text-center">Giá bán</th>
                         <th width="15%" class="text-center">Giá nhập</th>
-                        <th width="15%" class="text-center">Tồn</th>
                         <th width="3%" class="text-center">Đ/v</th>
+                        <th width="15%" class="text-center">Tồn</th>
                         <th width="15%" class="text-center">Danh mục</th>
                      </tr>
                   </thead>
@@ -232,8 +232,8 @@
         {data: 'name',name: 'name'},
         {data: 'export_price',name: 'export_price'},
         {data: 'import_price',name: 'import_price'},
-        {data: 'total_quantity',name: 'total_quantity'},
         {data: 'unit.name',name: 'unit', orderable: false, searchable: false},
+        {data: 'total_quantity',name: 'total_quantity'},
         {data: 'category.name',name: 'category', orderable: false, searchable: false},
     ]
   };

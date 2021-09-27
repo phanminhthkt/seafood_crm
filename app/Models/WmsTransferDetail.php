@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class WmsTransferDetail extends Model
 {
     use HasFactory;
+    public $timestamps = false;
     protected $table = 'wms_transfer_details';
     protected $fillable = [
         'transfer_id',

@@ -214,7 +214,8 @@ table.dataTable td, table.dataTable th{text-align: center;}
 div.dataTables_wrapper div.dataTables_info{text-align: left;}
 table.dataTable th:last-child{min-width: 75px !important;}
 th.mw-100{min-width: 100px !important;}
-
+tr.no-event{background:#f1f1f1;cursor: not-allowed;}
+tr.no-event label,tr.no-event input{pointer-events:none;}
 /*End datatable*/
 
 

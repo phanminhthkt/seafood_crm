@@ -11,7 +11,8 @@ class WmsTransfer extends Model
     protected $fillable = [
         'code',
         'total_price',
-        'store_id',
+        'store_from_id',
+        'store_to_id',
         'user_id',
         'status_id',
         'note',
@@ -25,7 +26,7 @@ class WmsTransfer extends Model
         return $this->belongsTo(Wms::class,'store_from_id');
     }
     public function toStore(){
-        return $this->belongsTo(Wms::class,'store_id');
+        return $this->belongsTo(Wms::class,'store_to_id');
     }
     public function details(){
         return $this->hasMany(WmsTransferDetail::class,'transfer_id','id');
