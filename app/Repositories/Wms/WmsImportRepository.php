@@ -128,10 +128,9 @@ class WmsImportRepository extends BaseRepository implements WmsImportRepositoryI
         if($this->_model->findOrFail($id)->update($data)){
             if($request->has('data_child') && count($request->data_child)){
                 $wmsImport = $this->_model->findOrFail($id);
-                if($wmsImport->details()->delete('import_id',$id)){
-                    $dataDetail = $this->arrayDetail($request->data_child,$id);
-                    $wmsImport->details()->createMany($dataDetail);
-                }
+                $wmsImport->details()->delete('import_id',$id);
+                $dataDetail = $this->arrayDetail($request->data_child,$id);
+                $wmsImport->details()->createMany($dataDetail);
             }
             return true;
         }else{

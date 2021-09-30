@@ -103,7 +103,7 @@
     <button type="submit" name="save_cancel" value="1" class="hidden-xs btn btn-danger waves-effect waves-light">Huỷ phiếu</button>
     @if($item->status_id !== 2 && $item->status_id !== 1)
     <button type="button"
-    onclick="loadOtherPage('{{route('admin.wms.import.print', ['id' => $item->id])}}')" class="hidden-xs btn btn-purple waves-effect waves-light"><i class="mdi mdi-cloud-print-outline mr-1"></i>Xuất phiếu</button>
+    onclick="loadOtherPage('{{route('admin.wms.transfer.print', ['id' => $item->id])}}')" class="hidden-xs btn btn-purple waves-effect waves-light"><i class="mdi mdi-cloud-print-outline mr-1"></i>Xuất phiếu</button>
 
     @endif
   </div>
@@ -114,28 +114,43 @@
       </div>
       <div class="card-body">
           <div class="form-group">
-              <label>Chi nhánh</label>
-              <select class="selectpicker" data-live-search="true" name="store_id" id="store" required="">
+              <label>Từ chi nhánh</label>
+              <select class="selectpicker" data-live-search="true" name="store_from_id" id="store_from" required="">
                 @foreach($wms as $v)
-                <option value="{{$v->id}}"
-                {{ $item->store_id == $v->id ? 'selected' : ''}}  
+                <option value="{{$v->id}}" 
+                  {{$v->id == $store_default_id ? 'selected':''}}
                 >
                 {{$v->name}}
                 </option>
                 @endforeach
               </select>
-              <div class="invalid-feedback">Vui lòng chọn kho</div>
+              <div class="invalid-feedback">Vui lòng chọn kho xuất</div>
+          </div>
+          <div class="form-group">
+              <label>Đến chi nhánh</label>
+              <select class="selectpicker" data-live-search="true" name="store_to_id" id="store_to" required="">
+                @foreach($wms as $v)
+                  @if($store_default_id != $v->id)
+                  <option value="{{$v->id}}"
+                  {{ $item->store_to_id == $v->id ? 'selected' : ''}}  
+                  >
+                  @endif
+                {{$v->name}}
+                </option>
+                @endforeach
+              </select>
+              <div class="invalid-feedback">Vui lòng chọn kho nhập</div>
           </div>
           @if($item->status_id == 2)
           <div class="form-group">
-            <label id="import_created_at">Ngày tạo đơn</label>
+            <label id="transfer_created_at">Ngày tạo đơn</label>
             <div class="input-group">
               <input 
                 type="text" 
-                name="import_created_at" 
+                name="transfer_created_at" 
                 class="form-control input-dev-default flatpickr-input" 
-                id="import_created_at" 
-                value="{{formatDate($item->import_created_at,'d-m-Y H:i')}}" 
+                id="transfer_created_at" 
+                value="{{formatDate($item->transfer_created_at,'d-m-Y H:i')}}" 
                 readonly="readonly"
                 placeholder="Ngày tạo đơn"
                 >
@@ -181,7 +196,7 @@
     <button type="submit" name="save_cancel" value="1" class="hidden-sm btn btn-danger waves-effect waves-light">Huỷ phiếu</button>
     @if($item->status_id !== 2 && $item->status_id !== 1)
     <button type="button"
-    onclick="loadOtherPage('{{route('admin.wms.import.print', ['id' => $item->id])}}')" class="hidden-sm btn btn-purple waves-effect waves-light"><i class="mdi mdi-cloud-print-outline mr-1"></i>Xuất phiếu</button>
+    onclick="loadOtherPage('{{route('admin.wms.transfer.print', ['id' => $item->id])}}')" class="hidden-sm btn btn-purple waves-effect waves-light"><i class="mdi mdi-cloud-print-outline mr-1"></i>Xuất phiếu</button>
     @endif
   </div>
 </div>
@@ -208,7 +223,7 @@
                     </div>
                 </div>
               </form>
-               <table id="datatable-buttons" class="table table-striped dt-responsive no-border w-100">
+               <table id="datatable-buttons" class="table has-inventory-number dt-responsive no-border w-100">
                   <thead>
                      <tr role="row">
                         <th>Id</th>
@@ -278,7 +293,7 @@
 <script type="text/javascript">
   var Datatable = {
     ajax: {
-        url: '<?=URL::to('/admin/product/data?type=noparent');?>',
+        url: '<?=URL::to('/admin/product/data?store='.$store_default_id);?>',
         data: function (d) {
             d.name = $('input[name=term]').val();
         }
@@ -291,6 +306,7 @@
         {data: 'export_price',name: 'export_price'},
         {data: 'import_price',name: 'import_price'},
         {data: 'unit.name',name: 'unit', orderable: false, searchable: false},
+        {data: 'total_quantity',name: 'total_quantity'},
         {data: 'category.name',name: 'category', orderable: false, searchable: false},
     ]
   };

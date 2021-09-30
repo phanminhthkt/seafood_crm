@@ -61,3 +61,8 @@ if($('.row-wms').exists()){
 	})
 
 }
+if($("#store_from").exists()){
+	$("#store_from").change(function(){
+		window.location ="?store_from_id="+$(this).val();
+	})
+}

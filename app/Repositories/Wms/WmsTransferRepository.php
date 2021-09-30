@@ -134,10 +134,9 @@ class WmsTransferRepository extends BaseRepository implements WmsTransferReposit
         if($this->_model->findOrFail($id)->update($data)){
             if($request->has('data_child') && count($request->data_child)){
                 $wmsTransfer = $this->_model->findOrFail($id);
-                if($wmsTransfer->details()->delete('transfer_id',$id)){
-                    $dataDetail = $this->arrayDetail($request,$id);
-                    $wmsTransfer->details()->createMany($dataDetail);
-                }
+                $wmsTransfer->details()->delete('transfer_id',$id);
+                $dataDetail = $this->arrayDetail($request,$id);
+                $wmsTransfer->details()->createMany($dataDetail);
             }
             return true;
         }else{

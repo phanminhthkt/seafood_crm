@@ -154,10 +154,9 @@ class WmsExportRepository extends BaseRepository implements WmsExportRepositoryI
         if($this->_model->findOrFail($id)->update($data)){
             if($request->has('data_child') && count($request->data_child)){
                 $wmsExport = $this->_model->findOrFail($id);
-                if($wmsExport->details()->delete('export_id',$id)){
-                    $dataDetail = $this->arrayDetail($request->data_child,$id);
-                    $wmsExport->details()->createMany($dataDetail);
-                }
+                $wmsExport->details()->delete('export_id',$id);
+                $dataDetail = $this->arrayDetail($request->data_child,$id);
+                $wmsExport->details()->createMany($dataDetail);
             }
             return true;
         }else{

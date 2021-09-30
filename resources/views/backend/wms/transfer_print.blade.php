@@ -3,31 +3,36 @@
     @page { size: auto;  margin: 0mm; }
 </style>
 <script type="text/javascript">
-   window.print();
+   // window.print();
 </script>
 <div class="printBox">
-    <div style="text-align:center; padding:10px 0 0;"><strong style="font-size:16px">HÓA ĐƠN NHẬP HÀNG</strong></div>
+    <div style="text-align:center; padding:10px 0 0;"><strong style="font-size:16px">HÓA ĐƠN ĐIỀU CHUYỂN HÀNG</strong></div>
     <table width="100%">
         <tbody>
             <tr>
-                <td style="text-align:center; font-size:13px;">
-                    Cửa hàng: {{$item->store->name}}</td>
+                <td colspan="2" style="text-align:center; font-size:13px;">Ngày: {{formatDate($item->transfer_created_at,'d/m/Y H:i')}}</td>
             </tr>
             <tr>
-                <td style="text-align:center; font-size:13px;">Địa chỉ: {{$item->store->address}}</td>
+                <td colspan="2" style="text-align:center; font-size:13px;">Số HĐ: {{$item->code}}</td>
             </tr>
-             <tr>
-                <td style="text-align:center; font-size:13px;">Điện thoại: {{$item->store->phone}}</td>
-                        
-            </tr><tr>
-                <td style="text-align:center; font-size:13px;">Số HĐ: {{$item->code}}</td>
-            </tr>
+            <tr style="height: 20px;"></tr>
             <tr>
-                <td style="text-align:center; font-size:13px;">Ngày: {{formatDate($item->import_created_at,'d/m/Y H:i')}}</td>
+                <td style="text-align:left; font-size:13px;">
+                    <p>Từ cửa hàng: {{$item->fromStore->name}}</p>
+                    <p>Địa chỉ: {{$item->fromStore->address}}</p>
+                    <p>Số điện thoại: {{$item->fromStore->phone}}</p>
+                </td>
+
+                <td style="text-align:left; font-size:13px;">
+                    <p>Đến cửa hàng: {{$item->toStore->name}}</p>
+                    <p>Địa chỉ: {{$item->toStore->address}}</p>
+                    <p>Số điện thoại: {{$item->toStore->phone}}</p>
+                </td>
             </tr>
+            <tr style="height: 10px;"></tr>
         </tbody>
     </table>
-    <table style="width:100%;" cellpadding="3">
+    <table style="width:100%;" cellpadding="3" >
         <tbody>
             <tr>
                 <td width="35%" style="width:35%; border-top:1px solid black; border-bottom:1px solid black;"><strong><span style="font-size:14px;">Đơn giá</span></strong></td>

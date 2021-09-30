@@ -55,11 +55,12 @@ class WmsTransferController extends Controller
      */
     public function print($id)
     {
-        $this->_data['item'] = $this->_repository->findOrFail($id);
+        $this->_data['item'] = $this->_repository->getModel()::with(['fromStore:id,name,address,phone','toStore:id,name,address,phone'])->findOrFail($id);
         return view('backend.wms.transfer_print',$this->_data);
     }
-    public function create()
+    public function create(Request $request)
     {
+        $this->_data['store_default_id'] = $request->store_from_id ?? $this->_data['wms']->first()->id;
         return view('backend.wms.transfer_add',$this->_data);
     }
 
@@ -98,6 +99,7 @@ class WmsTransferController extends Controller
     public function edit($id)
     {
         $this->_data['item'] = $this->_repository->findOrFail($id);
+        $this->_data['store_default_id'] = $request->store_from_id ?? $this->_data['item']->store_from_id;
         return view('backend.wms.transfer_edit',$this->_data);
     }
 

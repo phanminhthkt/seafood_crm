@@ -69,7 +69,7 @@
               <label>Từ chi nhánh</label>
               <select class="selectpicker" data-live-search="true" name="store_from_id" id="store_from" required="">
                 @foreach($wms as $v)
-                <option value="{{$v->id}}">
+                <option value="{{$v->id}}" {{$v->id == $store_default_id ? 'selected':''}}>
                 {{$v->name}}
                 </option>
                 @endforeach
@@ -80,7 +80,9 @@
               <label>Đến chi nhánh</label>
               <select class="selectpicker" data-live-search="true" name="store_to_id" id="store_to" required="">
                 @foreach($wms as $v)
-                <option value="{{$v->id}}">
+                  @if($store_default_id != $v->id)
+                  <option value="{{$v->id}}">
+                  @endif
                 {{$v->name}}
                 </option>
                 @endforeach
@@ -88,13 +90,13 @@
               <div class="invalid-feedback">Vui lòng chọn kho nhập</div>
           </div>
           <div class="form-group">
-            <label id="import_created_at">Ngày tạo đơn</label>
+            <label id="transfer_created_at">Ngày tạo đơn</label>
             <div class="input-group">
               <input 
                 type="text" 
-                name="import_created_at" 
+                name="transfer_created_at" 
                 class="form-control input-dev-default flatpickr-input" 
-                id="import_created_at" 
+                id="transfer_created_at" 
                 value="{{formatDate(Carbon\Carbon::now(),'d-m-Y H:i')}}" 
                 readonly="readonly"
                 placeholder="Ngày tạo đơn"
@@ -220,7 +222,7 @@
 <script type="text/javascript">
   var Datatable = {
     ajax: {
-        url: '<?=URL::to('/admin/product/data?store=1');?>',
+        url: '<?=URL::to('/admin/product/data?store='.$store_default_id);?>',
         data: function (d) {
             d.name = $('input[name=term]').val();
         }

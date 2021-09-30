@@ -39,10 +39,20 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-3 col-6">
+      <div class="col-sm-2 col-6">
           <div class="form-group">
-              <select class="select2"  name="store" >
-              <option value="" >Chọn chi nhánh</option>
+              <select class="select2"  name="store_from" >
+              <option value="" >Từ chi nhánh</option>
+                @foreach($wms as $v)
+                <option value="{{$v->id}}">{{$v->name}}</option>
+                @endforeach
+              </select>
+          </div>
+      </div>
+      <div class="col-sm-2 col-6">
+          <div class="form-group">
+              <select class="select2"  name="store_to" >
+              <option value="" >Đến chi nhánh</option>
                 @foreach($wms as $v)
                 <option value="{{$v->id}}">{{$v->name}}</option>
                 @endforeach
@@ -66,10 +76,10 @@
           </button>
         </div>
       </div>
-      <div class="col-sm-2 col-6">
+      <div class="col-sm-1 col-6">
         <div class="form-group">
           <button class="btn btn-danger btn-destroy__filter text-white w-100" type="button">
-              <i class="mdi mdi-close-circle mr-1"></i>Huỷ</button>
+              <i class="mdi mdi-close-circle"></i></button>
         </div>
       </div>
   </div>
@@ -102,7 +112,7 @@
                           <th class="text-center"width="10%">Ngày tạo</th>
                           <th width="10%" class="text-center">Trạng thái</th>
                           <th class="text-center"width="10%">Tổng tiền</th>
-                          <th width="10%">Hành động</th>
+                          <th width="13%">Hành động</th>
                        </tr>
                     </thead>
                 </table>
@@ -118,7 +128,8 @@
         data: function (d) {
             d.name = $('input[name=term]').val();
             d.status = $('select[name=status] option:selected').val();
-            d.store = $('select[name=store] option:selected').val();
+            d.store_from = $('select[name=store_from] option:selected').val();
+            d.store_to = $('select[name=store_to] option:selected').val();
             d.created_at = $('input[name=created_at]').val();
         }
     },
@@ -126,8 +137,8 @@
         {data: 'id',name: 'id', visible: false},
         {data: 'checkbox', orderable: false, searchable: false},
         {data: 'code',name: 'code'},
-        {data: 'fromStore.name',name: 'fromStore', orderable: false, searchable: false},
-        {data: 'toStore.name',name: 'toStore', orderable: false, searchable: false},
+        {data: 'from_store.name',name: 'from_store', orderable: false, searchable: false},
+        {data: 'to_store.name',name: 'to_store', orderable: false, searchable: false},
         {data: 'created_at',name: 'created_at'},
         {data: 'status',name: 'status', orderable: false, searchable: false},
         {data: 'total_price',name: 'total_price', orderable: false, searchable: false},
