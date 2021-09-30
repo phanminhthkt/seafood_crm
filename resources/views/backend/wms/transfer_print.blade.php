@@ -3,7 +3,7 @@
     @page { size: auto;  margin: 0mm; }
 </style>
 <script type="text/javascript">
-   // window.print();
+   window.print();
 </script>
 <div class="printBox">
     <div style="text-align:center; padding:10px 0 0;"><strong style="font-size:16px">HÓA ĐƠN ĐIỀU CHUYỂN HÀNG</strong></div>
