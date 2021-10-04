@@ -43,6 +43,7 @@ a{color:#29689e;}
 .mtb-2{margin:2rem 0;}
 .pd-0{padding: 0 !important}
 b.bold{font-weight: bold;}
+b.medium{font-weight: 600;}
 .border-top{border-top:1px solid #ccc;}
 .card-body .nav-tabs{margin-top:-15px;}
 .nav-bordered a.active{border-bottom: 2px solid #3bafda!important;}

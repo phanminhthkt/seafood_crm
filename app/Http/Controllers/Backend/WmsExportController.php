@@ -11,7 +11,7 @@ use DataTables;
 use App\Repositories\Wms\WmsExportRepositoryInterface;
 use Illuminate\Support\Arr;
 use Auth;
-
+use App\Traits\WmsTrait;
 
 class WmsExportController extends Controller
 {
@@ -20,6 +20,7 @@ class WmsExportController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    use WmsTrait;
     private $_data;
     private $_pathType;
     private $_repository;
@@ -71,8 +72,11 @@ class WmsExportController extends Controller
      */
     public function store(Request $request)
     {   
-        if($id = $this->_repository->createHasRelation($request)){
-            return redirect()->route('admin.wms.export.edit',['id'=>$id])->with('success', 'Thêm phiếu phiếu xuất kho <b>'. $request->code .'</b> thành công');
+        if($data = $this->_repository->createHasRelation($request)){
+            $id = $data['id'];
+            $status_id = $data['status_id'];
+            $action = ($status_id == 1 || $status_id == 3) ? 'view':'edit';
+            return redirect()->route('admin.wms.export.'.$action.'',['id'=>$id])->with('success', 'Thêm phiếu phiếu xuất kho <b>'. $request->code .'</b> thành công');
         }else{
             return redirect()->route('admin.wms.export.index')->with('danger', 'Thêm phiếu xuất kho <b>'. $request->code .'</b> thất bại.Xin vui lòng thử lại');
         }
@@ -84,9 +88,10 @@ class WmsExportController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function view($id)
     {
-        //
+        $this->_data['item'] = $this->_repository->getModel()::with(['customer:id,name,phone,address'])->findOrFail($id);
+        return view('backend.wms.export_view',$this->_data);
     }
 
     /**
@@ -95,9 +100,11 @@ class WmsExportController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    
     public function edit($id)
     {
         $this->_data['item'] = $this->_repository->getModel()::with(['customer:id,name,phone,address'])->findOrFail($id);
+        $this->checkPermissionReEditWmsAction($this->_data['item']->status_id,$id,Auth::user(),'export');
         return view('backend.wms.export_edit',$this->_data);
     }
 
@@ -110,8 +117,14 @@ class WmsExportController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if($this->_repository->updateHasRelation($request,$id)){
-            return redirect()->route('admin.wms.export.edit',['id'=>$id])->with('success', 'Cập nhật phiếu xuất kho <b>'. $request->code .'</b> thành công');
+
+        $status_id = $this->_repository->findOrFail($id)->status_id;
+        $this->checkPermissionReEditWmsAction($status_id,$id,Auth::user(),'export');
+        if($data = $this->_repository->updateHasRelation($request,$id)){
+            $id = $data['id'];
+            $status_id = $data['status_id'];
+            $action = ($status_id == 1 || $status_id == 3) ? 'view':'edit';
+            return redirect()->route('admin.wms.export.'.$action.'',['id'=>$id])->with('success', 'Cập nhật phiếu xuất kho <b>'. $request->code .'</b> thành công');
         }else{
             return redirect()->route('admin.wms.export.edit',['id'=>$id])->with('danger', 'Cập nhật phiếu xuất kho <b>'. $request->code .'</b> thất bại.Xin vui lòng thử lại');
         }

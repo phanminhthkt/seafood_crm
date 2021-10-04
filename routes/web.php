@@ -71,13 +71,13 @@ Route::group(['as' => 'admin.','namespace' => 'App\Http\Controllers\Backend', 'p
 		Route::get('/member/send-mail',['uses' => 'MemberController@sendMail']);
 
 		/*Nhóm thành viên */
-		Route::get('/group_member',['uses' => 'GroupMemberController@index','as' => 'group_member.index'])->middleware('can:view-group_member');
-		// Route::get('/group_member/add',['uses' => 'GroupMemberController@create','as' => 'group_member.add'])->middleware('can:create-group_member');
+		Route::get('/group_member',['uses' => 'GroupMemberController@index','as' => 'group_member.index'])->middleware('can:view-group-member');
+		// Route::get('/group_member/add',['uses' => 'GroupMemberController@create','as' => 'group_member.add'])->middleware('can:create-group-member');
 		Route::post('/group_member/store',['uses' => 'GroupMemberController@store','as' => 'group_member.store']);
-		Route::get('/group_member/edit/{id}',['uses' => 'GroupMemberController@edit','as' => 'group_member.edit'])->middleware('can:update-group_member');
+		Route::get('/group_member/edit/{id}',['uses' => 'GroupMemberController@edit','as' => 'group_member.edit'])->middleware('can:update-group-member');
 		// Route::put('/group_member/update/{id}', ['uses' => 'GroupMemberController@update','as' => 'group_member.update']);
-		// Route::delete('/group_member/delete/{id}',['uses' => 'GroupMemberController@delete','as' => 'group_member.delete'])->middleware('can:delete-group_member');
-		// Route::delete('/group_member/delete-multiple/{id}',['uses' => 'GroupMemberController@deleteMultiple'])->middleware('can:delete-group_member');
+		// Route::delete('/group_member/delete/{id}',['uses' => 'GroupMemberController@delete','as' => 'group_member.delete'])->middleware('can:delete-group-member');
+		// Route::delete('/group_member/delete-multiple/{id}',['uses' => 'GroupMemberController@deleteMultiple'])->middleware('can:delete-group-member');
 
 		/*Nhóm trạng thái */
 		Route::get('/unit',['uses' => 'UnitController@index','as' => 'unit.index'])->middleware('can:view-unit');
@@ -85,7 +85,7 @@ Route::group(['as' => 'admin.','namespace' => 'App\Http\Controllers\Backend', 'p
 		Route::get('/unit/add',['uses' => 'UnitController@create','as' => 'unit.add'])->middleware('can:create-unit');
 		Route::post('/unit/store',['uses' => 'UnitController@store','as' => 'unit.store'])->middleware('can:create-unit');
 		Route::get('/unit/edit/{id}',['uses' => 'UnitController@edit','as' => 'unit.edit'])->middleware('can:update-unit');
-		Route::put('/unit/update/{id}', ['uses' => 'UnitController@update','as' => 'unit.update']);
+		Route::put('/unit/update/{id}', ['uses' => 'UnitController@update','as' => 'unit.update'])->middleware('can:update-unit');
 		Route::delete('/unit/delete/{id}',['uses' => 'UnitController@delete','as' => 'unit.delete'])->middleware('can:delete-unit');
 		Route::delete('/unit/delete-multiple/{id}',['uses' => 'UnitController@deleteMultiple'])->middleware('can:delete-unit');
 
@@ -93,7 +93,7 @@ Route::group(['as' => 'admin.','namespace' => 'App\Http\Controllers\Backend', 'p
 		Route::get('/group_status',['uses' => 'GroupStatusController@index','as' => 'group_status.index'])->middleware('can:view-group_status');
 		Route::get('/group_status/data',['uses' => 'GroupStatusController@getData','as' => 'group_status.data'])->middleware('can:view-group_status');
 		Route::get('/group_status/add',['uses' => 'GroupStatusController@create','as' => 'group_status.add'])->middleware('can:create-group_status');
-		Route::post('/group_status/store',['uses' => 'GroupStatusController@store','as' => 'group_status.store']);
+		Route::post('/group_status/store',['uses' => 'GroupStatusController@store','as' => 'group_status.store'])->middleware('can:create-group_status');
 		Route::get('/group_status/edit/{id}',['uses' => 'GroupStatusController@edit','as' => 'group_status.edit'])->middleware('can:update-group_status');
 		Route::put('/group_status/update/{id}', ['uses' => 'GroupStatusController@update','as' => 'group_status.update']);
 		Route::delete('/group_status/delete/{id}',['uses' => 'GroupStatusController@delete','as' => 'group_status.delete'])->middleware('can:delete-group_status');
@@ -103,30 +103,30 @@ Route::group(['as' => 'admin.','namespace' => 'App\Http\Controllers\Backend', 'p
 		Route::get('/status',['uses' => 'StatusController@index','as' => 'status.index'])->middleware('can:view-status');
 		Route::get('/status/data',['uses' => 'StatusController@getData','as' => 'status.data'])->middleware('can:view-status');
 		Route::get('/status/add',['uses' => 'StatusController@create','as' => 'status.add'])->middleware('can:create-status');
-		Route::post('/status/store',['uses' => 'StatusController@store','as' => 'status.store']);
+		Route::post('/status/store',['uses' => 'StatusController@store','as' => 'status.store'])->middleware('can:create-status');
 		Route::get('/status/edit/{id}',['uses' => 'StatusController@edit','as' => 'status.edit'])->middleware('can:update-status');
-		Route::put('/status/update/{id}', ['uses' => 'StatusController@update','as' => 'status.update']);
+		Route::put('/status/update/{id}', ['uses' => 'StatusController@update','as' => 'status.update'])->middleware('can:update-status');
 		Route::delete('/status/delete/{id}',['uses' => 'StatusController@delete','as' => 'status.delete'])->middleware('can:delete-status');
 		Route::delete('/status/delete-multiple/{id}',['uses' => 'StatusController@deleteMultiple'])->middleware('can:delete-status');
 
 		/*Nhóm thuộc tính */
-		Route::get('/group_attribute',['uses' => 'GroupAttributeController@index','as' => 'group_attribute.index'])->middleware('can:view-group_attribute');
-		Route::get('/group_attribute/data',['uses' => 'GroupAttributeController@getData','as' => 'group_attribute.data'])->middleware('can:view-group_attribute');
-		Route::get('/group_attribute/add',['uses' => 'GroupAttributeController@create','as' => 'group_attribute.add'])->middleware('can:create-group_attribute');
-		Route::post('/group_attribute/store',['uses' => 'GroupAttributeController@store','as' => 'group_attribute.store']);
-		Route::get('/group_attribute/edit/{id}',['uses' => 'GroupAttributeController@edit','as' => 'group_attribute.edit'])->middleware('can:update-group_attribute');
-		Route::put('/group_attribute/update/{id}', ['uses' => 'GroupAttributeController@update','as' => 'group_attribute.update']);
-		Route::delete('/group_attribute/delete/{id}',['uses' => 'GroupAttributeController@delete','as' => 'group_attribute.delete'])->middleware('can:delete-group_attribute');
-		Route::delete('/group_attribute/delete-multiple/{id}',['uses' => 'GroupAttributeController@deleteMultiple'])->middleware('can:delete-group_attribute');
+		Route::get('/group_attribute',['uses' => 'GroupAttributeController@index','as' => 'group_attribute.index'])->middleware('can:view-group-attribute');
+		Route::get('/group_attribute/data',['uses' => 'GroupAttributeController@getData','as' => 'group_attribute.data'])->middleware('can:view-group-attribute');
+		Route::get('/group_attribute/add',['uses' => 'GroupAttributeController@create','as' => 'group_attribute.add'])->middleware('can:create-group-attribute');
+		Route::post('/group_attribute/store',['uses' => 'GroupAttributeController@store','as' => 'group_attribute.store'])->middleware('can:create-group-attribute');
+		Route::get('/group_attribute/edit/{id}',['uses' => 'GroupAttributeController@edit','as' => 'group_attribute.edit'])->middleware('can:update-group-attribute');
+		Route::put('/group_attribute/update/{id}', ['uses' => 'GroupAttributeController@update','as' => 'group_attribute.update'])->middleware('can:update-group-attribute');
+		Route::delete('/group_attribute/delete/{id}',['uses' => 'GroupAttributeController@delete','as' => 'group_attribute.delete'])->middleware('can:delete-group-attribute');
+		Route::delete('/group_attribute/delete-multiple/{id}',['uses' => 'GroupAttributeController@deleteMultiple'])->middleware('can:delete-group-attribute');
 
 		/*Thuộc tính */
 		Route::get('/attribute',['uses' => 'AttributeController@index','as' => 'attribute.index'])->middleware('can:view-attribute');
 		Route::get('/attribute/data',['uses' => 'AttributeController@getData','as' => 'attribute.data'])->middleware('can:view-attribute');
 		Route::get('/attribute/add',['uses' => 'AttributeController@create','as' => 'attribute.add'])->middleware('can:create-attribute');
 		Route::get('/attribute/add/group/{group_id}',['uses' => 'AttributeController@create','as' => 'attribute.add'])->middleware('can:create-attribute');
-		Route::post('/attribute/store',['uses' => 'AttributeController@store','as' => 'attribute.store']);
+		Route::post('/attribute/store',['uses' => 'AttributeController@store','as' => 'attribute.store'])->middleware('can:create-attribute');
 		Route::get('/attribute/edit/{id}',['uses' => 'AttributeController@edit','as' => 'attribute.edit'])->middleware('can:update-attribute');
-		Route::put('/attribute/update/{id}', ['uses' => 'AttributeController@update','as' => 'attribute.update']);
+		Route::put('/attribute/update/{id}', ['uses' => 'AttributeController@update','as' => 'attribute.update'])->middleware('can:update-attribute');
 		Route::delete('/attribute/delete/{id}',['uses' => 'AttributeController@delete','as' => 'attribute.delete'])->middleware('can:delete-attribute');
 		Route::delete('/attribute/delete-multiple/{id}',['uses' => 'AttributeController@deleteMultiple'])->middleware('can:delete-attribute');
 
@@ -134,9 +134,9 @@ Route::group(['as' => 'admin.','namespace' => 'App\Http\Controllers\Backend', 'p
 		Route::get('/category',['uses' => 'CategoryController@index','as' => 'category.index'])->middleware('can:view-category');
 		Route::get('/category/data',['uses' => 'CategoryController@getData','as' => 'category.data'])->middleware('can:view-category');
 		Route::get('/category/add',['uses' => 'CategoryController@create','as' => 'category.add'])->middleware('can:create-category');
-		Route::post('/category/store',['uses' => 'CategoryController@store','as' => 'category.store']);
+		Route::post('/category/store',['uses' => 'CategoryController@store','as' => 'category.store'])->middleware('can:create-category');
 		Route::get('/category/edit/{id}',['uses' => 'CategoryController@edit','as' => 'category.edit'])->middleware('can:update-category');
-		Route::put('/category/update/{id}', ['uses' => 'CategoryController@update','as' => 'category.update']);
+		Route::put('/category/update/{id}', ['uses' => 'CategoryController@update','as' => 'category.update'])->middleware('can:update-category');
 		Route::delete('/category/delete/{id}',['uses' => 'CategoryController@delete','as' => 'category.delete'])->middleware('can:delete-category');
 		Route::delete('/category/delete-multiple/{id}',['uses' => 'CategoryController@deleteMultiple'])->middleware('can:delete-category');
 
@@ -145,77 +145,78 @@ Route::group(['as' => 'admin.','namespace' => 'App\Http\Controllers\Backend', 'p
 		Route::get('/product/data',['uses' => 'ProductController@getData','as' => 'product.data'])->middleware('can:view-product');
 		Route::get('/product/data-child/{id}',['uses' => 'ProductController@getDataChild','as' => 'product.data.child'])->middleware('can:view-product');
 		Route::get('/product/add',['uses' => 'ProductController@create','as' => 'product.add'])->middleware('can:create-product');
-		Route::post('/product/store',['uses' => 'ProductController@store','as' => 'product.store']);
+		Route::post('/product/store',['uses' => 'ProductController@store','as' => 'product.store'])->middleware('can:create-product');
 		Route::get('/product/edit/{id}',['uses' => 'ProductController@edit','as' => 'product.edit'])->middleware('can:update-product');
-		Route::put('/product/update/{id}', ['uses' => 'ProductController@update','as' => 'product.update']);
+		Route::put('/product/update/{id}', ['uses' => 'ProductController@update','as' => 'product.update'])->middleware('can:update-product');
 
-		Route::get('/product/child/add/{id}',['uses' => 'ProductController@createChild','as' => 'product.child.add'])->middleware('can:update-product');
-		Route::post('/product/child/store/{id}', ['uses' => 'ProductController@storeChild','as' => 'product.child.store']);
+		Route::get('/product/child/add/{id}',['uses' => 'ProductController@createChild','as' => 'product.child.add'])->middleware('can:create-product');
+		Route::post('/product/child/store/{id}', ['uses' => 'ProductController@storeChild','as' => 'product.child.store'])->middleware('can:create-product');
 		
 		Route::get('/product/child/edit/{id}',['uses' => 'ProductController@editChild','as' => 'product.child.edit'])->middleware('can:update-product');
-		Route::put('/product/child/update/{id}', ['uses' => 'ProductController@updateChild','as' => 'product.child.update']);
+		Route::put('/product/child/update/{id}', ['uses' => 'ProductController@updateChild','as' => 'product.child.update'])->middleware('can:update-product');
 
 		Route::delete('/product/delete/{id}',['uses' => 'ProductController@delete','as' => 'product.delete'])->middleware('can:delete-product');
 		Route::delete('/product/delete-multiple/{id}',['uses' => 'ProductController@deleteMultiple'])->middleware('can:delete-product');
 
 		/*Khách hàng */
-		Route::get('/customer',['uses' => 'CustomerController@index','as' => 'customer.index'])->middleware('can:view-status');
-		Route::get('/customer/data',['uses' => 'CustomerController@getData','as' => 'customer.data'])->middleware('can:view-status');
-		Route::get('/customer/data-order/{id}',['uses' => 'CustomerController@getDataOrders','as' => 'customer.dataOrder'])->middleware('can:view-status');
-		Route::get('/customer/add',['uses' => 'CustomerController@create','as' => 'customer.add'])->middleware('can:create-status');
-		Route::post('/customer/store',['uses' => 'CustomerController@store','as' => 'customer.store']);
-		Route::get('/customer/edit/{id}',['uses' => 'CustomerController@edit','as' => 'customer.edit'])->middleware('can:update-status');
-		Route::get('/customer/show',['uses' => 'CustomerController@show','as' => 'customer.show'])->middleware('can:update-status');
-		Route::put('/customer/update/{id}', ['uses' => 'CustomerController@update','as' => 'customer.update']);
-		Route::delete('/customer/delete/{id}',['uses' => 'CustomerController@delete','as' => 'customer.delete'])->middleware('can:delete-status');
-		Route::delete('/customer/delete-multiple/{id}',['uses' => 'CustomerController@deleteMultiple'])->middleware('can:delete-status');
+		Route::get('/customer',['uses' => 'CustomerController@index','as' => 'customer.index'])->middleware('can:view-customer');
+		Route::get('/customer/data',['uses' => 'CustomerController@getData','as' => 'customer.data'])->middleware('can:view-customer');
+		Route::get('/customer/data-order/{id}',['uses' => 'CustomerController@getDataOrders','as' => 'customer.dataOrder'])->middleware('can:view-customer');
+		Route::get('/customer/add',['uses' => 'CustomerController@create','as' => 'customer.add'])->middleware('can:create-customer');
+		Route::post('/customer/store',['uses' => 'CustomerController@store','as' => 'customer.store'])->middleware('can:create-customer');
+		Route::get('/customer/edit/{id}',['uses' => 'CustomerController@edit','as' => 'customer.edit'])->middleware('can:update-customer');
+		Route::get('/customer/show',['uses' => 'CustomerController@show','as' => 'customer.show'])->middleware('can:update-customer');
+		Route::put('/customer/update/{id}', ['uses' => 'CustomerController@update','as' => 'customer.update'])->middleware('can:update-customer');
+		Route::delete('/customer/delete/{id}',['uses' => 'CustomerController@delete','as' => 'customer.delete'])->middleware('can:delete-customer');
+		Route::delete('/customer/delete-multiple/{id}',['uses' => 'CustomerController@deleteMultiple'])->middleware('can:delete-customer');
 
 		/*Chi nhánh,kho */
-		Route::get('/wms-store',['uses' => 'WmsController@index','as' => 'wms.index'])->middleware('can:view-status');
-		Route::get('/wms-store/data',['uses' => 'WmsController@getData','as' => 'wms.data'])->middleware('can:view-status');
-		Route::get('/wms-store/add',['uses' => 'WmsController@create','as' => 'wms.add'])->middleware('can:create-status');
-		Route::post('/wms-store/store',['uses' => 'WmsController@store','as' => 'wms.store']);
-		Route::get('/wms-store/edit/{id}',['uses' => 'WmsController@edit','as' => 'wms.edit'])->middleware('can:update-status');
-		Route::put('/wms-store/update/{id}', ['uses' => 'WmsController@update','as' => 'wms.update']);
-		Route::delete('/wms-store/delete/{id}',['uses' => 'WmsController@delete','as' => 'wms.delete'])->middleware('can:delete-status');
-		Route::delete('/wms-store/delete-multiple/{id}',['uses' => 'WmsController@deleteMultiple'])->middleware('can:delete-status');
+		Route::get('/wms-store',['uses' => 'WmsController@index','as' => 'wms.index'])->middleware('can:view-wms-store');
+		Route::get('/wms-store/data',['uses' => 'WmsController@getData','as' => 'wms.data'])->middleware('can:view-wms-store');
+		Route::get('/wms-store/add',['uses' => 'WmsController@create','as' => 'wms.add'])->middleware('can:create-wms-store');
+		Route::post('/wms-store/store',['uses' => 'WmsController@store','as' => 'wms.store'])->middleware('can:create-wms-store');
+		Route::get('/wms-store/edit/{id}',['uses' => 'WmsController@edit','as' => 'wms.edit'])->middleware('can:update-wms-store');
+		Route::put('/wms-store/update/{id}', ['uses' => 'WmsController@update','as' => 'wms.update'])->middleware('can:update-wms-store');
+		Route::delete('/wms-store/delete/{id}',['uses' => 'WmsController@delete','as' => 'wms.delete'])->middleware('can:delete-wms-store');
+		Route::delete('/wms-store/delete-multiple/{id}',['uses' => 'WmsController@deleteMultiple'])->middleware('can:delete-wms-store');
 
 		/*Chi nhánh,kho */
-		Route::get('/wms-import',['uses' => 'WmsImportController@index','as' => 'wms.import.index'])->middleware('can:view-status');
-		Route::get('/wms-import/data',['uses' => 'WmsImportController@getData','as' => 'wms.import.data'])->middleware('can:view-status');
-		Route::get('/wms-import/add',['uses' => 'WmsImportController@create','as' => 'wms.import.add'])->middleware('can:create-status');
-		Route::post('/wms-import/store',['uses' => 'WmsImportController@store','as' => 'wms.import.store']);
-		Route::get('/wms-import/edit/{id}',['uses' => 'WmsImportController@edit','as' => 'wms.import.edit'])->middleware('can:update-status');
-		Route::get('/wms-import/print/{id}',['uses' => 'WmsImportController@print','as' => 'wms.import.print'])->middleware('can:print-status');
-		Route::put('/wms-import/update/{id}', ['uses' => 'WmsImportController@update','as' => 'wms.import.update']);
-		Route::delete('/wms-import/delete/{id}',['uses' => 'WmsImportController@delete','as' => 'wms.import.delete'])->middleware('can:delete-status');
-		Route::delete('/wms-import/delete-multiple/{id}',['uses' => 'WmsImportController@deleteMultiple'])->middleware('can:delete-status');
+		Route::get('/wms-import',['uses' => 'WmsImportController@index','as' => 'wms.import.index'])->middleware('can:view-wms-import');
+		Route::get('/wms-import/data',['uses' => 'WmsImportController@getData','as' => 'wms.import.data'])->middleware('can:view-wms-import');
+		Route::get('/wms-import/add',['uses' => 'WmsImportController@create','as' => 'wms.import.add'])->middleware('can:create-wms-import');
+		Route::post('/wms-import/store',['uses' => 'WmsImportController@store','as' => 'wms.import.store'])->middleware('can:create-wms-import');
+		Route::get('/wms-import/edit/{id}',['uses' => 'WmsImportController@edit','as' => 'wms.import.edit'])->middleware('can:update-wms-import');
+		Route::get('/wms-import/print/{id}',['uses' => 'WmsImportController@print','as' => 'wms.import.print']);
+		Route::put('/wms-import/update/{id}', ['uses' => 'WmsImportController@update','as' => 'wms.import.update'])->middleware('can:update-wms-import');
+		Route::delete('/wms-import/delete/{id}',['uses' => 'WmsImportController@delete','as' => 'wms.import.delete'])->middleware('can:delete-wms-import');
+		Route::delete('/wms-import/delete-multiple/{id}',['uses' => 'WmsImportController@deleteMultiple'])->middleware('can:delete-wms-import');
 
 		/*Chi nhánh,kho */
-		Route::get('/wms-export',['uses' => 'WmsExportController@index','as' => 'wms.export.index'])->middleware('can:view-status');
-		Route::get('/wms-export/data',['uses' => 'WmsExportController@getData','as' => 'wms.export.data'])->middleware('can:view-status');
-		Route::get('/wms-export/add',['uses' => 'WmsExportController@create','as' => 'wms.export.add'])->middleware('can:create-status');
-		Route::post('/wms-export/store',['uses' => 'WmsExportController@store','as' => 'wms.export.store']);
-		Route::get('/wms-export/edit/{id}',['uses' => 'WmsExportController@edit','as' => 'wms.export.edit'])->middleware('can:update-status');
-		Route::get('/wms-export/print/{id}',['uses' => 'WmsExportController@print','as' => 'wms.export.print'])->middleware('can:print-status');
-		Route::put('/wms-export/update/{id}', ['uses' => 'WmsExportController@update','as' => 'wms.export.update']);
-		Route::delete('/wms-export/delete/{id}',['uses' => 'WmsExportController@delete','as' => 'wms.export.delete'])->middleware('can:delete-status');
-		Route::delete('/wms-export/delete-multiple/{id}',['uses' => 'WmsExportController@deleteMultiple'])->middleware('can:delete-status');
+		Route::get('/wms-export',['uses' => 'WmsExportController@index','as' => 'wms.export.index'])->middleware('can:view-wms-export');
+		Route::get('/wms-export/data',['uses' => 'WmsExportController@getData','as' => 'wms.export.data'])->middleware('can:view-wms-export');
+		Route::get('/wms-export/add',['uses' => 'WmsExportController@create','as' => 'wms.export.add'])->middleware('can:create-wms-export');
+		Route::post('/wms-export/store',['uses' => 'WmsExportController@store','as' => 'wms.export.store'])->middleware('can:create-wms-export');
+		Route::get('/wms-export/edit/{id}',['uses' => 'WmsExportController@edit','as' => 'wms.export.edit'])->middleware('can:update-wms-export');
+		Route::get('/wms-export/view/{id}',['uses' => 'WmsExportController@view','as' => 'wms.export.view'])->middleware('can:view-wms-export');
+		Route::get('/wms-export/print/{id}',['uses' => 'WmsExportController@print','as' => 'wms.export.print']);
+		Route::put('/wms-export/update/{id}', ['uses' => 'WmsExportController@update','as' => 'wms.export.update'])->middleware('can:update-wms-export');
+		Route::delete('/wms-export/delete/{id}',['uses' => 'WmsExportController@delete','as' => 'wms.export.delete'])->middleware('can:delete-wms-export');
+		Route::delete('/wms-export/delete-multiple/{id}',['uses' => 'WmsExportController@deleteMultiple'])->middleware('can:delete-wms-export');
 
 
 		/*Chi nhánh,kho điều chuyển*/
-		Route::get('/wms-transfer',['uses' => 'WmsTransferController@index','as' => 'wms.transfer.index'])->middleware('can:view-status');
-		Route::get('/wms-transfer/data',['uses' => 'WmsTransferController@getData','as' => 'wms.transfer.data'])->middleware('can:view-status');
-		Route::get('/wms-transfer/add',['uses' => 'WmsTransferController@create','as' => 'wms.transfer.add'])->middleware('can:create-status');
-		Route::post('/wms-transfer/store',['uses' => 'WmsTransferController@store','as' => 'wms.transfer.store']);
-		Route::get('/wms-transfer/edit/{id}',['uses' => 'WmsTransferController@edit','as' => 'wms.transfer.edit'])->middleware('can:update-status');
-		Route::get('/wms-transfer/print/{id}',['uses' => 'WmsTransferController@print','as' => 'wms.transfer.print'])->middleware('can:print-status');
-		Route::put('/wms-transfer/update/{id}', ['uses' => 'WmsTransferController@update','as' => 'wms.transfer.update']);
-		Route::delete('/wms-transfer/delete/{id}',['uses' => 'WmsTransferController@delete','as' => 'wms.transfer.delete'])->middleware('can:delete-status');
-		Route::delete('/wms-transfer/delete-multiple/{id}',['uses' => 'WmsTransferController@deleteMultiple'])->middleware('can:delete-status');
+		Route::get('/wms-transfer',['uses' => 'WmsTransferController@index','as' => 'wms.transfer.index'])->middleware('can:view-wms-transfer');
+		Route::get('/wms-transfer/data',['uses' => 'WmsTransferController@getData','as' => 'wms.transfer.data'])->middleware('can:view-wms-transfer');
+		Route::get('/wms-transfer/add',['uses' => 'WmsTransferController@create','as' => 'wms.transfer.add'])->middleware('can:create-wms-transfer');
+		Route::post('/wms-transfer/store',['uses' => 'WmsTransferController@store','as' => 'wms.transfer.store'])->middleware('can:create-wms-transfer');
+		Route::get('/wms-transfer/edit/{id}',['uses' => 'WmsTransferController@edit','as' => 'wms.transfer.edit'])->middleware('can:update-wms-transfer');
+		Route::get('/wms-transfer/print/{id}',['uses' => 'WmsTransferController@print','as' => 'wms.transfer.print']);
+		Route::put('/wms-transfer/update/{id}', ['uses' => 'WmsTransferController@update','as' => 'wms.transfer.update'])->middleware('can:update-wms-transfer');
+		Route::delete('/wms-transfer/delete/{id}',['uses' => 'WmsTransferController@delete','as' => 'wms.transfer.delete'])->middleware('can:delete-wms-transfer');
+		Route::delete('/wms-transfer/delete-multiple/{id}',['uses' => 'WmsTransferController@deleteMultiple'])->middleware('can:delete-wms-transfer');
 
 		/*Báo cáo */
-		Route::get('/report-product',['uses' => 'ReportController@reportTopProduct','as' => 'report.product.index'])->middleware('can:view-status');
-		Route::get('/report-revenue',['uses' => 'ReportController@reportRevenue','as' => 'report.revenue.index'])->middleware('can:view-status');
+		Route::get('/report-product',['uses' => 'ReportController@reportTopProduct','as' => 'report.product.index'])->middleware('can:view-report-product');
+		Route::get('/report-revenue',['uses' => 'ReportController@reportRevenue','as' => 'report.revenue.index'])->middleware('can:view-report-revenue');
 	});
 });

@@ -44,7 +44,8 @@ class WmsExportRepository extends BaseRepository implements WmsExportRepositoryI
                                   <label class="custom-control-label" for="autoSizingCheck-'.$value->id.'"></label>
                                 </div>';})
         ->addColumn('code', function ($value) use ($data) {
-                return '<a href="'.$data['pageIndex'].'/edit/'.$value->id.'" class="text-success">'.$value->code.'</a>';})
+            $action = ($value->status_id == 3 || $value->status_id == 1) ? 'view' : 'edit';
+            return '<a href="'.$data['pageIndex'].'/'.$action.'/'.$value->id.'" class="text-success">'.$value->code.'</a>';})
         ->addColumn('total_price', function ($value) use ($data) {
                 return number_format($value->total_price + $value->ship_price - $value->reduce_price, 0,'',',');})
         ->addColumn('status', function ($value) use ($data) {
@@ -52,11 +53,12 @@ class WmsExportRepository extends BaseRepository implements WmsExportRepositoryI
         ->addColumn('created_at', function ($value) use ($data) {
                 return formatDate($value->export_created_at,'d/m/Y');})
         ->addColumn('action', function ($value) use ($data) {
+            $action = ($value->status_id == 3 || $value->status_id == 1) ? 'view' : 'edit';
             $str = '<a  
                             href="javascript:void(0)"
                             class="btn btn-icon waves-effect waves-light btn-info '.$data['form']->ajaxform.'"
-                            data-title="Sửa '.$data['title'].'"
-                            data-url="'.$data['pageIndex'].'/edit/'.$value->id.$data['path_type'].'"  
+                            data-title="'.$action.' '.$data['title'].'"
+                            data-url="'.$data['pageIndex'].'/'.$action.'/'.$value->id.$data['path_type'].'"  
                                   >
                             <i class="mdi mdi-pencil"></i>
                         </a>
@@ -133,7 +135,8 @@ class WmsExportRepository extends BaseRepository implements WmsExportRepositoryI
                 $dataDetail = $this->arrayDetail($request->data_child,$exportId);
                 $wmsExport->details()->createMany($dataDetail);
             }
-            return $exportId;
+            $response = ['id' => $exportId,'status_id' => $data['status_id'] ];
+            return $response;
         }else{
             return false;
         }
@@ -158,7 +161,8 @@ class WmsExportRepository extends BaseRepository implements WmsExportRepositoryI
                 $dataDetail = $this->arrayDetail($request->data_child,$id);
                 $wmsExport->details()->createMany($dataDetail);
             }
-            return true;
+            $response = ['id' => $id,'status_id' => $data['status_id'] ];
+            return $response;
         }else{
             return false;
         }

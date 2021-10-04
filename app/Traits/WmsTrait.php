@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 use App\Models\Product;
+use App\Models\Permission;
 use DB;
 
 trait WmsTrait {
@@ -51,5 +52,12 @@ trait WmsTrait {
           })
           ->selectRaw('IFNULL(import_quantity,0) - IFNULL(export_quantity,0) + IFNULL(store_to_quantity,0) - IFNULL(store_from_quantity,0) as total_quantity');
       return $value;    
+    }
+
+    public function checkPermissionReEditWmsAction($status_id,$id,$user,$action){
+      $permission = Permission::where('slug','=','re-update-wms-'.$action)->first();//Check sửa phiếu lại
+      if(($status_id == 3 || $status_id == 1) && !$user->hasPermission($permission) && !$user->isSuperAdmin()){ 
+        return redirect()->route('admin.wms.export.view',['id'=>$id])->send();
+      }
     }
 }
