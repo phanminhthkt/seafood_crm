@@ -186,6 +186,7 @@ Route::group(['as' => 'admin.','namespace' => 'App\Http\Controllers\Backend', 'p
 		Route::get('/wms-import/add',['uses' => 'WmsImportController@create','as' => 'wms.import.add'])->middleware('can:create-wms-import');
 		Route::post('/wms-import/store',['uses' => 'WmsImportController@store','as' => 'wms.import.store'])->middleware('can:create-wms-import');
 		Route::get('/wms-import/edit/{id}',['uses' => 'WmsImportController@edit','as' => 'wms.import.edit'])->middleware('can:update-wms-import');
+		Route::get('/wms-import/view/{id}',['uses' => 'WmsImportController@view','as' => 'wms.import.view'])->middleware('can:view-wms-import');
 		Route::get('/wms-import/print/{id}',['uses' => 'WmsImportController@print','as' => 'wms.import.print']);
 		Route::put('/wms-import/update/{id}', ['uses' => 'WmsImportController@update','as' => 'wms.import.update'])->middleware('can:update-wms-import');
 		Route::delete('/wms-import/delete/{id}',['uses' => 'WmsImportController@delete','as' => 'wms.import.delete'])->middleware('can:delete-wms-import');
@@ -210,6 +211,7 @@ Route::group(['as' => 'admin.','namespace' => 'App\Http\Controllers\Backend', 'p
 		Route::get('/wms-transfer/add',['uses' => 'WmsTransferController@create','as' => 'wms.transfer.add'])->middleware('can:create-wms-transfer');
 		Route::post('/wms-transfer/store',['uses' => 'WmsTransferController@store','as' => 'wms.transfer.store'])->middleware('can:create-wms-transfer');
 		Route::get('/wms-transfer/edit/{id}',['uses' => 'WmsTransferController@edit','as' => 'wms.transfer.edit'])->middleware('can:update-wms-transfer');
+		Route::get('/wms-transfer/view/{id}',['uses' => 'WmsTransferController@view','as' => 'wms.transfer.view'])->middleware('can:view-wms-transfer');
 		Route::get('/wms-transfer/print/{id}',['uses' => 'WmsTransferController@print','as' => 'wms.transfer.print']);
 		Route::put('/wms-transfer/update/{id}', ['uses' => 'WmsTransferController@update','as' => 'wms.transfer.update'])->middleware('can:update-wms-transfer');
 		Route::delete('/wms-transfer/delete/{id}',['uses' => 'WmsTransferController@delete','as' => 'wms.transfer.delete'])->middleware('can:delete-wms-transfer');

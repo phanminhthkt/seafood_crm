@@ -43,7 +43,8 @@ class WmsImportRepository extends BaseRepository implements WmsImportRepositoryI
                                   <label class="custom-control-label" for="autoSizingCheck-'.$value->id.'"></label>
                                 </div>';})
         ->addColumn('code', function ($value) use ($data) {
-                return '<a href="'.$data['pageIndex'].'/edit/'.$value->id.'" class="text-success">'.$value->code.'</a>';})
+            $action = ($value->status_id == 3 || $value->status_id == 1) ? 'view' : 'edit';
+            return '<a href="'.$data['pageIndex'].'/'.$action.'/'.$value->id.'" class="text-success">'.$value->code.'</a>';})
         ->addColumn('total_price', function ($value) use ($data) {
                 return number_format($value->total_price, 0,'',',');})
         ->addColumn('status', function ($value) use ($data) {
@@ -51,11 +52,12 @@ class WmsImportRepository extends BaseRepository implements WmsImportRepositoryI
         ->addColumn('created_at', function ($value) use ($data) {
                 return formatDate($value->import_created_at,'d/m/Y');})
         ->addColumn('action', function ($value) use ($data) {
-                $str = '<a  
+            $action = ($value->status_id == 3 || $value->status_id == 1) ? 'view' : 'edit';
+            $str = '<a  
                             href="javascript:void(0)"
                             class="btn btn-icon waves-effect waves-light btn-info '.$data['form']->ajaxform.'"
-                            data-title="Sửa '.$data['title'].'"
-                            data-url="'.$data['pageIndex'].'/edit/'.$value->id.$data['path_type'].'"  
+                            data-title="'.$action.' '.$data['title'].'"
+                            data-url="'.$data['pageIndex'].'/'.$action.'/'.$value->id.$data['path_type'].'"  
                                   >
                             <i class="mdi mdi-pencil"></i>
                         </a>
@@ -112,7 +114,8 @@ class WmsImportRepository extends BaseRepository implements WmsImportRepositoryI
                 $dataDetail = $this->arrayDetail($request->data_child,$importId);
                 $wmsImport->details()->createMany($dataDetail);
             }
-            return $importId;
+            $response = ['id' => $importId,'status_id' => $data['status_id'] ];
+            return $response;
         }else{
             return false;
         }
@@ -121,7 +124,9 @@ class WmsImportRepository extends BaseRepository implements WmsImportRepositoryI
     public function updateHasRelation($request,$id){
         $data = $request->except('_token','_method','data_child');//# request only
         $data['status_id'] = $request->save_draft ?? $request->save_success ?? $request->save_cancel;
-        $data['total_price'] = $this->totalPrice($request->data_child) ?? 0;
+        if($request->has('data_child')){
+            $data['total_price'] = $this->totalPrice($request->data_child);
+        }
         if($request->has('import_created_at')){
             $data['import_created_at'] = formatDate($request->import_created_at,'Y-m-d H:i:s');
         }
@@ -132,7 +137,8 @@ class WmsImportRepository extends BaseRepository implements WmsImportRepositoryI
                 $dataDetail = $this->arrayDetail($request->data_child,$id);
                 $wmsImport->details()->createMany($dataDetail);
             }
-            return true;
+            $response = ['id' => $id,'status_id' => $data['status_id'] ];
+            return $response;
         }else{
             return false;
         }

@@ -57,7 +57,7 @@ trait WmsTrait {
     public function checkPermissionReEditWmsAction($status_id,$id,$user,$action){
       $permission = Permission::where('slug','=','re-update-wms-'.$action)->first();//Check sửa phiếu lại
       if(($status_id == 3 || $status_id == 1) && !$user->hasPermission($permission) && !$user->isSuperAdmin()){ 
-        return redirect()->route('admin.wms.export.view',['id'=>$id])->send();
+        return redirect()->route('admin.wms.'.$action.'.view',['id'=>$id])->send();
       }
     }
 }

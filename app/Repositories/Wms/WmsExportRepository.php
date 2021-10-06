@@ -146,10 +146,15 @@ class WmsExportRepository extends BaseRepository implements WmsExportRepositoryI
     public function updateHasRelation($request,$id){
         $data = $request->except('_token','_method','data_child','customer');//# request only
         $data['status_id'] = $request->save_draft ?? $request->save_success ?? $request->save_cancel;
-        $data['total_price'] = $this->totalPrice($request->data_child) ?? 0;
+        if($request->has('data_child')){
+            $data['total_price'] = $this->totalPrice($request->data_child);
+        }
         $data['reduce_price'] = str_replace(',','',$request->reduce_price ?: 0);
         $data['ship_price'] = str_replace(',','',$request->ship_price ?: 0);
-        $data['customer_id'] = $this->saveCustomerToId($request->customer) ?? 0;
+        if($request->has('customer')){
+            $data['customer_id'] = $this->saveCustomerToId($request->customer);
+        }
+        
 
         if($request->has('export_created_at')){
             $data['export_created_at'] = formatDate($request->export_created_at,'Y-m-d H:i:s');

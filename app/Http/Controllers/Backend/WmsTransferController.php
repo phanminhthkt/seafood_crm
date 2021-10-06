@@ -11,10 +11,11 @@ use DataTables;
 use App\Repositories\Wms\WmsTransferRepositoryInterface;
 use Illuminate\Support\Arr;
 use Auth;
-
+use App\Traits\WmsTrait;
 
 class WmsTransferController extends Controller
 {
+    use WmsTrait;
     /**
      * Display a listing of the resource.
      *
@@ -73,9 +74,12 @@ class WmsTransferController extends Controller
     public function store(Request $request)
     {   
         if($id = $this->_repository->createHasRelation($request)){
-            return redirect()->route('admin.wms.transfer.edit',['id'=>$id])->with('success', 'Thêm phiếu phiếu xuất kho <b>'. $request->code .'</b> thành công');
+            $id = $data['id'];
+            $status_id = $data['status_id'];
+            $action = ($status_id == 1 || $status_id == 3) ? 'view':'edit';
+            return redirect()->route('admin.wms.transfer.'.$action.'',['id'=>$id])->with('success', 'Thêm phiếu phiếu chuyển kho <b>'. $request->code .'</b> thành công');
         }else{
-            return redirect()->route('admin.wms.transfer.index')->with('danger', 'Thêm phiếu xuất kho <b>'. $request->code .'</b> thất bại.Xin vui lòng thử lại');
+            return redirect()->route('admin.wms.transfer.index')->with('danger', 'Thêm phiếu chuyển kho <b>'. $request->code .'</b> thất bại.Xin vui lòng thử lại');
         }
     }
 
@@ -85,9 +89,10 @@ class WmsTransferController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function view($id)
     {
-        //
+        $this->_data['item'] = $this->_repository->findOrFail($id);
+        return view('backend.wms.transfer_view',$this->_data);
     }
 
     /**
@@ -100,6 +105,7 @@ class WmsTransferController extends Controller
     {
         $this->_data['item'] = $this->_repository->findOrFail($id);
         $this->_data['store_default_id'] = $request->store_from_id ?? $this->_data['item']->store_from_id;
+        $this->checkPermissionReEditWmsAction($this->_data['item']->status_id,$id,Auth::user(),'transfer');
         return view('backend.wms.transfer_edit',$this->_data);
     }
 
@@ -112,10 +118,16 @@ class WmsTransferController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if($this->_repository->updateHasRelation($request,$id)){
-            return redirect()->route('admin.wms.transfer.edit',['id'=>$id])->with('success', 'Cập nhật phiếu xuất kho <b>'. $request->code .'</b> thành công');
+        $status_id = $this->_repository->findOrFail($id)->status_id;
+        $this->checkPermissionReEditWmsAction($status_id,$id,Auth::user(),'transfer');
+
+        if($data = $this->_repository->updateHasRelation($request,$id)){
+            $id = $data['id'];
+            $status_id = $data['status_id'];
+            $action = ($status_id == 1 || $status_id == 3) ? 'view':'edit';
+            return redirect()->route('admin.wms.transfer.'.$action,['id'=>$id])->with('success', 'Cập nhật phiếu chuyển kho <b>'. $request->code .'</b> thành công');
         }else{
-            return redirect()->route('admin.wms.transfer.edit',['id'=>$id])->with('danger', 'Cập nhật phiếu xuất kho <b>'. $request->code .'</b> thất bại.Xin vui lòng thử lại');
+            return redirect()->route('admin.wms.transfer.edit',['id'=>$id])->with('danger', 'Cập nhật phiếu chuyển kho <b>'. $request->code .'</b> thất bại.Xin vui lòng thử lại');
         }
     }
 
@@ -128,17 +140,17 @@ class WmsTransferController extends Controller
     public function delete($id)
     {
         if($this->_repository->delete($id)){
-            return ['success' => true, 'message' => 'Xóa phiếu xuất kho thành công !!'];
+            return ['success' => true, 'message' => 'Xóa phiếu chuyển kho thành công !!'];
         }else{
-            return ['error' => true, 'message' => 'Xóa phiếu xuất kho thất bại.Xin vui lòng thử lại !!'];
+            return ['error' => true, 'message' => 'Xóa phiếu chuyển kho thất bại.Xin vui lòng thử lại !!'];
         }
     }
     public function deleteMultiple($listId)
     {
         if($this->_repository->deleteMultiple($listId)){
-            return ['success' => true, 'message' => 'Xóa phiếu xuất kho thành công !!'];
+            return ['success' => true, 'message' => 'Xóa phiếu chuyển kho thành công !!'];
         }else{
-            return ['error' => true, 'message' => 'Xóa phiếu xuất kho thất bại.Xin vui lòng thử lại !!'];
+            return ['error' => true, 'message' => 'Xóa phiếu chuyển kho thất bại.Xin vui lòng thử lại !!'];
         }
     }
 }

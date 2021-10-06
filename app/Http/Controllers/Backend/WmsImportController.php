@@ -11,10 +11,11 @@ use DataTables;
 use App\Repositories\Wms\WmsImportRepositoryInterface;
 use Illuminate\Support\Arr;
 use Auth;
-
+use App\Traits\WmsTrait;
 
 class WmsImportController extends Controller
 {
+    use WmsTrait;
     /**
      * Display a listing of the resource.
      *
@@ -71,8 +72,11 @@ class WmsImportController extends Controller
      */
     public function store(Request $request)
     {   
-        if($id = $this->_repository->createHasRelation($request)){
-            return redirect()->route('admin.wms.import.edit',['id'=>$id])->with('success', 'Thêm phiếu phiếu nhập kho <b>'. $request->code .'</b> thành công');
+        if($data = $this->_repository->createHasRelation($request)){
+            $id = $data['id'];
+            $status_id = $data['status_id'];
+            $action = ($status_id == 1 || $status_id == 3) ? 'view':'edit';
+            return redirect()->route('admin.wms.import.'.$action.'',['id'=>$id])->with('success', 'Thêm phiếu nhập xuất kho <b>'. $request->code .'</b> thành công');
         }else{
             return redirect()->route('admin.wms.import.index')->with('danger', 'Thêm phiếu nhập kho <b>'. $request->name .'</b> thất bại.Xin vui lòng thử lại');
         }
@@ -84,9 +88,10 @@ class WmsImportController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function view($id)
     {
-        //
+        $this->_data['item'] = $this->_repository->findOrFail($id);
+        return view('backend.wms.import_view',$this->_data);
     }
 
     /**
@@ -98,6 +103,7 @@ class WmsImportController extends Controller
     public function edit($id)
     {
         $this->_data['item'] = $this->_repository->findOrFail($id);
+        $this->checkPermissionReEditWmsAction($this->_data['item']->status_id,$id,Auth::user(),'import');
         return view('backend.wms.import_edit',$this->_data);
     }
 
@@ -110,8 +116,14 @@ class WmsImportController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if($this->_repository->updateHasRelation($request,$id)){
-            return redirect()->route('admin.wms.import.edit',['id'=>$id])->with('success', 'Cập nhật phiếu nhập kho <b>'. $request->name .'</b> thành công');
+        $status_id = $this->_repository->findOrFail($id)->status_id;
+        $this->checkPermissionReEditWmsAction($status_id,$id,Auth::user(),'import');
+
+        if($data = $this->_repository->updateHasRelation($request,$id)){
+            $id = $data['id'];
+            $status_id = $data['status_id'];
+            $action = ($status_id == 1 || $status_id == 3) ? 'view':'edit';
+            return redirect()->route('admin.wms.import.'.$action.'',['id'=>$id])->with('success', 'Cập nhật nhập xuất kho <b>'. $request->code .'</b> thành công');
         }else{
             return redirect()->route('admin.wms.import.edit',['id'=>$id])->with('danger', 'Cập nhật phiếu nhập kho <b>'. $request->name .'</b> thất bại.Xin vui lòng thử lại');
         }
