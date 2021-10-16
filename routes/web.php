@@ -123,7 +123,7 @@ Route::group(['as' => 'admin.','namespace' => 'App\Http\Controllers\Backend', 'p
 		Route::get('/attribute',['uses' => 'AttributeController@index','as' => 'attribute.index'])->middleware('can:view-attribute');
 		Route::get('/attribute/data',['uses' => 'AttributeController@getData','as' => 'attribute.data'])->middleware('can:view-attribute');
 		Route::get('/attribute/add',['uses' => 'AttributeController@create','as' => 'attribute.add'])->middleware('can:create-attribute');
-		Route::get('/attribute/add/group/{group_id}',['uses' => 'AttributeController@create','as' => 'attribute.add'])->middleware('can:create-attribute');
+		Route::get('/attribute/add/group/{group_id}',['uses' => 'AttributeController@create','as' => 'attribute.group.add'])->middleware('can:create-attribute');
 		Route::post('/attribute/store',['uses' => 'AttributeController@store','as' => 'attribute.store'])->middleware('can:create-attribute');
 		Route::get('/attribute/edit/{id}',['uses' => 'AttributeController@edit','as' => 'attribute.edit'])->middleware('can:update-attribute');
 		Route::put('/attribute/update/{id}', ['uses' => 'AttributeController@update','as' => 'attribute.update'])->middleware('can:update-attribute');

@@ -25,9 +25,10 @@
 <!-- App js -->
 <script  src="{{asset('backend')}}\libs\datatables\jquery.dataTables.min.js"></script>
 <script  src="{{asset('backend')}}\libs\datatables\dataTables.bootstrap4.js"></script>
+<script  src="{{asset('backend')}}\libs\filer/jquery.filer.js"></script>
 <script  src="{{asset('backend')}}\js\functions.js"></script>
 <script  src="{{asset('backend')}}\js\app.dev.js"></script>
 <script  src="{{asset('backend')}}\js\app.attribute.js"></script>
 <script  src="{{asset('backend')}}\js\app.wms.js"></script>
 <script  src="{{asset('backend')}}\js\app.report.js"></script>
-
+<script  src="{{asset('backend')}}\js\app.album.js"></script>

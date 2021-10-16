@@ -404,4 +404,5 @@ $(document).ready(function(){
 			},
 	    });
 	})
+	photoZone("#photo-zone","#file-zone","#photoUpload-preview img");
 })

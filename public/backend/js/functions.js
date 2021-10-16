@@ -343,6 +343,11 @@ function addValueTemp(eMain,eFind,value){
 	container.find(eFind).attr('value',value);
 	$(eMain).html(container.html());
 }
+function addValueImgTemp(eMain,eFind,value){
+	container = $('<dev/>').html($(eMain).html());
+	container.find(eFind).attr('src',value);
+	$(eMain).html(container.html());
+}
 function addTextTemp(eMain,eFind,value){
 	container = $('<dev/>').html($(eMain).html());
 	container.find(eFind).text(value);
@@ -373,4 +378,88 @@ function loadOtherPage(url) {
 	$("<iframe>").hide().attr("src",url).appendTo("body");
 	$('#pre-loader').show();
 	setTimeout(function(){ $('#pre-loader').delay(250).fadeOut(function () {}); }, 2000);
+}
+
+/* Reader image */
+function readImage(inputFile,elementPhoto)
+{
+	if(inputFile[0].files[0])
+	{
+		if(inputFile[0].files[0].name.match(/.(jpg|jpeg|png|gif)$/i))
+		{
+			var size = parseInt(inputFile[0].files[0].size) / 1024;
+
+			if(size <= 4096)
+			{
+
+				var reader = new FileReader();
+				reader.onload = function(e){
+					$(elementPhoto).attr('src', e.target.result);
+				}
+				reader.readAsDataURL(inputFile[0].files[0]);
+			}
+			else
+			{
+				notifyDialog("Dung lượng hình ảnh lớn. Dung lượng cho phép <= 4MB ~ 4096KB");
+				return false;
+			}
+		}
+		else
+		{
+			notifyDialog("Hình ảnh không hợp lệ");
+			return false;
+		}
+	}
+	else
+	{
+		notifyDialog("Dữ liệu không hợp lệ");
+		return false;
+	}
+}
+/* Photo zone */
+function photoZone(eDrag,iDrag,eLoad)
+{
+	if($(eDrag).length)
+	{
+		/* Drag over */
+		$(eDrag).on("dragover",function(){
+			$(this).addClass("drag-over");
+			return false;
+		});
+
+		/* Drag leave */
+		$(eDrag).on("dragleave",function(){
+			$(this).removeClass("drag-over");
+			return false;
+		});
+
+		/* Drop */
+		$(eDrag).on("drop",function(e){
+			e.preventDefault();
+			$(this).removeClass("drag-over");
+
+			var lengthZone = e.originalEvent.dataTransfer.files.length;
+
+			if(lengthZone == 1)
+			{
+				$(iDrag).prop("files", e.originalEvent.dataTransfer.files);
+				readImage($(iDrag),eLoad);
+			}
+			else if(lengthZone > 1)
+			{
+				notifyDialog("Bạn chỉ được chọn 1 hình ảnh để upload");
+				return false;
+			}
+			else
+			{
+				notifyDialog("Dữ liệu không hợp lệ");
+				return false;
+			}
+		});
+
+		/* File zone */
+		$(iDrag).change(function(){
+			readImage($(this),eLoad);
+		});
+	}
 }

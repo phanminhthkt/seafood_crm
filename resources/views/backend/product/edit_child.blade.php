@@ -168,7 +168,7 @@
                           <div class="col-lg-8 col-md-6">
                             <div class="input-group flex-wrap-initial mtb-sm-0-5">
                               <select class="select2 select2-multiple attribute attribute__child--edit" name="attribute_id[]" multiple="multiple" required="">
-                                <option value="" >Nhóm thuộc tính</option>
+                                <option value="" >Thuộc tính</option>
                                 @foreach($vPivot->group->attributes as $v)
                                 <option value="{{$v->id}}"
                                 {{ $vPivot->id == $v->id ? 'selected' : ''}}
@@ -181,7 +181,7 @@
                                 data-title='Tạo thuộc tính'
                                 data-form-size = 'modal-md'
                                 data-form-rel = 'true'
-                                data-url="">
+                                data-url="{{Route('admin.attribute.group.add',['group_id' => $vPivot->group->id])}}">
                                   <i class="mdi mdi-plus-circle-outline"></i>
                                 </button>
                               </div>

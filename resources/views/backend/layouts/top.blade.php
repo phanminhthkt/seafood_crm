@@ -11,4 +11,8 @@
 <link href="{{asset('backend')}}\css\icons.min.css" rel="stylesheet" type="text/css">
 <link href="{{asset('backend')}}\css\app.min.css" rel="stylesheet" type="text/css">
 <link href="{{asset('backend')}}\css\flatpickr.custom.css" rel="stylesheet" type="text/css">
+<link href="{{asset('backend')}}\css\flatpickr.custom.css" rel="stylesheet" type="text/css">
+<link href="{{asset('backend')}}\libs/filer/jquery.filer.css" rel="stylesheet">
+<link href="{{asset('backend')}}\libs/filer/jquery.filer-dragdropbox-theme.css" rel="stylesheet">
 <link href="{{asset('backend')}}\css\app.dev.css" rel="stylesheet" type="text/css">
+
