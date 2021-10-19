@@ -9,4 +9,6 @@ interface ProductRepositoryInterface extends RepositoryInterface
     public function getDataChildByCondition($id,$request,$data);
     public function createHasRelation($request);
 	public function updateHasRelation($request,$id);
+	public function deleteProductPhotos($id);
+	public function checkValidateFile($request);
 }

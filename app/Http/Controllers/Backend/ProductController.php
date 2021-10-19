@@ -12,6 +12,7 @@ use App\Models\Unit;
 use DataTables;
 use App\Repositories\Product\ProductRepositoryInterface;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\File;
 
 class ProductController extends Controller
 {
@@ -101,7 +102,7 @@ class ProductController extends Controller
         if($this->_repository->findOrFail($id)->children->count() > 0 || $this->_repository->findOrFail($id)->parent_id!=NULL){
             return redirect()->route('admin.product.index')->with('warning', 'Vui lòng chọn sản phẩm cùng loại để chỉnh sửa');
         }
-        $this->_data['item'] = $this->_repository->findOrFail($id);
+        $this->_data['item'] = $this->_repository->getModel()::with('photos')->findOrFail($id);
         // dd($this->_data['item']);
         return view('backend.product.edit',$this->_data);
     }
@@ -130,36 +131,65 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function delete($id)
-    {
-        if($this->_repository->delete($id)){
-            return ['success' => true, 'message' => 'Xóa sản phẩm thành công !!'];
-        }else{
-            return ['error' => true, 'message' => 'Xóa sản phẩm thất bại.Xin vui lòng thử lại !!'];
+    {   
+        $this->deletePhoto($id);
+        
+        $this->_repository->deleteProductPhotos($id);
+        $childProducts = Product::select(['id','photo'])->where('parent_id','=',$id)->get();
+        foreach($childProducts as $child){
+            $this->_repository->deleteProductPhotos($child->id);
         }
+            if($this->_repository->delete($id)){
+                return ['success' => true, 'message' => 'Xóa sản phẩm thành công !!'];
+            }else{
+                return ['error' => true, 'message' => 'Xóa sản phẩm thất bại.Xin vui lòng thử lại !!'];
+            }
+        
     }
     public function deleteMultiple($listId)
     {
+        $arrId = explode(",",$listId);
+        foreach($arrId as $itemId){
+            $this->deletePhoto($itemId);
+            $this->_repository->deleteProductPhotos($itemId);
+            $childProducts = Product::select(['id','photo'])->where('parent_id','=',$itemId)->get();
+            foreach($childProducts as $child){
+                $this->_repository->deleteProductPhotos($child->id);
+            }
+        }
         if($this->_repository->deleteMultiple($listId)){
             return ['success' => true, 'message' => 'Xóa sản phẩm thành công !!'];
         }else{
             return ['error' => true, 'message' => 'Xóa sản phẩm thất bại.Xin vui lòng thử lại !!'];
         }
     }
-
+    public function deletePhoto($id)
+    {
+        $item = $this->_repository->findOrFail($id);
+        if(File::exists(public_path('uploads/products/').$item->photo)){
+            File::delete(public_path('uploads/products/').$item->photo);
+        }
+    }
     public function createChild($id)
     {
-        // dd($this->_data['item']);
         $this->_data['item'] = $this->_repository->findOrFail($id);
+        $this->_data['item']->setRelation('photos', null);
+        $this->_data['item']->photo = null;
         return view('backend.product.add_child',$this->_data);
     }
     public function storeChild(Request $request, $id)
     {
         $data = $request->except('_token','_method');//# request only
-        
+        if($request->hasFile('file_photo')){
+          $this->_repository->checkValidateFile($request);
+          $data['photo']  = generateFile($request->file_photo,'uploads/products/');
+        }
         $data['export_price'] = str_replace(',', '', $request->export_price);
         $data['import_price'] = str_replace(',', '', $request->import_price);
         $data['parent_id'] = $id;
+        $dataAlbum = $request->only('data_album');
         if($idChild = $this->_repository->create($data)->id){
+            $this->_repository->addPhotoChild($dataAlbum,$request,$idChild);//Delete album
             $product = $this->_repository->findOrFail($idChild);
             $product->attributes()->attach($request->attribute_id);
             return redirect()->route('admin.product.index')->with('success', 'Tạo sản phẩm con <b>'. $request->name .'</b> thành công');
@@ -176,10 +206,20 @@ class ProductController extends Controller
     public function updateChild(Request $request, $id)
     {
         $data = $request->except('_token','_method');//# request only
+        if($request->hasFile('file_photo')){
+          $this->_repository->checkValidateFile($request);
+          $productPhoto = $this->_repository->findOrFail($id)->photo;
+          if(File::exists(public_path('uploads/products/').$productPhoto)){
+            File::delete(public_path('uploads/products/').$productPhoto);
+          }
+          $data['photo']  = generateFile($request->file_photo,'uploads/products/');
+        }
         $product = $this->_repository->findOrFail($id);
         $data['export_price'] = str_replace(',', '', $request->export_price);
         $data['import_price'] = str_replace(',', '', $request->import_price);
+        $dataAlbum = $request->only('data_album');
         if($this->_repository->update($id,$data)){
+            $this->_repository->addPhotoChild($dataAlbum,$request,$id);
             $product->attributes()->sync($request->attribute_id);
             return redirect()->route('admin.product.index')->with('success', 'Chỉnh sửa sản phẩm <b>'. $request->name .'</b> thành công');
         }else{

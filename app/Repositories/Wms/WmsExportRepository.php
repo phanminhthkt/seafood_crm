@@ -144,6 +144,7 @@ class WmsExportRepository extends BaseRepository implements WmsExportRepositoryI
 
 
     public function updateHasRelation($request,$id){
+        
         $data = $request->except('_token','_method','data_child','customer');//# request only
         $data['status_id'] = $request->save_draft ?? $request->save_success ?? $request->save_cancel;
         if($request->has('data_child')){
@@ -154,7 +155,6 @@ class WmsExportRepository extends BaseRepository implements WmsExportRepositoryI
         if($request->has('customer')){
             $data['customer_id'] = $this->saveCustomerToId($request->customer);
         }
-        
 
         if($request->has('export_created_at')){
             $data['export_created_at'] = formatDate($request->export_created_at,'Y-m-d H:i:s');

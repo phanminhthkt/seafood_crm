@@ -91,7 +91,7 @@ a.btn{cursor: pointer;}
 .photoUpload-zone .photoUpload-detail img{max-width:100%;max-height: 190px;}
 .photoUpload-zone .photoUpload-file{cursor:pointer;/* background-color:#F5F5F5; *//* outline:2px dashed #CDCDCD; */outline-offset:0px;/* padding: 1rem 0.75rem; */margin-bottom:1rem;border-radius:0.25rem;font-weight:normal!important;display:-webkit-flex;display:-moz-flex;display:-ms-flex;display:-o-flex;display:flex;/* flex-direction:column; *//* align-items:center; *//* justify-content:center; */-webkit-transition:outline-offset .15s ease-in-out,background-color .15s linear;transition:outline-offset .15s ease-in-out,background-color .15s linear;}
 .photoUpload-zone .photoUpload-file.drag-over{outline-offset:-10px;background-color:#fff9f9;}
-.photoUpload-zone .photoUpload-file input{display:none;}
+.photoUpload-zone .photoUpload-file input{opacity: 0;position: absolute;}
 .photoUpload-zone .photoUpload-file i:hover{opacity:0.9;}
 .photoUpload-zone .photoUpload-file i{/* color:#6C7D8F; *//* font-size:55px; *//* margin-bottom:0.75rem; */}
 .photoUpload-zone .photoUpload-file p{margin:0;/* color:#767978; */font-size: 0.8rem;}
@@ -102,7 +102,7 @@ a.btn{cursor: pointer;}
 
 /*Multiple upload*/
 .multiple-upload-dev{}
-.multiple-upload-dev input[type='file']{display: none;}
+.multiple-upload-dev input[type='file']{opacity: 0;position: absolute;}
 .multiple-upload-dev .multiple-upload-choose{margin-top:1rem;width: 100%;padding:1rem;cursor: pointer;margin-bottom: 0;}
 .multiple-upload-dev .remove-image{position: absolute;top: -25px;right: -25px;}
 .multiple-upload-dev input[type='text']{

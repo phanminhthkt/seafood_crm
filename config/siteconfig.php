@@ -42,6 +42,7 @@ return [
 	'product' => [
 		'title'	=> 'Hàng hoá',
 		'table' => 'products',
+		'attributes' => true,
 	],
 	'group_attribute' => [
 		'title'	=> 'Nhóm đơn vị',

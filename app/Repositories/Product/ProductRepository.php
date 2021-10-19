@@ -1,10 +1,15 @@
 <?php
 namespace App\Repositories\Product;
 use App\Repositories\BaseRepository;
+use Validator;
 use App\Models\WmsImportDetail;
 use App\Traits\WmsTrait;
+use App\Models\ProductPhotos;
 use DataTables;
 use DB;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 class ProductRepository extends BaseRepository implements ProductRepositoryInterface
 {
     use WmsTrait;
@@ -187,14 +192,78 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         }
       return true;  
     }
-
+    public function deleteProductPhotos($product_id){
+      $photos = ProductPhotos::where('product_id','=', $product_id)->pluck('photo');
+      foreach($photos as $photo){
+        if(File::exists(public_path('uploads/products/'.$photo))){
+          File::delete(public_path('uploads/products/').$photo);
+        }
+      } 
+      ProductPhotos::where('product_id','=',$product_id)->delete();
+    }
+    public function addPhotoChild($dataAlbum,$request,$id){
+      if(count($dataAlbum)){
+        $dataAlbumC = [];
+        $photos = ProductPhotos::where('product_id','=', $id)->pluck('photo');
+        if($request->_method == "PUT" && count($photos)>0){ // Check update Product
+          foreach($photos as $photo){ // Check delete and update photo
+            if(!in_array($photo,$dataAlbum['data_album']['hidden'])){
+              if(File::exists(public_path('uploads/products/').$photo)){
+                File::delete(public_path('uploads/products/').$photo);
+              }
+              ProductPhotos::where('photo','=',$photo)->delete();
+            }else{
+              $dem = 0;
+              foreach($dataAlbum['data_album']['hidden'] as $k => $hidden){
+                if($hidden==''){
+                  $photo = generateFile($request->file_photos[$k - $dem],'uploads/products/');
+                  ProductPhotos::insert([
+                    'product_id' => $id,
+                    'name' => $dataAlbum['data_album']['name'][$k],
+                    'is_priority' => $dataAlbum['data_album']['stt'][$k],
+                    'photo' => $photo
+                  ]);
+                }else{
+                  ProductPhotos::where('product_id','=',$id)->where('photo','=',$hidden)->update(
+                    [
+                      'name' => $dataAlbum['data_album']['name'][$k],
+                      'is_priority' => $dataAlbum['data_album']['stt'][$k]
+                    ]
+                  );
+                  $dem++;
+                }
+              }
+            }
+          }
+        }else{ // Check add Product
+          if(isset($dataAlbum['data_album']['stt'])){
+            foreach($dataAlbum['data_album']['stt'] as $k => $value){
+              $dataAlbumC[$k]['product_id'] = $id;
+              $dataAlbumC[$k]['name'] = $dataAlbum['data_album']['name'][$k];
+              $dataAlbumC[$k]['is_priority'] = $dataAlbum['data_album']['stt'][$k];
+              $dataAlbumC[$k]['photo'] = generateFile($request->file_photos[$k],'uploads/products/');
+            }
+          }
+          ProductPhotos::insert($dataAlbumC);
+        }
+      }else{ // Delete all photo child
+        $this->deleteProductPhotos($id);
+      }
+      return true;  
+    }
     public function createHasRelation($request){
-        $data = $request->except('_token','data_child');
+
+        $data = $request->except('_token','data_child','data_album','file_photo','file_photos');
+        if($request->hasFile('file_photo')){
+          $this->checkValidateFile($request);
+          $data['photo']  = generateFile($request->file_photo,'uploads/products/');
+        }
         $data['export_price'] = str_replace(',', '', $request->export_price);
         $data['import_price'] = str_replace(',', '', $request->import_price);
         $dataChild = $request->only('data_child');
+        $dataAlbum = $request->only('data_album');
         if($id = $this->_model->create($data)->id){
-          if($this->addProductChild($dataChild,$data,$id)){
+          if($this->addProductChild($dataChild,$data,$id) && $this->addPhotoChild($dataAlbum,$request,$id)){
             return true;
           }
         }else{
@@ -204,16 +273,34 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
 
     public function updateHasRelation($request,$id){
         $data = $request->except('_token','_method');//# request only
+        if($request->hasFile('file_photo')){
+          $this->checkValidateFile($request);
+          $productPhoto = $this->_model->findOrFail($id)->photo;
+          if(File::exists(public_path('uploads/products/').$productPhoto)){
+            File::delete(public_path('uploads/products/').$productPhoto);
+          }
+          $data['photo']  = generateFile($request->file_photo,'uploads/products/');
+        }
         $data['export_price'] = str_replace(',', '', $request->export_price);
         $data['import_price'] = str_replace(',', '', $request->import_price);
         $dataChild = $request->only('data_child');
+        $dataAlbum = $request->only('data_album');
         if($this->_model->findOrFail($id)->update($data)){
-            if($this->addProductChild($dataChild,$data,$id)){
-                return true;
+            if($this->addProductChild($dataChild,$data,$id) && $this->addPhotoChild($dataAlbum,$request,$id)){
+              return true;
             }
         }else{
             return false;
         }
     }
 
+    public function checkValidateFile($request){
+      $request->validate([
+              'file' => 'mimes:jpg,png,jpeg,gif|max:20000'],          
+          [
+              'file.mimes' => 'Chỉ chấp nhận file đuôi jpg,png,jpeg,gif',
+              'file.max' => 'File giới hạn dung lượng không quá 2M',
+          ]
+      );
+    }
 }

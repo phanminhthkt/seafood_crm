@@ -147,51 +147,12 @@
                       </div>
                     </div>
                   </div>
-                  <div id="attribute-product">
-                    <h5 class="text-uppercase bg-light p-2 mb-0">
-                      <i class="mdi mdi-settings mr-1"></i>Thuộc tính
-                    </h5>
-                    <div class="card">
-                      <div class="card-body">
-                        <div class="list-attribute">
-                          <div class="first-attribute"></div>
-                        </div>
-                        <a href="javascript: void(0);" 
-                        class="btn add-attr-pattern btn-info waves-effect waves-light">
-                          <i class="mdi mdi-plus-circle mr-1"></i>Thêm thuộc tính
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                  <div id="product-same">
-                    <h5 class="text-uppercase bg-light p-2 mb-0">
-                      <i class="mdi mdi-settings mr-1"></i>Hàng hoá cùng loại
-                    </h5>
-                    <div class="card">
-                      <div class="card-body">
-                          <div class="table-responsive">
-                            <table class="table table-borderless mb-0">
-                                <thead class="thead-light">
-                                <tr>
-                                    <th width="35%"><b class="bold">Tên</b></th>
-                                    <th><b class="bold">Sku</b></th>
-                                    <th><b class="bold">Giá bán</b></th>
-                                    <th><b class="bold">Giá gốc</b></th>
-                                    <th></th>
-                                </tr>
-                                </thead>
-                                <tbody class="first-same-item">
-                                  
-                                </tbody>
-                            </table>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  @if(config('siteconfig.product.attributes'))
+                    @include('backend.product.blocks.attribute')
+                  @endif
                 </div>
               </div>
-              <button type="submit" class="btn btn-success waves-effect waves-light"><i class="far fa-plus-square mr-1"></i>Tạo</button>
-              <button type="reset" class="btn btn-secondary waves-effect waves-light"><i class="fa fas fa-redo mr-1"></i>Làm mới</button>
+              
            </div>
         </div>
       </div>
@@ -220,6 +181,9 @@
         </div>
       </div>
     </div>
+
+    <button type="submit" class="btn btn-success waves-effect waves-light"><i class="far fa-plus-square mr-1"></i>Tạo</button>
+    <button type="reset" class="btn btn-secondary waves-effect waves-light"><i class="fa fas fa-redo mr-1"></i>Làm mới</button>
 </form>
 <div id="all-attribute" data-value="{{json_encode($group_attributes)}}"></div>
 <script id="attr-pattern" type="text/template">
@@ -311,10 +275,10 @@
   <div class="col-md-3">
     <div class="card mt-2 mb-1 shadow-none border dz-processing dz-success dz-complete dz-image-preview">
       <div class="p-2 text-center">
-        <a class="btn btn-link btn-lg text-muted remove-image" data-dz-remove=""><i class="mdi mdi-close-circle" onClick="removeImage(this)"></i></a>
+        <a class="btn btn-link btn-lg text-muted remove-image"><i class="mdi mdi-close-circle" onClick="removeImage(this)"></i></a>
         <img style="height:100px;" class="rounded bg-light img-child" alt="" src="">
-        <input type="text" class="name-img" name="data[album][name]" value="" placeholder="Tiêu đề">
-        <input type="text"  name="data[album][stt]" value="0" placeholder="Số thứ tự">
+        <input type="text" class="name-img" name="data_album[name][]" value="" placeholder="Tiêu đề">
+        <input type="text"  name="data_album[stt][]" value="0" placeholder="Số thứ tự">
       </div>
     </div>
   </div>

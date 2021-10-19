@@ -74,3 +74,10 @@ function classStyleStatus($statusId,$type){
     }
     return $str;
 }
+
+function generateFile($file,$path){
+    $photo = $file;
+    $pathPhoto =  Str::slug(time().'_'.pathinfo($photo->getClientOriginalName(),PATHINFO_FILENAME),'_').'.'.pathinfo($photo->getClientOriginalName(),PATHINFO_EXTENSION);
+    $photo->move(public_path('uploads/products'),$pathPhoto);
+    return $pathPhoto;
+}
