@@ -184,7 +184,7 @@ $(document).on('click', function (e) {
 
 // $(".ajax-form").
 if($('#datatable-buttons').exists()){
-	if($('.row-product').exists()){
+	if($('#details-template').exists()){
 		var template = Handlebars.compile($("#details-template").html());
 	}
 	$(document).ready(function(){

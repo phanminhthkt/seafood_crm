@@ -32,7 +32,9 @@
                     <thead>
                        <tr role="row">
                           <th>Id</th>
+                          @if(config('siteconfig.product.attributes'))
                           <th></th>
+                          @endif
                           <th width="1%">
                               <div class="custom-control custom-checkbox text-center">
                                 <input type="checkbox" class="custom-control-input" id="selectall-checkbox">
@@ -65,6 +67,7 @@
     },
     columns:[
         {data: 'id',name: 'id', visible: false},
+        <?php if(config('siteconfig.product.attributes')){ ?>
         {
             "className":      'details-control',
             "orderable":      false,
@@ -72,6 +75,7 @@
             "data":           null,
             "defaultContent": ''
         },
+        <?php } ?>
         {data: 'checkbox', orderable: false, searchable: false},
         {data: 'priority',name: 'priority', orderable: false, searchable: false},
         {data: 'name',name: 'name'},
@@ -84,6 +88,7 @@
     ]
   };
 </script>
+@if(config('siteconfig.product.attributes'))
 <script id="details-template" type="text/x-handlebars-template">
   <div class="text-left"><button type="button" 
   class="btn btn-outline-primary waves-effect waves-light direct-form"
@@ -106,5 +111,6 @@
       </thead>
   </table>
 </script>
+@endif
 @endsection
 
